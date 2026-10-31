@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Allow: /harga
+Allow: /diskusi
+Allow: /sitemap.xml
+
+Disallow: /admin/
+Disallow: /perti/
+Disallow: /unit/
+Disallow: /dashboard
+
+Sitemap: https://siladata.my.id/sitemap.xml

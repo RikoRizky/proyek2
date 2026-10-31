@@ -1,0 +1,56 @@
+<x-app-layout>
+    <x-slot name="header">
+        <div>
+            <p class="text-xs font-bold uppercase tracking-[0.2em] text-violet-600">Perguruan Tinggi</p>
+            <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900">Tambah Akun Perguruan Tinggi</h1>
+            <p class="mt-1 text-sm text-slate-600">Buat akun untuk institusi. Setelah login, akun ini dapat membuat akun Program Studi.</p>
+        </div>
+    </x-slot>
+
+    <div class="ui-card max-w-xl mx-auto p-6 sm:p-8">
+        <form method="post" action="{{ route('admin.pertis.store') }}" class="space-y-5">
+            @csrf
+
+            <div class="rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-800">
+                <strong>ℹ️ Catatan:</strong> Setelah akun ini dibuat, akun Perguruan Tinggi dapat login dan membuat akun Program Studi sendiri di bawah naungannya.
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-slate-700">Nama Institusi</label>
+                <input type="text" name="name" value="{{ old('name') }}" required class="ui-input mt-2"
+                    placeholder="Contoh: Universitas Logistik &amp; Bisnis Internasional">
+                @error('name')<p class="mt-1.5 text-sm font-medium text-red-600">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700">Email login</label>
+                <input type="email" name="email" value="{{ old('email') }}" required class="ui-input mt-2" placeholder="institusi@domain.com">
+                @error('email')<p class="mt-1.5 text-sm font-medium text-red-600">{{ $message }}</p>@enderror
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700">Kode PT <span class="font-normal text-slate-400">(opsional)</span></label>
+                    <input type="text" name="kode_pt" value="{{ old('kode_pt') }}" class="ui-input mt-2" placeholder="Contoh: 001009">
+                    @error('kode_pt')<p class="mt-1.5 text-sm font-medium text-red-600">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700">Alamat <span class="font-normal text-slate-400">(opsional)</span></label>
+                    <input type="text" name="alamat" value="{{ old('alamat') }}" class="ui-input mt-2" placeholder="Contoh: Bandung, Jawa Barat">
+                    @error('alamat')<p class="mt-1.5 text-sm font-medium text-red-600">{{ $message }}</p>@enderror
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700">Kata sandi awal</label>
+                <input type="password" name="password" required class="ui-input mt-2" autocomplete="new-password">
+                @error('password')<p class="mt-1.5 text-sm font-medium text-red-600">{{ $message }}</p>@enderror
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-slate-700">Ulangi kata sandi</label>
+                <input type="password" name="password_confirmation" required class="ui-input mt-2" autocomplete="new-password">
+            </div>
+            <div class="flex flex-wrap gap-3 pt-2">
+                <button type="submit" class="ui-btn-primary">Simpan akun</button>
+                <a href="{{ route('admin.users.index') }}" class="ui-btn-secondary">Batal</a>
+            </div>
+        </form>
+    </div>
+</x-app-layout>
