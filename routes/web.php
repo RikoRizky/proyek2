@@ -106,6 +106,7 @@ Route::middleware(['auth', 'role:perti'])->prefix('perti')->name('perti.')->grou
 
     // LKPS Review & Validasi Data Tabel
     Route::get('prodis/{prodi}/lkps/{table_code}', [\App\Http\Controllers\Perti\LkpsReviewController::class, 'show'])->name('prodis.lkps.show');
+    Route::get('prodis/{prodi}/lkps/{table_code}/view', [\App\Http\Controllers\Perti\LkpsReviewController::class, 'viewer'])->name('prodis.lkps.viewer');
     Route::post('prodis/{prodi}/lkps/{table_code}/validate', [\App\Http\Controllers\Perti\LkpsReviewController::class, 'validateTable'])->name('prodis.lkps.validate');
     Route::get('prodis/{prodi}/lkps/{table_code}/export', [\App\Http\Controllers\Perti\LkpsReviewController::class, 'export'])->name('prodis.lkps.export');
 });
@@ -123,6 +124,7 @@ Route::middleware(['auth', 'role:prodi'])->prefix('unit')->name('unit.')->group(
 
     // LKPS Input, Import, Export Data Tabel
     Route::get('lkps/{table_code}', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'show'])->name('lkps.show');
+    Route::get('lkps/{table_code}/view', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'viewer'])->name('lkps.viewer');
     Route::post('lkps/{table_code}/save', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'save'])->name('lkps.save');
     Route::post('lkps/{table_code}/import', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'import'])->name('lkps.import');
     Route::get('lkps/{table_code}/export', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'export'])->name('lkps.export');

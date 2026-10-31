@@ -35,6 +35,32 @@ class LkpsController extends Controller
     }
 
     /**
+     * Dedicated Full Viewer for an LKPS table submission (Prodi view).
+     */
+    public function viewer(string $tableCode): \Illuminate\View\View
+    {
+        $userId = auth()->id();
+        $submission = LkpsSubmission::where('user_id', $userId)
+            ->where('table_code', $tableCode)
+            ->first();
+
+        $requirement = Requirement::where('table_code', $tableCode)->first();
+
+        $backUrl = $requirement?->module_id
+            ? route('unit.submissions.module', [$requirement->module_id, 'tab' => 'lkps'])
+            : route('unit.submissions.index');
+
+        return view('lkps.viewer', [
+            'prodi'       => auth()->user()->prodiProfile,
+            'tableCode'   => $tableCode,
+            'submission'  => $submission,
+            'requirement' => $requirement,
+            'backUrl'     => $backUrl,
+            'routePrefix' => 'unit',
+        ]);
+    }
+
+    /**
      * Save web table data directly (inline/form editing).
      */
     public function save(Request $request, string $tableCode): JsonResponse|RedirectResponse

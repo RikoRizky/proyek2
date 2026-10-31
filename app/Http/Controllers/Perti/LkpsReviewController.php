@@ -36,6 +36,33 @@ class LkpsReviewController extends Controller
     }
 
     /**
+     * Dedicated Full Viewer for an LKPS table submission.
+     */
+    public function viewer(Prodi $prodi, string $tableCode): \Illuminate\View\View
+    {
+        $this->authorizePerti($prodi);
+
+        $submission = LkpsSubmission::where('user_id', $prodi->user_id)
+            ->where('table_code', $tableCode)
+            ->first();
+
+        $requirement = \App\Models\Requirement::where('table_code', $tableCode)->first();
+
+        $backUrl = $requirement?->module_id
+            ? route('perti.prodis.modul', [$prodi->id, $requirement->module_id, 'tab' => 'lkps'])
+            : route('perti.prodis.index');
+
+        return view('lkps.viewer', [
+            'prodi'       => $prodi,
+            'tableCode'   => $tableCode,
+            'submission'  => $submission,
+            'requirement' => $requirement,
+            'backUrl'     => $backUrl,
+            'routePrefix' => 'perti',
+        ]);
+    }
+
+    /**
      * Validate an LKPS table submission (Approve / Revisi).
      */
     public function validateTable(Request $request, Prodi $prodi, string $tableCode): RedirectResponse|JsonResponse

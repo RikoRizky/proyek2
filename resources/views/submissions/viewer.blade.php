@@ -14,6 +14,7 @@
         
         $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
         $isPdf = $ext === 'pdf';
+        $isExcel = in_array($ext, ['xlsx', 'xls', 'csv']);
     @endphp
 
     @if (session('status'))
@@ -125,12 +126,29 @@
                 @endif
             </div>
 
-            <!-- Right panel: iframe or empty state -->
+            <!-- Right panel: iframe, excel viewer, or empty state -->
             <div class="flex-1 flex flex-col min-h-0 bg-slate-100 relative">
                 @if (!empty($files))
-                    <div id="excel-warning" class="{{ $isPdf ? 'hidden' : '' }} shrink-0 border-b border-amber-200/60 bg-amber-50/95 px-4 py-2.5 text-xs text-amber-950 sm:px-6">
-                        Berkas <strong>Excel</strong> tidak selalu dapat ditampilkan di dalam peramban. Gunakan <strong>Tab baru</strong> atau <strong>Unduh</strong> jika tampilan kosong.
+                    {{-- Excel In-App Spreadsheet Viewer --}}
+                    <div id="excel-preview-container" class="flex-1 flex flex-col min-h-0 bg-white overflow-hidden" style="display: none;">
+                        <div class="shrink-0 bg-slate-50 border-b border-slate-200 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 select-none">
+                            <div class="flex items-center gap-1.5 overflow-x-auto" id="excel-sheet-tabs">
+                                <!-- Dynamic Sheet Tabs -->
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-slate-500 font-semibold" id="excel-row-count"></span>
+                            </div>
+                        </div>
+                        <div class="flex-1 overflow-auto p-4 sm:p-6" id="excel-table-canvas">
+                            <div id="excel-loading" class="flex flex-col items-center justify-center py-16 text-slate-400">
+                                <svg class="h-8 w-8 animate-spin text-violet-600 mb-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+                                <span class="text-xs font-semibold">Memuat lembar kerja Excel...</span>
+                            </div>
+                            <div id="excel-table-wrapper" class="rounded-xl border border-slate-200 overflow-hidden shadow-xs"></div>
+                        </div>
                     </div>
+
+                    {{-- PDF / Generic Iframe Viewer --}}
                     <iframe
                         id="viewer-iframe"
                         src="{{ route($routePrefix . '.submissions.inline', [$submission, 'file' => $activeFileIndex]) }}"
@@ -173,27 +191,33 @@
             </div>
         </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
         <script>
+            let currentWorkbook = null;
+
             function selectFile(index, inlineUrl, downloadUrl, filename) {
-                // Update iframe source
-                const iframe = document.getElementById('viewer-iframe');
-                if (iframe) {
-                    iframe.src = inlineUrl;
-                }
+                const ext = filename.split('.').pop().toLowerCase();
+                const isExcel = ['xlsx', 'xls', 'csv'].includes(ext);
 
                 // Update headers & links
                 document.getElementById('header-filename').textContent = filename;
                 document.getElementById('btn-tab-baru').href = inlineUrl;
                 document.getElementById('btn-download').href = downloadUrl;
 
-                // Handle warning bar visibility
-                const ext = filename.split('.').pop().toLowerCase();
-                const warningBar = document.getElementById('excel-warning');
-                if (warningBar) {
-                    if (ext === 'pdf') {
-                        warningBar.classList.add('hidden');
-                    } else {
-                        warningBar.classList.remove('hidden');
+                const iframe = document.getElementById('viewer-iframe');
+                const excelContainer = document.getElementById('excel-preview-container');
+
+                if (isExcel) {
+                    if (iframe) iframe.style.display = 'none';
+                    if (excelContainer) {
+                        excelContainer.style.display = 'flex';
+                        loadExcelPreview(inlineUrl);
+                    }
+                } else {
+                    if (excelContainer) excelContainer.style.display = 'none';
+                    if (iframe) {
+                        iframe.style.display = 'block';
+                        iframe.src = inlineUrl;
                     }
                 }
 
@@ -207,21 +231,203 @@
                     }
                 });
             }
+
+            async function loadExcelPreview(url) {
+                const loading = document.getElementById('excel-loading');
+                const wrapper = document.getElementById('excel-table-wrapper');
+                const tabs = document.getElementById('excel-sheet-tabs');
+                const rowCount = document.getElementById('excel-row-count');
+
+                if (loading) loading.style.display = 'flex';
+                if (wrapper) wrapper.innerHTML = '';
+                if (tabs) tabs.innerHTML = '';
+                if (rowCount) rowCount.textContent = '';
+
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error('Gagal mengunduh berkas');
+                    const arrayBuffer = await response.arrayBuffer();
+                    currentWorkbook = XLSX.read(arrayBuffer, { type: 'array' });
+
+                    if (loading) loading.style.display = 'none';
+
+                    if (!currentWorkbook.SheetNames || currentWorkbook.SheetNames.length === 0) {
+                        wrapper.innerHTML = '<p class="p-8 text-center text-xs text-slate-400">Berkas Excel tidak memiliki sheet yang dapat dibaca.</p>';
+                        return;
+                    }
+
+                    // Render sheet tabs
+                    currentWorkbook.SheetNames.forEach((name, idx) => {
+                        const tabBtn = document.createElement('button');
+                        tabBtn.type = 'button';
+                        tabBtn.className = idx === 0
+                            ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-violet-600 text-white shadow-xs'
+                            : 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 transition';
+                        tabBtn.textContent = name;
+                        tabBtn.onclick = () => renderSheet(name, tabBtn);
+                        tabs.appendChild(tabBtn);
+                    });
+
+                    // Render first sheet
+                    renderSheet(currentWorkbook.SheetNames[0], tabs.firstChild);
+                } catch (err) {
+                    if (loading) loading.style.display = 'none';
+                    if (wrapper) {
+                        wrapper.innerHTML = `<div class="p-8 text-center text-xs text-rose-600 font-semibold">Gagal memuat pratinjau Excel secara langsung (${err.message}). Silakan klik tombol "Unduh" di atas untuk membuka di Microsoft Excel.</div>`;
+                    }
+                }
+            }
+
+            function renderSheet(sheetName, activeBtn) {
+                if (!currentWorkbook) return;
+                const wrapper = document.getElementById('excel-table-wrapper');
+                const tabs = document.getElementById('excel-sheet-tabs');
+                const rowCount = document.getElementById('excel-row-count');
+
+                if (tabs) {
+                    Array.from(tabs.children).forEach(b => {
+                        b.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 transition';
+                    });
+                }
+                if (activeBtn) {
+                    activeBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-violet-600 text-white shadow-xs';
+                }
+
+                const worksheet = currentWorkbook.Sheets[sheetName];
+                const rawHtml = XLSX.utils.sheet_to_html(worksheet, {
+                    id: 'excel-rendered-table',
+                    editable: false
+                });
+
+                wrapper.innerHTML = rawHtml;
+
+                const table = wrapper.querySelector('table');
+                if (table) {
+                    table.className = 'w-full text-left text-xs divide-y divide-slate-200 border-collapse';
+                    table.querySelectorAll('tr').forEach((tr, rIdx) => {
+                        if (rIdx === 0) {
+                            tr.className = 'bg-slate-100 font-bold text-slate-700 sticky top-0 border-b border-slate-200';
+                        } else {
+                            tr.className = 'hover:bg-violet-50/30 transition';
+                        }
+                        tr.querySelectorAll('td, th').forEach(cell => {
+                            cell.className = 'py-2 px-3 border border-slate-200 text-slate-800 whitespace-nowrap';
+                        });
+                    });
+                    const rowsCount = table.querySelectorAll('tr').length;
+                    if (rowCount) rowCount.textContent = `${rowsCount} baris · Sheet "${sheetName}"`;
+                }
+            }
+
+            // Auto-detect Excel on initial load
+            document.addEventListener('DOMContentLoaded', () => {
+                const initialExt = @json($ext);
+                if (['xlsx', 'xls', 'csv'].includes(initialExt)) {
+                    const iframe = document.getElementById('viewer-iframe');
+                    const excelContainer = document.getElementById('excel-preview-container');
+                    if (iframe) iframe.style.display = 'none';
+                    if (excelContainer) {
+                        excelContainer.style.display = 'flex';
+                        loadExcelPreview(@json($inlineUrl));
+                    }
+                }
+            });
         </script>
     @else
-        <!-- Legacy / single file layout -->
-        <div class="flex min-h-0 flex-1 flex-col">
-            @unless ($isPdf)
-                <div class="shrink-0 border-b border-amber-200/60 bg-amber-50/95 px-4 py-2.5 text-xs text-amber-950 sm:px-6">
-                    Berkas <strong>Excel</strong> tidak selalu dapat ditampilkan di dalam peramban. Gunakan <strong>Tab baru</strong> atau <strong>Unduh</strong> jika tampilan kosong.
+        <!-- Single file layout with Excel + PDF support -->
+        <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+        <div class="flex min-h-0 flex-1 flex-col bg-slate-100">
+            @if ($isExcel)
+                <div id="excel-preview-container" class="flex-1 flex flex-col min-h-0 bg-white overflow-hidden">
+                    <div class="shrink-0 bg-slate-50 border-b border-slate-200 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 select-none">
+                        <div class="flex items-center gap-1.5 overflow-x-auto" id="excel-sheet-tabs"></div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-slate-500 font-semibold" id="excel-row-count"></span>
+                        </div>
+                    </div>
+                    <div class="flex-1 overflow-auto p-4 sm:p-6" id="excel-table-canvas">
+                        <div id="excel-loading" class="flex flex-col items-center justify-center py-16 text-slate-400">
+                            <svg class="h-8 w-8 animate-spin text-violet-600 mb-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+                            <span class="text-xs font-semibold">Memuat lembar kerja Excel...</span>
+                        </div>
+                        <div id="excel-table-wrapper" class="rounded-xl border border-slate-200 overflow-hidden shadow-xs"></div>
+                    </div>
                 </div>
-            @endunless
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        let currentWorkbook = null;
+                        async function loadSingleExcel() {
+                            const loading = document.getElementById('excel-loading');
+                            const wrapper = document.getElementById('excel-table-wrapper');
+                            const tabs = document.getElementById('excel-sheet-tabs');
+                            const rowCount = document.getElementById('excel-row-count');
 
-            <iframe
-                src="{{ $inlineUrl }}"
-                title="Pratinjau {{ $filename }}"
-                class="min-h-0 w-full flex-1 border-0 bg-white"
-            ></iframe>
+                            try {
+                                const response = await fetch(@json($inlineUrl));
+                                const arrayBuffer = await response.arrayBuffer();
+                                currentWorkbook = XLSX.read(arrayBuffer, { type: 'array' });
+                                if (loading) loading.style.display = 'none';
+
+                                currentWorkbook.SheetNames.forEach((name, idx) => {
+                                    const tabBtn = document.createElement('button');
+                                    tabBtn.type = 'button';
+                                    tabBtn.className = idx === 0
+                                        ? 'px-3 py-1.5 rounded-lg text-xs font-bold bg-violet-600 text-white shadow-xs'
+                                        : 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 transition';
+                                    tabBtn.textContent = name;
+                                    tabBtn.onclick = () => renderSingleSheet(name, tabBtn);
+                                    tabs.appendChild(tabBtn);
+                                });
+
+                                if (currentWorkbook.SheetNames.length > 0) {
+                                    renderSingleSheet(currentWorkbook.SheetNames[0], tabs.firstChild);
+                                }
+                            } catch (err) {
+                                if (loading) loading.style.display = 'none';
+                                if (wrapper) wrapper.innerHTML = `<div class="p-8 text-center text-xs text-rose-600 font-semibold">Gagal memuat berkas Excel: ${err.message}. Silakan unduh untuk melihat di Microsoft Excel.</div>`;
+                            }
+                        }
+
+                        function renderSingleSheet(sheetName, activeBtn) {
+                            if (!currentWorkbook) return;
+                            const wrapper = document.getElementById('excel-table-wrapper');
+                            const tabs = document.getElementById('excel-sheet-tabs');
+                            const rowCount = document.getElementById('excel-row-count');
+
+                            if (tabs) {
+                                Array.from(tabs.children).forEach(b => {
+                                    b.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 transition';
+                                });
+                            }
+                            if (activeBtn) {
+                                activeBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-violet-600 text-white shadow-xs';
+                            }
+
+                            const ws = currentWorkbook.Sheets[sheetName];
+                            wrapper.innerHTML = XLSX.utils.sheet_to_html(ws, { editable: false });
+                            const table = wrapper.querySelector('table');
+                            if (table) {
+                                table.className = 'w-full text-left text-xs divide-y divide-slate-200 border-collapse';
+                                table.querySelectorAll('tr').forEach((tr, rIdx) => {
+                                    if (rIdx === 0) tr.className = 'bg-slate-100 font-bold text-slate-700 sticky top-0';
+                                    else tr.className = 'hover:bg-violet-50/30 transition';
+                                    tr.querySelectorAll('td, th').forEach(c => c.className = 'py-2 px-3 border border-slate-200 text-slate-800 whitespace-nowrap');
+                                });
+                                const rc = table.querySelectorAll('tr').length;
+                                if (rowCount) rowCount.textContent = `${rc} baris · Sheet "${sheetName}"`;
+                            }
+                        }
+
+                        loadSingleExcel();
+                    });
+                </script>
+            @else
+                <iframe
+                    src="{{ $inlineUrl }}"
+                    title="Pratinjau {{ $filename }}"
+                    class="min-h-0 w-full flex-1 border-0 bg-white"
+                ></iframe>
+            @endif
         </div>
     @endif
 

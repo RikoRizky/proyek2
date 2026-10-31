@@ -68,10 +68,20 @@
                     {{-- Action buttons Perti --}}
                     <div class="flex flex-wrap items-center gap-2 self-start lg:shrink-0">
                         @if ($lkps && $rowCount > 0)
+                            <a href="{{ route('perti.prodis.lkps.viewer', [$prodi->id, $tableCode]) }}"
+                                class="inline-flex items-center gap-1.5 rounded-xl border border-violet-200 bg-violet-50/80 px-3.5 py-2 text-xs font-bold text-violet-700 shadow-sm hover:bg-violet-100 hover:border-violet-300 transition"
+                                title="Lihat lebih lengkap dalam tampilan viewer layar penuh">
+                                <svg class="h-4 w-4 text-violet-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                </svg>
+                                Lihat Lengkap
+                            </a>
+
                             <button type="button" @click="expanded = !expanded"
                                 class="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-sm hover:border-violet-300 hover:bg-violet-50 hover:text-violet-700 transition">
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
-                                <span x-text="expanded ? 'Tutup Tabel' : 'Buka & Periksa Tabel'"></span>
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+                                <span x-text="expanded ? 'Tutup Ringkas' : 'Periksa Ringkas'"></span>
                             </button>
 
                             <button type="button"
@@ -99,9 +109,15 @@
                         <div class="rounded-xl border border-slate-200 bg-white overflow-hidden shadow-sm">
                             <div class="bg-slate-50 px-4 py-2.5 border-b border-slate-200 flex items-center justify-between text-xs">
                                 <span class="font-bold text-slate-700">Isi Data Tabel {{ $tableCode }} (Total {{ $rowCount }} baris)</span>
-                                @if (isset($lkps->summary_data['total_sks']))
-                                    <span class="font-semibold text-violet-700">Total SKS Terhitung: {{ $lkps->summary_data['total_sks'] }}</span>
-                                @endif
+                                <div class="flex items-center gap-3">
+                                    @if (isset($lkps->summary_data['total_sks']))
+                                        <span class="font-semibold text-violet-700">Total SKS: {{ $lkps->summary_data['total_sks'] }}</span>
+                                    @endif
+                                    <a href="{{ route('perti.prodis.lkps.viewer', [$prodi->id, $tableCode]) }}" class="font-bold text-violet-600 hover:underline inline-flex items-center gap-1">
+                                        <span>Buka Layar Penuh</span>
+                                        <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                                    </a>
+                                </div>
                             </div>
                             <div class="overflow-x-auto max-h-96">
                                 <table class="w-full text-left text-xs divide-y divide-slate-100">

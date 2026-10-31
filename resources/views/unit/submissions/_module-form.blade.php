@@ -5,9 +5,11 @@
 
 @if ($errors->any())
     <div class="border-b border-red-100 bg-red-50/70 px-6 py-4 text-sm text-red-900">
-        <p class="font-semibold flex items-center gap-1.5">
-            <svg class="h-4.5 w-4.5 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/></svg>
-            Gagal menyimpan berkas. Periksa kembali isian Anda:
+        <p class="font-semibold flex items-center gap-2">
+            <svg class="h-5 w-5 shrink-0 text-red-600" style="width: 20px; height: 20px; min-width: 20px; min-height: 20px;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/>
+            </svg>
+            <span>Gagal menyimpan berkas. Periksa kembali isian Anda:</span>
         </p>
         <ul class="mt-2 list-disc space-y-1 pl-5 text-xs text-red-700">
             @foreach ($errors->all() as $error)
