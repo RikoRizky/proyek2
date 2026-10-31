@@ -41,6 +41,7 @@
                     <tr>
                         <th class="w-16">No Urut</th>
                         <th>Judul Syarat</th>
+                        <th>Tipe Pengisian</th>
                         <th>Deskripsi</th>
                         <th class="text-right">Aksi</th>
                     </tr>
@@ -50,6 +51,17 @@
                         <tr class="transition hover:bg-violet-50/25">
                             <td class="font-bold text-slate-400 text-center">{{ $req->sort_order ?? '-' }}</td>
                             <td class="font-semibold text-slate-900">{{ $req->title }}</td>
+                            <td>
+                                @if ($req->isTable())
+                                    <span class="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-800 ring-1 ring-emerald-500/20">
+                                        📊 Tabel {{ $req->table_code }}
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-1 rounded-md bg-violet-50 px-2 py-0.5 text-xs font-semibold text-violet-800 ring-1 ring-violet-500/20">
+                                        📄 Dokumen LED
+                                    </span>
+                                @endif
+                            </td>
                             <td class="text-slate-600 text-sm max-w-md truncate">{{ $req->description ?? '-' }}</td>
                             <td class="text-right space-x-2 text-sm font-semibold">
                                 <button
@@ -69,7 +81,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="ui-empty text-sm py-8 text-center text-slate-500">Belum ada persyaratan. Klik "+ Tambah Persyaratan" untuk menambahkan.</td>
+                            <td colspan="5" class="ui-empty text-sm py-8 text-center text-slate-500">Belum ada persyaratan. Klik "+ Tambah Persyaratan" untuk menambahkan.</td>
                         </tr>
                     @endforelse
                 </tbody>

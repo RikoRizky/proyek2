@@ -28,6 +28,8 @@ class RequirementController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'input_type' => ['required', 'string', 'in:document,table,matrix,hybrid'],
+            'table_code' => ['nullable', 'string', 'max:30'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
 
@@ -57,6 +59,8 @@ class RequirementController extends Controller
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'input_type' => ['required', 'string', 'in:document,table,matrix,hybrid'],
+            'table_code' => ['nullable', 'string', 'max:30'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
 

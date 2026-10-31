@@ -18,7 +18,7 @@
 @endif
 
 <div class="divide-y divide-slate-100">
-    @foreach ($module->requirements as $req)
+    @foreach ($module->requirements->filter(fn($r) => !$r->isTable()) as $req)
         @php
             $latest = $req->submissions->first();
             $hasError = session('failed_requirement_id') == $req->id;

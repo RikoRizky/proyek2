@@ -39,7 +39,12 @@ class UploadProgress
             ->get()
             ->keyBy('requirement_id');
 
-        $moduleRows = $modules->map(function (Module $module) use ($latestSubmissions) {
+        $lkpsSubmissions = \App\Models\LkpsSubmission::query()
+            ->where('user_id', $unit->id)
+            ->get()
+            ->keyBy('table_code');
+
+        $moduleRows = $modules->map(function (Module $module) use ($latestSubmissions, $lkpsSubmissions) {
             $total = $module->requirements->count();
             
             $uploaded = 0;
@@ -48,15 +53,29 @@ class UploadProgress
             $pendingValidation = 0;
 
             foreach ($module->requirements as $requirement) {
-                $sub = $latestSubmissions->get($requirement->id);
-                if ($sub && $sub->status !== SubmissionStatus::Pending) {
-                    $uploaded++;
-                    if ($sub->status === SubmissionStatus::Approved) {
-                        $approved++;
-                    } elseif ($sub->status === SubmissionStatus::Revision) {
-                        $revision++;
-                    } elseif ($sub->status === SubmissionStatus::Uploaded) {
-                        $pendingValidation++;
+                if ($requirement->isTable() && $requirement->table_code) {
+                    $lkps = $lkpsSubmissions->get($requirement->table_code);
+                    if ($lkps && !empty($lkps->table_rows)) {
+                        $uploaded++;
+                        if ($lkps->status === 'approved') {
+                            $approved++;
+                        } elseif ($lkps->status === 'revision') {
+                            $revision++;
+                        } else {
+                            $pendingValidation++;
+                        }
+                    }
+                } else {
+                    $sub = $latestSubmissions->get($requirement->id);
+                    if ($sub && $sub->status !== SubmissionStatus::Pending) {
+                        $uploaded++;
+                        if ($sub->status === SubmissionStatus::Approved) {
+                            $approved++;
+                        } elseif ($sub->status === SubmissionStatus::Revision) {
+                            $revision++;
+                        } elseif ($sub->status === SubmissionStatus::Uploaded) {
+                            $pendingValidation++;
+                        }
                     }
                 }
             }

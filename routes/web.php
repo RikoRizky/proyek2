@@ -103,6 +103,11 @@ Route::middleware(['auth', 'role:perti'])->prefix('perti')->name('perti.')->grou
     Route::get('submissions/{submission}/inline', [App\Http\Controllers\Perti\SubmissionController::class, 'inline'])->name('submissions.inline');
     Route::get('submissions/{submission}/download', [App\Http\Controllers\Perti\SubmissionController::class, 'download'])->name('submissions.download');
     Route::get('submissions/{submission}', [App\Http\Controllers\Perti\SubmissionController::class, 'show'])->name('submissions.show');
+
+    // LKPS Review & Validasi Data Tabel
+    Route::get('prodis/{prodi}/lkps/{table_code}', [\App\Http\Controllers\Perti\LkpsReviewController::class, 'show'])->name('prodis.lkps.show');
+    Route::post('prodis/{prodi}/lkps/{table_code}/validate', [\App\Http\Controllers\Perti\LkpsReviewController::class, 'validateTable'])->name('prodis.lkps.validate');
+    Route::get('prodis/{prodi}/lkps/{table_code}/export', [\App\Http\Controllers\Perti\LkpsReviewController::class, 'export'])->name('prodis.lkps.export');
 });
 
 Route::middleware(['auth', 'role:prodi'])->prefix('unit')->name('unit.')->group(function () {
@@ -115,6 +120,12 @@ Route::middleware(['auth', 'role:prodi'])->prefix('unit')->name('unit.')->group(
     Route::get('submissions/{submission}/download', [SubmissionController::class, 'download'])->name('submissions.download');
     Route::get('submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
     Route::get('reports/pdf', [ReportController::class, 'pdf'])->name('reports.pdf');
+
+    // LKPS Input, Import, Export Data Tabel
+    Route::get('lkps/{table_code}', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'show'])->name('lkps.show');
+    Route::post('lkps/{table_code}/save', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'save'])->name('lkps.save');
+    Route::post('lkps/{table_code}/import', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'import'])->name('lkps.import');
+    Route::get('lkps/{table_code}/export', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'export'])->name('lkps.export');
 });
 
 Route::middleware('auth')->group(function () {

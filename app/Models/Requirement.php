@@ -15,6 +15,8 @@ class Requirement extends Model
         'module_id',
         'title',
         'description',
+        'input_type',
+        'table_code',
         'sort_order',
     ];
 
@@ -26,5 +28,20 @@ class Requirement extends Model
     public function submissions(): HasMany
     {
         return $this->hasMany(Submission::class);
+    }
+
+    public function lkpsSubmissions(): HasMany
+    {
+        return $this->hasMany(LkpsSubmission::class);
+    }
+
+    public function isTable(): bool
+    {
+        return in_array($this->input_type, ['table', 'matrix', 'hybrid']);
+    }
+
+    public function isDocument(): bool
+    {
+        return in_array($this->input_type, ['document', 'hybrid']);
     }
 }

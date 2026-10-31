@@ -58,6 +58,8 @@ class ProdiProgressController extends Controller
                 $q->where('user_id', $prodiUser->id)
                   ->where('is_latest', true)
                   ->orderBy('version', 'desc');
+            }, 'lkpsSubmissions' => function ($ls) use ($prodiUser) {
+                $ls->where('user_id', $prodiUser->id);
             }])
             ->get();
 

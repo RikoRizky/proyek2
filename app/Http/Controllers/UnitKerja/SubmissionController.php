@@ -38,6 +38,8 @@ class SubmissionController extends Controller
                 ->with(['submissions' => function ($s) {
                     $s->where('user_id', auth()->id())
                         ->latestForUnit();
+                }, 'lkpsSubmissions' => function ($ls) {
+                    $ls->where('user_id', auth()->id());
                 }]);
         }]);
 
