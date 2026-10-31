@@ -29,13 +29,18 @@ class RequirementController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'input_type' => ['required', 'string', 'in:document,table,matrix,hybrid'],
-            'table_code' => ['nullable', 'string', 'max:30'],
+            'table_code' => ['nullable', 'string', 'max:50'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
 
+        if (in_array($validated['input_type'], ['table', 'matrix']) && empty($validated['table_code'])) {
+            $tableCount = $module->requirements()->whereIn('input_type', ['table', 'matrix'])->count() + 1;
+            $validated['table_code'] = 'T.' . $module->id . '.' . $tableCount;
+        }
+
         $module->requirements()->create($validated);
 
-        return redirect()->route('admin.modules.show', $module)->with('status', 'Persyaratan ditambahkan.');
+        return redirect()->route('admin.modules.show', $module)->with('status', 'Butir kriteria / tabel berhasil ditambahkan.');
     }
 
     public function show(Module $module, Requirement $requirement): View
@@ -71,9 +76,14 @@ class RequirementController extends Controller
                 ->with('edit_requirement_id', $requirement->id);
         }
 
-        $requirement->update($validator->validated());
+        $validated = $validator->validated();
+        if (in_array($validated['input_type'], ['table', 'matrix']) && empty($validated['table_code'])) {
+            $validated['table_code'] = $requirement->table_code ?: ('T.' . $module->id . '.' . $requirement->id);
+        }
 
-        return redirect()->route('admin.modules.show', $module)->with('status', 'Persyaratan diperbarui.');
+        $requirement->update($validated);
+
+        return redirect()->route('admin.modules.show', $module)->with('status', 'Butir kriteria / tabel berhasil diperbarui.');
     }
 
     public function destroy(Module $module, Requirement $requirement): RedirectResponse

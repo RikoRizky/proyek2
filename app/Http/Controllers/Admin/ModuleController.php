@@ -12,7 +12,12 @@ class ModuleController extends Controller
 {
     public function index(): View
     {
-        $modules = Module::query()->withCount('requirements')->orderBy('sort_order')->orderBy('name')->paginate(15);
+        $modules = Module::query()
+            ->with(['requirements'])
+            ->withCount('requirements')
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->paginate(15);
 
         return view('admin.modules.index', compact('modules'));
     }
