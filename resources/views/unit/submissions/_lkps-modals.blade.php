@@ -109,12 +109,99 @@
         }
     }
 
+    // Official LAM INFOKOM 2.1 Default Table Column Templates (31 Sheets)
+    const DEFAULT_TABLE_TEMPLATES = {
+        '1.A.1': ['Unit Kerja', 'Nama Ketua', 'Periode Jabatan', 'Pendidikan Terakhir', 'Jabatan Fungsional', 'Tugas Pokok & Fungsi'],
+        '1.A.2': ['Sumber Pendanaan', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+        '1.A.3': ['Penggunaan Dana', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+        '1.A.4': ['Nama DTPR', 'SKS Pengajaran PS Sendiri', 'SKS PS Lain PT Sendiri', 'SKS PT Lain', 'SKS Penelitian', 'SKS PkM', 'SKS Manajemen PT Sendiri', 'SKS Manajemen PT Lain', 'Total SKS'],
+        '1.A.5': ['Jenis Tenaga Kependidikan', 'S3', 'S2', 'S1', 'D4', 'D3', 'D2', 'D1', 'SMA/SMK', 'Unit Kerja'],
+        '1.B':   ['Unit SPMI', 'Nama Unit SPMI', 'Dokumen SPMI', 'Auditor Certified', 'Auditor Non-Certified', 'Frekuensi Audit/Tahun', 'Bukti Certified', 'Laporan Audit'],
+        '2.A.1': ['TS', 'Daya Tampung', 'Pendaftar Reguler', 'Pendaftar Afirmasi', 'Pendaftar Khusus', 'Mhs Baru Reguler', 'Mhs Baru RPL', 'Mhs Aktif Reguler', 'Mhs Aktif RPL'],
+        '2.A.2': ['Asal Mahasiswa', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+        '2.A.3': ['Kategori Mahasiswa Asing', 'TS-2', 'TS-1', 'TS', 'Jumlah'],
+        '2.B.1': ['PL 1', 'PL 2', 'PL 3', 'PL 4'],
+        '2.B.2': ['PL 1', 'PL 2', 'PL 3', 'PL 4'],
+        '2.B.3': ['CPL', 'CPMK', 'Semester 1', 'Semester 2', 'Semester 3', 'Semester 4', 'Semester 5', 'Semester 6', 'Semester 7', 'Semester 8'],
+        '2.B.4': ['Tahun Lulus', 'Jumlah Lulusan', 'Jumlah Terlacak', 'Rata-rata Waktu Tunggu (Bulan)'],
+        '2.B.5': ['Tahun Lulus', 'Jumlah Lulusan', 'Jumlah Terlacak', 'Profesi Infokom', 'Profesi Non-Infokom', 'Lingkup Tempat Kerja'],
+        '2.B.6': ['Jenis Kemampuan', 'Sangat Baik (%)', 'Baik (%)', 'Cukup (%)', 'Kurang (%)', 'Rencana Tindak Lanjut'],
+        '2.C':   ['Tahun Akademik', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+        '2.D':   ['Sumber Rekognisi', 'Jenis Pengakuan (Rekognisi)', 'Tahun Akademik', 'Link Bukti'],
+        '3.A.1': ['Nama Prasarana', 'Daya Tampung', 'Luas Ruang (m²)', 'Kepemilikan (M/W)', 'Lisensi (L/P/T)', 'Perangkat', 'Link Bukti'],
+        '3.A.2': ['Nama DTPR (Ketua)', 'Judul Penelitian', 'Mhs Terlibat', 'Jenis Hibah', 'Tingkat (L/N/I)', 'Durasi (Tahun)', 'Dana TS-2', 'Dana TS-1', 'Dana TS', 'Link Bukti'],
+        '3.A.3': ['Tahun Akademik', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+        '3.C.1': ['Judul Kerjasama', 'Mitra Kerja Sama', 'Tingkat (L/N/I)', 'Durasi (Tahun)', 'Dana TS-2', 'Dana TS-1', 'Dana TS', 'Link Bukti'],
+        '3.C.2': ['Nama DTPR', 'Judul Publikasi', 'Jenis Publikasi', 'Tahun Terbit (TS-2/TS-1/TS)', 'Link Bukti'],
+        '3.C.3': ['Judul HKI', 'Jenis HKI', 'Nama DTPR', 'Tahun Perolehan', 'Link Bukti'],
+        '4.A.1': ['Nama Prasarana PkM', 'Daya Tampung', 'Luas Ruang (m²)', 'Kepemilikan (M/W)', 'Lisensi (L/P/T)', 'Perangkat', 'Link Bukti'],
+        '4.A.2': ['Nama DTPR (Ketua PkM)', 'Judul PkM', 'Mhs Terlibat', 'Jenis Hibah', 'Tingkat (L/N/I)', 'Durasi (Tahun)', 'Dana TS-2', 'Dana TS-1', 'Dana TS', 'Link Bukti'],
+        '4.C.1': ['Judul Kerjasama PkM', 'Mitra Kerja Sama', 'Tingkat (L/N/I)', 'Durasi (Tahun)', 'Dana TS-2', 'Dana TS-1', 'Dana TS', 'Link Bukti'],
+        '4.C.2': ['Nama DTPR (Ketua)', 'Judul PkM', 'Diseminasi (L/N/I)', 'Tahun (TS-2/TS-1/TS)', 'Link Bukti'],
+        '4.C.3': ['Judul HKI PkM', 'Jenis HKI', 'Nama DTPR', 'Tahun Perolehan', 'Link Bukti'],
+        '5.1':   ['Jenis Tata Kelola', 'Nama Sistem Informasi', 'Akses (Lokal/Internet)', 'Unit Pengelola', 'Link Bukti'],
+        '5.2':   ['Nama Prasarana Pendidikan', 'Daya Tampung', 'Luas Ruang (m²)', 'Kepemilikan (M/W)', 'Lisensi (L/P/T)', 'Perangkat', 'Link Bukti'],
+        '6':     ['Visi PT', 'Visi UPPS', 'Visi Keilmuan PS', 'Misi PT', 'Misi UPPS']
+    };
+
     // Alpine component definition for LKPS Table Editor
     function lkpsTableEditor(tableCode, initialHeaders, initialRows, initialSummary) {
+        // Determine start headers
+        const defaultHeaders = DEFAULT_TABLE_TEMPLATES[tableCode] || ['Kolom 1', 'Kolom 2', 'Kolom 3'];
+        let startHeaders = [];
+        if (initialHeaders && Array.isArray(initialHeaders) && initialHeaders.length > 0) {
+            startHeaders = [...initialHeaders];
+        } else {
+            startHeaders = [...defaultHeaders];
+        }
+
+        // Normalize initial rows
+        let startRows = [];
+        if (initialRows && Array.isArray(initialRows) && initialRows.length > 0) {
+            startRows = initialRows.map(r => {
+                if (tableCode === '2.B.1' || tableCode === '2.B.2') {
+                    return JSON.parse(JSON.stringify(r));
+                }
+                // Generic or 2.B.3
+                if (r && Array.isArray(r.cells)) {
+                    const cells = [...r.cells];
+                    while (cells.length < startHeaders.length) cells.push('');
+                    return { cells };
+                }
+                if (Array.isArray(r)) {
+                    const cells = [...r];
+                    while (cells.length < startHeaders.length) cells.push('');
+                    return { cells };
+                }
+                if (r && typeof r === 'object') {
+                    const cells = startHeaders.map((h, i) => {
+                        if (r[h] !== undefined) return r[h];
+                        const key = Object.keys(r)[i];
+                        return key !== undefined ? r[key] : '';
+                    });
+                    return { cells };
+                }
+                return { cells: startHeaders.map(() => '') };
+            });
+        } else {
+            // Empty state: provide 1 row ready for input
+            if (tableCode === '2.B.1') {
+                const plMap = {};
+                startHeaders.forEach(h => plMap[h] = 0);
+                startRows = [{ no: 1, mata_kuliah: '', sks: 3, semester: 1, profil_lulusan: plMap }];
+            } else if (tableCode === '2.B.2') {
+                const plMap = {};
+                startHeaders.forEach(h => plMap[h] = 0);
+                startRows = [{ cpl: 'CPL 01', profil_lulusan: plMap }];
+            } else {
+                startRows = [{ cells: startHeaders.map(() => '') }];
+            }
+        }
+
         return {
             tableCode: tableCode,
-            headers: initialHeaders && initialHeaders.length ? [...initialHeaders] : (tableCode === '2.B.1' || tableCode === '2.B.2' ? ['PL 1', 'PL 2', 'PL 3', 'PL 4'] : ['Kolom 1', 'Kolom 2', 'Kolom 3']),
-            rows: initialRows && initialRows.length ? JSON.parse(JSON.stringify(initialRows)) : [],
+            headers: startHeaders,
+            rows: startRows,
             summary: initialSummary ? {...initialSummary} : {},
             saving: false,
             saveStatusMessage: '',
@@ -123,6 +210,68 @@
                 if (this.tableCode === '2.B.1') {
                     this.calcSummary2B1();
                 }
+            },
+
+            // ── Generic & Dynamic Column Manipulation ──
+            addColumn() {
+                const colName = prompt('Masukkan judul kolom baru:', 'Kolom ' + (this.headers.length + 1));
+                if (colName === null || colName.trim() === '') return;
+                const finalName = colName.trim();
+                this.headers.push(finalName);
+
+                // Add empty cell to every row
+                this.rows.forEach(r => {
+                    if (!r.cells) r.cells = [];
+                    r.cells.push('');
+                });
+            },
+
+            removeColumn(index) {
+                if (this.headers.length <= 1) {
+                    alert('Tabel minimal harus memiliki 1 kolom.');
+                    return;
+                }
+                const colName = this.headers[index];
+                if (!confirm(`Hapus kolom "${colName}"? Data dalam kolom ini akan dihapus.`)) {
+                    return;
+                }
+                this.headers.splice(index, 1);
+                this.rows.forEach(r => {
+                    if (r.cells) {
+                        r.cells.splice(index, 1);
+                    }
+                });
+            },
+
+            resetToDefaultColumns() {
+                const def = DEFAULT_TABLE_TEMPLATES[this.tableCode];
+                if (!def || def.length === 0) return;
+                if (!confirm('Kembalikan judul kolom ke template standar LAM INFOKOM?')) return;
+                this.headers = [...def];
+                this.rows.forEach(r => {
+                    if (!r.cells) r.cells = [];
+                    while (r.cells.length < this.headers.length) {
+                        r.cells.push('');
+                    }
+                });
+            },
+
+            // ── Generic Row Manipulation ──
+            addRow() {
+                const newCells = this.headers.map(() => '');
+                this.rows.push({ cells: newCells });
+            },
+
+            removeRow(index) {
+                this.rows.splice(index, 1);
+                if (this.tableCode === '2.B.1') {
+                    this.calcSummary2B1();
+                }
+            },
+
+            setCellVal(row, cIdx, val) {
+                if (!row.cells) row.cells = [];
+                row.cells[cIdx] = val;
             },
 
             // ── Tabel 2.B.1 Helpers ──
@@ -181,47 +330,24 @@
                 });
             },
 
-            // ── Tabel 2.B.3 Helpers ──
-            addRow2B3() {
-                const semMap = {};
-                for (let i = 1; i <= 8; i++) {
-                    semMap['semester_' + i] = '';
-                }
-                const nextNum = this.rows.length + 1;
-                this.rows.push({
-                    cpl: 'CPL ' + (nextNum < 10 ? '0' + nextNum : nextNum),
-                    cpmk: 'CPMK ' + (nextNum < 10 ? '0' + nextNum : nextNum),
-                    semesters: semMap
-                });
-            },
-
-            setSemesterVal(row, semIndex, value) {
-                if (!row.semesters) row.semesters = {};
-                row.semesters['semester_' + semIndex] = value;
-            },
-
-            // ── Generic Table Helpers ──
-            addGenericRow() {
-                const rowObj = {};
-                this.headers.forEach(h => rowObj[h] = '');
-                this.rows.push(rowObj);
-            },
-
-            setGenericColVal(row, colName, colIdx, val) {
-                row[colName] = val;
-            },
-
-            removeRow(index) {
-                this.rows.splice(index, 1);
-                if (this.tableCode === '2.B.1') {
-                    this.calcSummary2B1();
-                }
-            },
-
             // ── Save to Server ──
             async saveTableData() {
                 this.saving = true;
                 this.saveStatusMessage = 'Menyimpan data...';
+
+                // Format payload rows so both cells and header key/values exist
+                let payloadRows = [];
+                if (this.tableCode === '2.B.1' || this.tableCode === '2.B.2') {
+                    payloadRows = this.rows;
+                } else {
+                    payloadRows = this.rows.map(r => {
+                        const rowObj = { cells: r.cells || [] };
+                        this.headers.forEach((h, idx) => {
+                            rowObj[h] = (r.cells && r.cells[idx] !== undefined) ? r.cells[idx] : '';
+                        });
+                        return rowObj;
+                    });
+                }
 
                 try {
                     const response = await fetch('/unit/lkps/' + encodeURIComponent(this.tableCode) + '/save', {
@@ -234,7 +360,7 @@
                         body: JSON.stringify({
                             table_code: this.tableCode,
                             dynamic_headers: this.headers,
-                            rows: this.rows,
+                            rows: payloadRows,
                             summary_data: this.summary,
                         })
                     });
@@ -244,7 +370,7 @@
                         this.saveStatusMessage = '✓ Data berhasil disimpan (' + new Date().toLocaleTimeString('id-ID') + ')';
                         setTimeout(() => {
                             window.location.reload();
-                        }, 800);
+                        }, 700);
                     } else {
                         this.saveStatusMessage = 'Gagal: ' + (res.message || 'Terjadi kesalahan');
                     }
@@ -257,4 +383,3 @@
         };
     }
 </script>
-
