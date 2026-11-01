@@ -6,7 +6,7 @@
 
 <x-public-layout title="Sistem Dokumen Akreditasi Perguruan Tinggi">
 
-    {{-- Pure CSS untuk Hero & Navbar agar 100% presisi dan tajam sesuai desain referensi --}}
+    {{-- Pure CSS untuk Hero & Navbar agar 100% presisi, simetris, dan berada di tengah sempurna --}}
     <style>
         .siladata-hero-section {
             position: relative;
@@ -24,14 +24,13 @@
         .siladata-hero-container {
             position: relative;
             z-index: 10;
-            max-width: 1240px;
+            max-width: 1180px;
             width: 100%;
             margin: 0 auto;
-            padding: 24px 24px 0 24px;
+            padding: 24px 28px 0 28px;
             flex: 1 1 auto;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             box-sizing: border-box;
         }
 
@@ -41,39 +40,55 @@
             align-items: center;
             justify-content: space-between;
             background-color: #FFFFFF;
-            border: 1px solid rgba(225, 218, 204, 0.75);
+            border: 1px solid rgba(225, 218, 204, 0.85);
             border-radius: 9999px;
-            padding: 12px 28px;
-            box-shadow: 0 8px 30px rgba(17, 28, 46, 0.06);
-            max-width: 980px;
+            padding: 12px 30px;
+            box-shadow: 0 10px 30px rgba(17, 28, 46, 0.07);
+            width: 100%;
+            max-width: 100%;
             margin: 0 auto;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         .siladata-nav-left {
             display: flex;
-            align-items: baseline;
-            gap: 12px;
+            align-items: center;
+            gap: 16px;
         }
 
         .siladata-nav-brand {
-            font-size: 22px;
+            font-size: 23px;
             font-weight: 900;
-            letter-spacing: -0.025em;
+            letter-spacing: -0.03em;
             color: #111C2E !important;
             text-decoration: none;
+            line-height: 1;
+        }
+
+        .siladata-nav-divider {
+            width: 1px;
+            height: 18px;
+            background-color: #E2D9CC;
+            display: none;
         }
 
         .siladata-nav-subtitle {
             display: none;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 500;
             color: #475467;
+            letter-spacing: -0.01em;
+            line-height: 1;
+            white-space: nowrap;
         }
 
         .siladata-nav-right {
             display: flex;
             align-items: center;
-            gap: 22px;
+            gap: 26px;
         }
 
         .siladata-nav-link {
@@ -82,6 +97,7 @@
             color: #111C2E !important;
             text-decoration: none;
             transition: color 0.15s ease;
+            white-space: nowrap;
         }
 
         .siladata-nav-link:hover {
@@ -96,57 +112,82 @@
             color: #FFFFFF !important;
             font-size: 14px;
             font-weight: 700;
-            padding: 9px 26px;
+            padding: 9.5px 28px;
             border-radius: 9999px;
             text-decoration: none;
             white-space: nowrap;
-            transition: transform 0.15s ease, background-color 0.15s ease;
+            box-shadow: 0 4px 12px rgba(17, 28, 46, 0.15);
+            transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
         }
 
         .siladata-nav-btn:hover {
             background-color: #1B2B43;
             transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(17, 28, 46, 0.22);
         }
 
-        /* 2-Column Hero Grid */
+        /* 2-Column Hero Grid (Centered vertically in remaining viewport space) */
         .siladata-hero-row {
             display: flex;
             flex-direction: row;
-            align-items: flex-end;
+            align-items: center;
             justify-content: space-between;
-            padding-top: 16px;
+            gap: 40px;
             width: 100%;
-            flex: 1 1 auto;
+            margin: auto 0;
+            padding: 24px 0 16px 0;
+            flex: 1 0 auto;
+            box-sizing: border-box;
         }
 
         .siladata-hero-col-left {
-            width: 52%;
-            flex: 0 0 52%;
-            max-width: 52%;
-            align-self: center;
-            padding-top: 12px;
-            padding-bottom: 32px;
+            flex: 0 0 51%;
+            max-width: 535px;
             position: relative;
             z-index: 20;
         }
 
         .siladata-hero-col-right {
-            width: 48%;
-            flex: 0 0 48%;
-            max-width: 48%;
+            flex: 0 0 49%;
+            max-width: 510px;
             display: flex;
-            align-items: flex-end;
-            justify-content: flex-end;
-            align-self: flex-end;
+            align-items: center;
+            justify-content: center;
             position: relative;
             z-index: 10;
         }
 
+        /* Pill Badge */
+        .siladata-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 9999px;
+            border: 1px solid rgba(180, 94, 48, 0.35);
+            background-color: rgba(248, 236, 225, 0.85);
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #994A1F;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+            box-shadow: 0 2px 8px rgba(180, 94, 48, 0.06);
+        }
+
+        .siladata-badge-glow {
+            width: 7px;
+            height: 7px;
+            border-radius: 9999px;
+            background-color: #E87A36;
+            box-shadow: 0 0 8px #E87A36;
+            flex-shrink: 0;
+        }
+
         /* Headline */
         .siladata-h1 {
-            font-size: 38px;
+            font-size: clamp(34px, 3.4vw, 48px);
             font-weight: 900;
-            line-height: 1.12;
+            line-height: 1.14;
             letter-spacing: -0.03em;
             color: #111C2E;
             margin: 0;
@@ -160,17 +201,17 @@
 
         /* Description */
         .siladata-desc {
-            margin-top: 20px;
-            font-size: 16.5px;
-            line-height: 1.62;
-            color: #2D3748;
+            margin-top: 18px;
+            font-size: 16px;
+            line-height: 1.65;
+            color: #334155;
             font-weight: 400;
             max-width: 490px;
         }
 
         /* CTA Buttons */
         .siladata-cta-group {
-            margin-top: 30px;
+            margin-top: 28px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
@@ -181,20 +222,22 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
             border-radius: 9999px;
             background-color: #111C2E;
             color: #FFFFFF !important;
             font-size: 15px;
             font-weight: 700;
-            padding: 13px 32px;
+            padding: 12.5px 32px;
             box-shadow: 0 8px 20px rgba(17, 28, 46, 0.18);
             text-decoration: none;
-            transition: transform 0.15s ease, background-color 0.15s ease;
+            transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
         }
 
         .siladata-btn-dark:hover {
             background-color: #1B2B43;
             transform: translateY(-1px);
+            box-shadow: 0 10px 24px rgba(17, 28, 46, 0.24);
         }
 
         .siladata-btn-outline {
@@ -208,7 +251,7 @@
             color: #994A1F !important;
             font-size: 15px;
             font-weight: 700;
-            padding: 11px 26px;
+            padding: 10.5px 26px;
             text-decoration: none;
             transition: transform 0.15s ease, background-color 0.15s ease;
         }
@@ -218,53 +261,80 @@
             transform: translateY(-1px);
         }
 
+        /* Micro Trust Highlights */
+        .siladata-trust-row {
+            margin-top: 26px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 18px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(210, 198, 180, 0.5);
+        }
+
+        .siladata-trust-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #475467;
+        }
+
+        .siladata-trust-icon {
+            width: 14px;
+            height: 14px;
+            color: #16A34A;
+            flex-shrink: 0;
+        }
+
         /* ═══════════════════════════════════════════
            STAGE VISUAL CODINGAN HERO (RIGHT COLUMN)
            ═══════════════════════════════════════════ */
         .siladata-stage-box {
             position: relative;
             width: 100%;
-            max-width: 500px;
-            height: 425px;
+            max-width: 490px;
+            height: 440px;
             margin: 0 auto;
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             justify-content: center;
         }
 
-        /* SVG Concentric Target Circles */
+        /* SVG Concentric Target Circles - Perfectly Centered */
         .siladata-concentric-circles {
             position: absolute;
-            left: 52%;
-            top: 48%;
+            left: 50%;
+            top: 50%;
             transform: translate(-50%, -50%);
-            width: 355px;
-            height: 355px;
+            width: 375px;
+            height: 375px;
             z-index: 1;
             pointer-events: none;
             user-select: none;
         }
 
-        /* Person / Woman Image (ONLY the person is an image) */
+        /* Person / Woman Image (Pristine Cutout, Anchored Symmetrically) */
         .siladata-woman-img {
             position: absolute;
-            left: 52%;
+            left: 50%;
             bottom: 0;
             transform: translateX(-50%);
-            height: 385px;
+            height: 420px;
             width: auto;
             max-width: none;
             z-index: 10;
             pointer-events: none;
             user-select: none;
-            filter: drop-shadow(0 4px 12px rgba(17, 28, 46, 0.08));
+            filter: drop-shadow(0 10px 24px rgba(17, 28, 46, 0.12));
         }
 
         /* Top-Right Dashboard + Upload Mockup Cards (Layered Behind Shoulder) */
         .siladata-stage-top-right {
             position: absolute;
             right: 0px;
-            top: 14px;
+            top: 16px;
             z-index: 4;
         }
 
@@ -406,19 +476,19 @@
             white-space: nowrap;
         }
 
-        /* Left Floating Card: Rating Kepuasan */
+        /* Left Floating Card: 4.9/5 Rating Kepuasan */
         .siladata-card-rating {
             position: absolute;
-            left: 20px;
-            top: 148px;
+            left: -8px;
+            top: 142px;
             z-index: 20;
             background: rgba(255, 255, 255, 0.98);
             border-radius: 14px;
             padding: 8.5px 14px 9.5px 14px;
             border: 1px solid rgba(255, 255, 255, 0.95);
             box-shadow: 0 14px 30px -4px rgba(17, 28, 46, 0.12), 0 4px 10px -2px rgba(17, 28, 46, 0.05);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .siladata-card-rating-title {
@@ -432,8 +502,8 @@
         /* Left Floating Pill: Data Terenkripsi & Aman */
         .siladata-card-lock {
             position: absolute;
-            left: 45px;
-            bottom: 84px;
+            left: 18px;
+            bottom: 56px;
             z-index: 20;
             background: rgba(255, 255, 255, 0.98);
             border-radius: 9999px;
@@ -443,8 +513,8 @@
             display: inline-flex;
             align-items: center;
             gap: 7.5px;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .siladata-card-lock-text {
@@ -457,16 +527,16 @@
         /* Right Floating Card: 1.300+ Kampus */
         .siladata-card-kampus {
             position: absolute;
-            right: 12px;
-            bottom: 120px;
+            right: -6px;
+            bottom: 80px;
             z-index: 20;
             background: rgba(255, 255, 255, 0.98);
             border-radius: 14px;
             padding: 8.5px 14px 9.5px 14px;
             border: 1px solid rgba(255, 255, 255, 0.95);
             box-shadow: 0 14px 30px -4px rgba(17, 28, 46, 0.12), 0 4px 10px -2px rgba(17, 28, 46, 0.05);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .siladata-card-kampus-title {
@@ -482,7 +552,7 @@
             position: relative;
             z-index: 25;
             width: 100%;
-            height: 28px;
+            height: 24px;
             background-color: #111C2E;
             flex-shrink: 0;
         }
@@ -505,143 +575,122 @@
             animation: siladata-float-gentle 5s ease-in-out 2s infinite;
         }
 
-        /* Responsive Breakpoints (Tablet & Desktop) */
+        /* Responsive Breakpoints */
         @media (min-width: 640px) {
             #siladata-hero-nav {
-                padding: 14px 34px;
+                padding: 13px 34px;
             }
             .siladata-nav-brand {
                 font-size: 24px;
             }
+            .siladata-nav-divider {
+                display: block;
+            }
             .siladata-nav-subtitle {
                 display: inline-block;
-            }
-            .siladata-hero-row {
-                flex-direction: row;
-                align-items: flex-end;
-                padding-top: 20px;
-            }
-            .siladata-hero-col-left {
-                width: 53%;
-                flex: 0 0 53%;
-                align-self: center;
-                padding-top: 20px;
-                padding-bottom: 40px;
-            }
-            .siladata-hero-col-right {
-                width: 49%;
-                flex: 0 0 49%;
-                margin-left: -2%;
-                justify-content: flex-end;
-            }
-            .siladata-h1 {
-                font-size: 38px;
             }
         }
 
         @media (min-width: 1024px) {
-            .siladata-hero-section {
-                height: 100vh;
-                height: 100dvh;
+            .siladata-hero-row {
+                padding: 28px 0 20px 0;
+            }
+            .siladata-stage-box {
+                max-width: 500px;
+                height: 450px;
+            }
+            .siladata-concentric-circles {
+                width: 380px;
+                height: 380px;
+            }
+            .siladata-woman-img {
+                height: 425px;
+            }
+        }
+
+        @media (max-width: 1023px) and (min-width: 768px) {
+            .siladata-hero-row {
+                gap: 24px;
             }
             .siladata-hero-col-left {
-                width: 52%;
                 flex: 0 0 52%;
-                padding-top: 16px;
-                padding-bottom: 36px;
             }
             .siladata-hero-col-right {
-                width: 50%;
-                flex: 0 0 50%;
-                margin-left: -2%;
+                flex: 0 0 48%;
             }
             .siladata-stage-box {
-                max-width: 560px;
-                height: clamp(480px, 63vh, 550px);
-            }
-            .siladata-concentric-circles {
-                width: clamp(390px, 52vh, 450px);
-                height: clamp(390px, 52vh, 450px);
-                top: 48%;
-                left: 52%;
-            }
-            .siladata-woman-img {
-                height: clamp(420px, 57vh, 495px);
-                left: 52%;
-                bottom: 0;
-            }
-            .siladata-card-rating {
-                left: clamp(14px, 2.5vw, 24px);
-                top: clamp(155px, 22vh, 185px);
-            }
-            .siladata-card-lock {
-                left: clamp(36px, 5vw, 54px);
-                bottom: clamp(75px, 11vh, 98px);
-            }
-            .siladata-card-kampus {
-                right: clamp(10px, 2vw, 18px);
-                bottom: clamp(115px, 16vh, 142px);
-            }
-            .siladata-stage-top-right {
-                right: 4px;
-                top: clamp(12px, 2.4vh, 24px);
-            }
-            .siladata-h1 {
-                font-size: clamp(44px, 3.8vw, 54px);
-                line-height: 1.1;
-            }
-            .siladata-h1-line1 {
-                white-space: nowrap;
-            }
-            .siladata-desc {
-                font-size: clamp(16px, 1.25vw, 18px);
-                max-width: 510px;
-                line-height: 1.65;
+                transform: scale(0.88);
+                transform-origin: center right;
             }
         }
 
-        @media (min-width: 1024px) and (max-height: 650px) {
+        @media (max-width: 767px) {
             .siladata-hero-section {
                 height: auto;
-                min-height: 650px;
+                min-height: auto;
             }
-        }
-
-        @media (max-width: 639px) {
+            .siladata-hero-container {
+                padding: 16px 16px 0 16px;
+            }
+            #siladata-hero-nav {
+                padding: 10px 18px;
+            }
+            .siladata-nav-brand {
+                font-size: 20px;
+            }
+            .siladata-nav-right {
+                gap: 16px;
+            }
+            .siladata-nav-link {
+                font-size: 13.5px;
+            }
+            .siladata-nav-btn {
+                padding: 7.5px 20px;
+                font-size: 13px;
+            }
+            .siladata-hero-row {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 32px;
+                padding: 24px 0 20px 0;
+            }
+            .siladata-hero-col-left {
+                max-width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .siladata-h1 {
+                font-size: 32px;
+            }
+            .siladata-desc {
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+                font-size: 15px;
+            }
+            .siladata-cta-group {
+                justify-content: center;
+            }
+            .siladata-trust-row {
+                justify-content: center;
+            }
+            .siladata-hero-col-right {
+                max-width: 100%;
+                width: 100%;
+            }
             .siladata-stage-box {
-                max-width: 360px;
-                height: 370px;
+                transform: scale(0.82);
+                margin: 0 auto;
+                height: 380px;
             }
             .siladata-concentric-circles {
-                width: 280px;
-                height: 280px;
-            }
-            .siladata-woman-img {
+                width: 320px;
                 height: 320px;
             }
-            .siladata-card-rating {
-                transform: scale(0.85);
-                transform-origin: top left;
-                top: 115px;
-                left: 8px;
-            }
-            .siladata-card-lock {
-                transform: scale(0.85);
-                transform-origin: bottom left;
-                bottom: 60px;
-                left: 20px;
-            }
-            .siladata-card-kampus {
-                transform: scale(0.85);
-                transform-origin: bottom right;
-                bottom: 92px;
-                right: 6px;
-            }
-            .siladata-stage-top-right {
-                transform: scale(0.8);
-                transform-origin: top right;
-                top: 10px;
-                right: -6px;
+            .siladata-woman-img {
+                height: 360px;
             }
         }
     </style>
@@ -652,7 +701,7 @@
     <section class="siladata-hero-section">
         {{-- Background Organic Waves in Soft Sand / Taupe --}}
         <div class="pointer-events-none absolute inset-0 z-0">
-            <svg class="h-full w-full object-cover" viewBox="0 0 1440 900" preserveAspectRatio="none" fill="none">
+            <svg class="h-full w-full object-cover" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none">
                 <!-- Warm Sand Base -->
                 <rect width="1440" height="900" fill="#F5EEE4" />
 
@@ -672,6 +721,7 @@
             <nav id="siladata-hero-nav">
                 <div class="siladata-nav-left">
                     <a href="{{ url('/') }}" class="siladata-nav-brand">SILADATA</a>
+                    <div class="siladata-nav-divider"></div>
                     <span class="siladata-nav-subtitle">Sistem Layanan Dokumen Akreditasi</span>
                 </div>
 
@@ -689,6 +739,7 @@
             <div class="siladata-hero-row">
                 {{-- Left Column: Typography & CTAs --}}
                 <div class="siladata-hero-col-left">
+
                     {{-- Headline --}}
                     <h1 class="siladata-h1">
                         <span class="siladata-h1-line1">Sistem Dokumen Akreditasi</span>
@@ -704,11 +755,17 @@
                     <div class="siladata-cta-group">
                         @auth
                             <a href="{{ route('dashboard') }}" class="siladata-btn-dark">
-                                Masuk ke Dashboard
+                                <span>Masuk ke Dashboard</span>
+                                <svg style="width: 17px; height: 17px; margin-left: 4px;" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
                             </a>
                         @else
                             <a href="{{ route('harga') }}" class="siladata-btn-dark">
-                                Lihat Harga
+                                <span>Lihat Harga</span>
+                                <svg style="width: 17px; height: 17px; margin-left: 4px;" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
                             </a>
                             <a href="{{ route('discussion') }}" class="siladata-btn-outline">
                                 <span>Coba Demo Gratis</span>
@@ -722,6 +779,28 @@
                             </a>
                         @endauth
                     </div>
+
+                    {{-- Micro Trust Highlights --}}
+                    <div class="siladata-trust-row">
+                        <div class="siladata-trust-item">
+                            <svg class="siladata-trust-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            <span>LED & LKPS Terstruktur</span>
+                        </div>
+                        <div class="siladata-trust-item">
+                            <svg class="siladata-trust-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            <span>Validasi Bertingkat</span>
+                        </div>
+                        <div class="siladata-trust-item">
+                            <svg class="siladata-trust-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                            </svg>
+                            <span>Monitoring Real-time</span>
+                        </div>
+                    </div>
                 </div>
 
                 {{-- Right Column: Pure Coded Elements & Clean Person Cutout --}}
@@ -734,11 +813,11 @@
                                 <!-- Lingkaran Terluar Terracotta -->
                                 <circle cx="190" cy="190" r="180" stroke="#BF602E" stroke-width="12" />
                                 <!-- Lingkaran Kedua Sand / Peach -->
-                                <circle cx="190" cy="190" r="165" stroke="#DFCAAF" stroke-width="18" />
+                                <circle cx="190" cy="190" r="166" stroke="#DFCAAF" stroke-width="16" />
                                 <!-- Lingkaran Ketiga Terracotta Tebal -->
-                                <circle cx="190" cy="190" r="140" stroke="#B8592B" stroke-width="32" />
+                                <circle cx="190" cy="190" r="142" stroke="#B8592B" stroke-width="32" />
                                 <!-- Disc Navy Tua Pusat -->
-                                <circle cx="190" cy="190" r="112" fill="#141E30" />
+                                <circle cx="190" cy="190" r="114" fill="#141E30" />
                             </svg>
                         </div>
 
