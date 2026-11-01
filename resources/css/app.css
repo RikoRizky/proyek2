@@ -84,4 +84,14 @@
     .ui-empty {
         @apply flex flex-col items-center justify-center gap-2 py-14 text-center text-slate-500;
     }
+
+    /* SILADATA New Brand Identity */
+    .bg-navy-dark { background-color: #111C2E !important; }
+    .bg-navy-card { background-color: #16243A !important; }
+    .text-navy-dark { color: #111C2E !important; }
+    .text-terracotta { color: #E47A34 !important; }
+    .bg-terracotta { background-color: #E47A34 !important; }
+    .border-terracotta { border-color: #C86B32 !important; }
+    .bg-sand { background-color: #F7F3ED !important; }
+    .bg-sand-card { background-color: #FAF7F2 !important; }
 }

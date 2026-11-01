@@ -94,63 +94,72 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
-<body class="font-sans text-slate-900 antialiased">
-    <header class="sticky top-0 z-50 border-b border-white/60 bg-white/70 backdrop-blur-md shadow-sm">
-        <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6 lg:px-8">
-            <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                <div class="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-md shadow-violet-500/20 ring-1 ring-violet-200/50 transition group-hover:shadow-violet-500/30">
-                    <img
-                        class="h-8 w-8 object-contain"
-                        src="{{ asset('images/logoname.png') }}"
-                        alt="SILADATA"
-                    />
+<body class="font-sans text-slate-900 antialiased" style="background-color: #ECE8DD; margin: 0; padding: 0;">
+    {{-- Floating Pill Navbar (Sticky on scroll for home, always on other pages) --}}
+    @if(request()->routeIs('home'))
+        {{-- Sticky Nav for Home: appears smoothly when user scrolls down past hero banner --}}
+        <header x-data="{ scrolled: false }"
+                x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 150 })"
+                x-show="scrolled"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 -translate-y-4"
+                x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 translate-y-0"
+                x-transition:leave-end="opacity-0 -translate-y-4"
+                class="fixed top-4 left-0 right-0 z-50 mx-auto px-4 pointer-events-none"
+                style="max-width: 864px; display: none;">
+            <div class="pointer-events-auto flex items-center justify-between"
+                 style="background-color: rgba(255, 255, 255, 0.96); border-radius: 9999px; padding: 10px 28px; border: 1px solid rgba(229, 223, 209, 0.85); box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+                <a href="{{ route('home') }}" class="flex items-center gap-2 group" style="text-decoration: none;">
+                    <span style="font-size: 22px; font-weight: 900; letter-spacing: -0.03em; color: #111C2E; font-family: 'Plus Jakarta Sans', sans-serif;">SILADATA</span>
+                    <span class="hidden sm:inline" style="font-size: 13px; color: #475467; font-weight: 400; margin-left: 6px;">Sistem Layanan Dokumen Akreditasi</span>
+                </a>
+                <div class="flex items-center gap-5">
+                    <a href="{{ route('harga') }}" style="font-size: 14px; font-weight: 600; color: #111C2E; text-decoration: none;">Harga</a>
+                    @auth
+                        <a href="{{ route('dashboard') }}" style="display: inline-flex; align-items: center; justify-content: center; background-color: #111C2E; color: #FFFFFF; font-size: 13px; font-weight: 700; border-radius: 9999px; padding: 7px 24px; text-decoration: none;">Dashboard</a>
+                    @else
+                        <a href="{{ route('login') }}" style="display: inline-flex; align-items: center; justify-content: center; background-color: #111C2E; color: #FFFFFF; font-size: 13px; font-weight: 700; border-radius: 9999px; padding: 7px 24px; text-decoration: none;">Masuk</a>
+                    @endauth
                 </div>
-                <div>
-                    <p class="text-sm font-black text-slate-900 leading-tight sm:block hidden">SILADATA</p>
-                    <p class="text-[10px] text-slate-500 sm:block hidden">Sistem Layanan Dokumen Akreditasi</p>
-                    <p class="text-sm font-black text-slate-900 sm:hidden">SILADATA</p>
-                </div>
-            </a>
-            <div class="flex items-center gap-2 sm:gap-6">
-                <nav class="hidden sm:flex items-center gap-1">
-                    <a href="{{ route('home') }}" class="rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 {{ request()->routeIs('home') ? 'bg-violet-50 text-violet-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
-                        Beranda
-                    </a>
-                    <a href="{{ route('harga') }}" class="rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 {{ request()->routeIs('harga') ? 'bg-violet-50 text-violet-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900' }}">
-                        Harga
-                    </a>
-                </nav>
-                <div class="h-5 w-px bg-slate-200 hidden sm:block"></div>
-                @auth
-                    <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-2 text-sm font-bold text-white shadow-md shadow-violet-500/20 transition hover:shadow-violet-500/30 hover:scale-[1.02]">
-                        Dashboard
-                    </a>
-                @else
-                    <a href="{{ route('login') }}" class="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-violet-500/20 transition hover:shadow-violet-500/30 hover:scale-[1.02]">
-                        Masuk
-                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-                    </a>
-                @endauth
             </div>
-        </div>
-    </header>
+        </header>
+    @else
+        {{-- Floating Nav for Other Pages (Harga, Discussion, etc.) --}}
+        <header class="sticky top-4 z-50 mx-auto w-full px-4 mb-4" style="max-width: 864px;">
+            <div class="flex items-center justify-between"
+                 style="background-color: rgba(255, 255, 255, 0.96); border-radius: 9999px; padding: 10px 28px; border: 1px solid rgba(229, 223, 209, 0.85); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+                <a href="{{ route('home') }}" class="flex items-center gap-2 group" style="text-decoration: none;">
+                    <span style="font-size: 22px; font-weight: 900; letter-spacing: -0.03em; color: #111C2E; font-family: 'Plus Jakarta Sans', sans-serif;">SILADATA</span>
+                    <span class="hidden sm:inline" style="font-size: 13px; color: #475467; font-weight: 400; margin-left: 6px;">Sistem Layanan Dokumen Akreditasi</span>
+                </a>
+                <div class="flex items-center gap-5">
+                    <a href="{{ route('harga') }}" style="font-size: 14px; font-weight: 600; color: #111C2E; text-decoration: none;">Harga</a>
+                    @auth
+                        <a href="{{ route('dashboard') }}" style="display: inline-flex; align-items: center; justify-content: center; background-color: #111C2E; color: #FFFFFF; font-size: 13px; font-weight: 700; border-radius: 9999px; padding: 7px 24px; text-decoration: none;">Dashboard</a>
+                    @else
+                        <a href="{{ route('login') }}" style="display: inline-flex; align-items: center; justify-content: center; background-color: #111C2E; color: #FFFFFF; font-size: 13px; font-weight: 700; border-radius: 9999px; padding: 7px 24px; text-decoration: none;">Masuk</a>
+                    @endauth
+                </div>
+            </div>
+        </header>
+    @endif
 
-    <div class="relative min-h-screen flex flex-col bg-gradient-to-br from-slate-100 via-violet-50/40 to-indigo-50/30">
-        <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-violet-200/25 via-transparent to-transparent"></div>
-
+    <div class="relative min-h-screen flex flex-col" style="background-color: #ECE8DD;">
         <main class="relative flex-grow">
             {{ $slot }}
         </main>
 
-        {{-- Footer Gelap --}}
-        <footer class="bg-[#101f3c] text-slate-300">
+        {{-- Footer Gelap (Matching Bottom Accent) --}}
+        <footer class="bg-[#101A2B] text-slate-300" style="background-color: #101A2B;">
             <div class="mx-auto max-w-7xl px-6 py-16">
                 <div class="grid gap-12 md:grid-cols-12">
                     {{-- Logo & Deskripsi --}}
                     <div class="md:col-span-5 flex flex-col justify-between">
                         <div>
-                            <span class="text-3xl font-extrabold tracking-wider text-white">SILADATA</span>
-                            <p class="mt-1 text-xs font-medium text-violet-400 tracking-wider uppercase">Sistem Layanan Dokumen Akreditasi</p>
+                            <span class="text-3xl font-black tracking-wider text-white">SILADATA</span>
+                            <p class="mt-1 text-xs font-medium text-[#E47A34] tracking-wider uppercase">Sistem Layanan Dokumen Akreditasi</p>
                             <p class="mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
                                 Platform digital yang membantu perguruan tinggi dalam mengelola, menyimpan, dan mempersiapkan dokumen akreditasi sesuai standar LAM Infokom, LAMEMBA, LAM-PTKes, dan LAMDIK secara efisien dan transparan.
                             </p>
@@ -168,7 +177,7 @@
                                 </div>
                                 <div>
                                     <p class="text-sm font-medium">+62 881-0233-00457</p>
-                                    <p class="text-xs text-slate-500">Chat via WhatsApp</p>
+                                    <p class="text-xs text-slate-400">Chat via WhatsApp</p>
                                 </div>
                             </a>
                         </div>
@@ -180,10 +189,10 @@
                         <div>
                             <h3 class="text-xs font-semibold uppercase tracking-wider text-white mb-4">Navigasi</h3>
                             <ul class="space-y-2.5 text-sm">
-                                <li><a href="{{ route('home') }}" class="text-slate-400 hover:text-white transition">Beranda</a></li>
-                                <li><a href="{{ route('harga') }}" class="text-slate-400 hover:text-white transition">Harga Paket</a></li>
-                                <li><a href="{{ route('discussion') }}" class="text-slate-400 hover:text-white transition">Diskusi</a></li>
-                                <li><a href="{{ route('login') }}" class="text-slate-400 hover:text-white transition">Masuk</a></li>
+                                <li><a href="{{ route('home') }}" class="text-slate-400 hover:text-[#E47A34] transition">Beranda</a></li>
+                                <li><a href="{{ route('harga') }}" class="text-slate-400 hover:text-[#E47A34] transition">Harga Paket</a></li>
+                                <li><a href="{{ route('discussion') }}" class="text-slate-400 hover:text-[#E47A34] transition">Diskusi</a></li>
+                                <li><a href="{{ route('login') }}" class="text-slate-400 hover:text-[#E47A34] transition">Masuk</a></li>
                             </ul>
                         </div>
 
@@ -191,10 +200,10 @@
                         <div>
                             <h3 class="text-xs font-semibold uppercase tracking-wider text-white mb-4">Fitur Platform</h3>
                             <ul class="space-y-2.5 text-sm">
-                                <li><span class="text-slate-500">Dashboard Akreditasi</span></li>
-                                <li><span class="text-slate-500">Monitoring Progress</span></li>
-                                <li><span class="text-slate-500">Upload Dokumen</span></li>
-                                <li><span class="text-slate-500">Cetak Laporan PDF</span></li>
+                                <li><span class="text-slate-400">Dashboard Akreditasi</span></li>
+                                <li><span class="text-slate-400">Monitoring Progress</span></li>
+                                <li><span class="text-slate-400">Upload Dokumen</span></li>
+                                <li><span class="text-slate-400">Cetak Laporan PDF</span></li>
                             </ul>
                         </div>
 
