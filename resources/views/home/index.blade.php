@@ -12,17 +12,27 @@
             position: relative;
             overflow: hidden;
             background-color: #F5EEE4;
-            padding-top: 24px;
-            padding-bottom: 0;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            box-sizing: border-box;
         }
 
         .siladata-hero-container {
             position: relative;
             z-index: 10;
-            max-width: 1180px;
+            max-width: 1240px;
+            width: 100%;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 24px 24px 0 24px;
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
         }
 
         /* Floating Pill Navbar */
@@ -104,8 +114,9 @@
             flex-direction: row;
             align-items: flex-end;
             justify-content: space-between;
-            padding-top: 24px;
+            padding-top: 16px;
             width: 100%;
+            flex: 1 1 auto;
         }
 
         .siladata-hero-col-left {
@@ -113,8 +124,8 @@
             flex: 0 0 52%;
             max-width: 52%;
             align-self: center;
-            padding-top: 20px;
-            padding-bottom: 44px;
+            padding-top: 12px;
+            padding-bottom: 32px;
             position: relative;
             z-index: 20;
         }
@@ -131,54 +142,39 @@
             z-index: 10;
         }
 
-        /* Badge */
-        .siladata-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border-radius: 9999px;
-            border: 1.5px solid #D8986B;
-            background-color: #F8ECE1;
-            padding: 6px 18px;
-            font-size: 13.5px;
-            font-weight: 600;
-            color: #9A4E23;
-            margin-bottom: 18px;
-        }
-
         /* Headline */
         .siladata-h1 {
-            font-size: 34px;
+            font-size: 38px;
             font-weight: 900;
-            line-height: 1.14;
-            letter-spacing: -0.025em;
+            line-height: 1.12;
+            letter-spacing: -0.03em;
             color: #111C2E;
             margin: 0;
         }
 
         .siladata-h1-accent {
             display: block;
-            margin-top: 4px;
+            margin-top: 6px;
             color: #E87A36;
         }
 
         /* Description */
         .siladata-desc {
-            margin-top: 18px;
-            font-size: 16px;
-            line-height: 1.6;
-            color: #232B38;
+            margin-top: 20px;
+            font-size: 16.5px;
+            line-height: 1.62;
+            color: #2D3748;
             font-weight: 400;
-            max-width: 480px;
+            max-width: 490px;
         }
 
         /* CTA Buttons */
         .siladata-cta-group {
-            margin-top: 28px;
+            margin-top: 30px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
 
         .siladata-btn-dark {
@@ -413,14 +409,14 @@
         /* Left Floating Card: Rating Kepuasan */
         .siladata-card-rating {
             position: absolute;
-            left: -4px;
-            top: 165px;
+            left: 20px;
+            top: 148px;
             z-index: 20;
-            background: rgba(255, 255, 255, 0.97);
+            background: rgba(255, 255, 255, 0.98);
             border-radius: 14px;
-            padding: 8px 14px 9px 14px;
+            padding: 8.5px 14px 9.5px 14px;
             border: 1px solid rgba(255, 255, 255, 0.95);
-            box-shadow: 0 12px 28px -4px rgba(17, 28, 46, 0.12), 0 4px 10px -2px rgba(17, 28, 46, 0.05);
+            box-shadow: 0 14px 30px -4px rgba(17, 28, 46, 0.12), 0 4px 10px -2px rgba(17, 28, 46, 0.05);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
         }
@@ -436,14 +432,14 @@
         /* Left Floating Pill: Data Terenkripsi & Aman */
         .siladata-card-lock {
             position: absolute;
-            left: 10px;
-            bottom: 72px;
+            left: 45px;
+            bottom: 84px;
             z-index: 20;
-            background: rgba(255, 255, 255, 0.97);
+            background: rgba(255, 255, 255, 0.98);
             border-radius: 9999px;
-            padding: 6.5px 16px 6.5px 11px;
+            padding: 7px 16px 7px 12px;
             border: 1px solid rgba(255, 255, 255, 0.95);
-            box-shadow: 0 10px 24px -4px rgba(17, 28, 46, 0.12);
+            box-shadow: 0 12px 26px -4px rgba(17, 28, 46, 0.14);
             display: inline-flex;
             align-items: center;
             gap: 7.5px;
@@ -461,14 +457,14 @@
         /* Right Floating Card: 1.300+ Kampus */
         .siladata-card-kampus {
             position: absolute;
-            right: 4px;
-            bottom: 112px;
+            right: 12px;
+            bottom: 120px;
             z-index: 20;
-            background: rgba(255, 255, 255, 0.97);
+            background: rgba(255, 255, 255, 0.98);
             border-radius: 14px;
-            padding: 8px 13px 9px 13px;
+            padding: 8.5px 14px 9.5px 14px;
             border: 1px solid rgba(255, 255, 255, 0.95);
-            box-shadow: 0 12px 28px -4px rgba(17, 28, 46, 0.12), 0 4px 10px -2px rgba(17, 28, 46, 0.05);
+            box-shadow: 0 14px 30px -4px rgba(17, 28, 46, 0.12), 0 4px 10px -2px rgba(17, 28, 46, 0.05);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
         }
@@ -486,8 +482,9 @@
             position: relative;
             z-index: 25;
             width: 100%;
-            height: 26px;
+            height: 28px;
             background-color: #111C2E;
+            flex-shrink: 0;
         }
 
         /* Subtle Gentle Floating Animation */
@@ -522,7 +519,7 @@
             .siladata-hero-row {
                 flex-direction: row;
                 align-items: flex-end;
-                padding-top: 24px;
+                padding-top: 20px;
             }
             .siladata-hero-col-left {
                 width: 53%;
@@ -543,11 +540,15 @@
         }
 
         @media (min-width: 1024px) {
+            .siladata-hero-section {
+                height: 100vh;
+                height: 100dvh;
+            }
             .siladata-hero-col-left {
                 width: 52%;
                 flex: 0 0 52%;
-                padding-top: 28px;
-                padding-bottom: 50px;
+                padding-top: 16px;
+                padding-bottom: 36px;
             }
             .siladata-hero-col-right {
                 width: 50%;
@@ -555,41 +556,54 @@
                 margin-left: -2%;
             }
             .siladata-stage-box {
-                max-width: 520px;
-                height: 460px;
+                max-width: 560px;
+                height: clamp(480px, 63vh, 550px);
             }
             .siladata-concentric-circles {
-                width: 370px;
-                height: 370px;
+                width: clamp(390px, 52vh, 450px);
+                height: clamp(390px, 52vh, 450px);
+                top: 48%;
+                left: 52%;
             }
             .siladata-woman-img {
-                height: 405px;
+                height: clamp(420px, 57vh, 495px);
+                left: 52%;
+                bottom: 0;
             }
             .siladata-card-rating {
-                left: 0px;
-                top: 180px;
+                left: clamp(14px, 2.5vw, 24px);
+                top: clamp(155px, 22vh, 185px);
             }
             .siladata-card-lock {
-                left: 18px;
-                bottom: 84px;
+                left: clamp(36px, 5vw, 54px);
+                bottom: clamp(75px, 11vh, 98px);
             }
             .siladata-card-kampus {
-                right: 12px;
-                bottom: 130px;
+                right: clamp(10px, 2vw, 18px);
+                bottom: clamp(115px, 16vh, 142px);
             }
             .siladata-stage-top-right {
                 right: 4px;
-                top: 22px;
+                top: clamp(12px, 2.4vh, 24px);
             }
             .siladata-h1 {
-                font-size: 45px;
+                font-size: clamp(44px, 3.8vw, 54px);
+                line-height: 1.1;
             }
             .siladata-h1-line1 {
                 white-space: nowrap;
             }
             .siladata-desc {
-                font-size: 17px;
-                max-width: 485px;
+                font-size: clamp(16px, 1.25vw, 18px);
+                max-width: 510px;
+                line-height: 1.65;
+            }
+        }
+
+        @media (min-width: 1024px) and (max-height: 650px) {
+            .siladata-hero-section {
+                height: auto;
+                min-height: 650px;
             }
         }
 
@@ -608,20 +622,20 @@
             .siladata-card-rating {
                 transform: scale(0.85);
                 transform-origin: top left;
-                top: 140px;
-                left: -8px;
+                top: 115px;
+                left: 8px;
             }
             .siladata-card-lock {
                 transform: scale(0.85);
                 transform-origin: bottom left;
                 bottom: 60px;
-                left: 0px;
+                left: 20px;
             }
             .siladata-card-kampus {
                 transform: scale(0.85);
                 transform-origin: bottom right;
-                bottom: 100px;
-                right: -6px;
+                bottom: 92px;
+                right: 6px;
             }
             .siladata-stage-top-right {
                 transform: scale(0.8);
@@ -638,18 +652,18 @@
     <section class="siladata-hero-section">
         {{-- Background Organic Waves in Soft Sand / Taupe --}}
         <div class="pointer-events-none absolute inset-0 z-0">
-            <svg class="h-full w-full object-cover" viewBox="0 0 1440 640" preserveAspectRatio="none" fill="none">
+            <svg class="h-full w-full object-cover" viewBox="0 0 1440 900" preserveAspectRatio="none" fill="none">
                 <!-- Warm Sand Base -->
-                <rect width="1440" height="640" fill="#F5EEE4" />
+                <rect width="1440" height="900" fill="#F5EEE4" />
 
                 <!-- Top Right Organic Waves Swooshes -->
-                <path d="M860 0C940 100 1140 195 1440 245V0H860Z" fill="#DDD2C4" fill-opacity="0.45" />
-                <path d="M970 0C1050 75 1210 145 1440 180V0H970Z" fill="#D0C3B3" fill-opacity="0.35" />
+                <path d="M840 0C930 140 1140 270 1440 340V0H840Z" fill="#DDD2C4" fill-opacity="0.45" />
+                <path d="M960 0C1045 105 1220 200 1440 250V0H960Z" fill="#D0C3B3" fill-opacity="0.35" />
 
                 <!-- Bottom Left Organic Waves Swooshes -->
-                <path d="M0 380C140 395 280 465 390 640H0V380Z" fill="#E5DCD0" fill-opacity="0.55" />
-                <path d="M0 460C120 470 220 525 300 640H0V460Z" fill="#DDD0C2" fill-opacity="0.45" />
-                <path d="M0 535C90 545 160 580 215 640H0V535Z" fill="#D0C0B0" fill-opacity="0.35" />
+                <path d="M0 520C150 540 310 650 430 900H0V520Z" fill="#E5DCD0" fill-opacity="0.55" />
+                <path d="M0 630C130 645 240 725 330 900H0V630Z" fill="#DDD0C2" fill-opacity="0.45" />
+                <path d="M0 735C95 745 175 795 235 900H0V735Z" fill="#D0C0B0" fill-opacity="0.35" />
             </svg>
         </div>
 
@@ -673,18 +687,8 @@
 
             {{-- Hero 2-Column Content --}}
             <div class="siladata-hero-row">
-                {{-- Left Column: Typography, Badge & CTAs --}}
+                {{-- Left Column: Typography & CTAs --}}
                 <div class="siladata-hero-col-left">
-                    {{-- Badge --}}
-                    <div class="siladata-badge">
-                        <svg style="width: 15px; height: 15px; color: #E87A36; flex-shrink: 0;" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M10 3L11.8 8.2L17 10L11.8 11.8L10 17L8.2 11.8L3 10L8.2 8.2L10 3Z" />
-                            <path d="M18 2L18.9 4.6L21.5 5.5L18.9 6.4L18 9L17.1 6.4L14.5 5.5L17.1 4.6L18 2Z" />
-                            <circle cx="18" cy="14" r="1.2" />
-                        </svg>
-                        <span>Sesuai Standar Instrumen Akreditasi Terbaru</span>
-                    </div>
-
                     {{-- Headline --}}
                     <h1 class="siladata-h1">
                         <span class="siladata-h1-line1">Sistem Dokumen Akreditasi</span>
@@ -824,7 +828,7 @@
 
                         {{-- 3. Woman / Person Visual Cutout (HANYA INI YANG GAMBAR) --}}
                         <img
-                            src="{{ asset('images/hero-woman-clean.png') }}"
+                            src="{{ asset('images/hero-woman-clean.png') }}?v={{ filemtime(public_path('images/hero-woman-clean.png')) }}"
                             alt="Sistem Dokumen Akreditasi Perguruan Tinggi SILADATA"
                             class="siladata-woman-img"
                         />
