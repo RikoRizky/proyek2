@@ -30,7 +30,7 @@ class PertiManagementTest extends TestCase
             ]);
 
         $response->assertSessionHasNoErrors();
-        $response->assertRedirect(route('admin.pertis.index'));
+        $response->assertRedirect(route('admin.users.index'));
 
         $this->assertDatabaseHas('users', [
             'name' => 'ITB Universitas',

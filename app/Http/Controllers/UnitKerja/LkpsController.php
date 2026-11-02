@@ -35,7 +35,7 @@ class LkpsController extends Controller
     }
 
     /**
-     * Dedicated Full Viewer for an LKPS table submission (Prodi view).
+     * Dedicated Full Viewer & Editor for an LKPS table submission (Prodi view).
      */
     public function viewer(string $tableCode): \Illuminate\View\View
     {
@@ -44,7 +44,7 @@ class LkpsController extends Controller
             ->where('table_code', $tableCode)
             ->first();
 
-        $requirement = Requirement::where('table_code', $tableCode)->first();
+        $requirement = Requirement::with('module')->where('table_code', $tableCode)->first();
 
         $backUrl = $requirement?->module_id
             ? route('unit.submissions.module', [$requirement->module_id, 'tab' => 'lkps'])
@@ -61,6 +61,15 @@ class LkpsController extends Controller
     }
 
     /**
+     * Open dedicated full-size editor directly.
+     */
+    public function edit(string $tableCode): \Illuminate\View\View
+    {
+        request()->merge(['mode' => 'edit']);
+        return $this->viewer($tableCode);
+    }
+
+    /**
      * Save web table data directly (inline/form editing).
      */
     public function save(Request $request, string $tableCode): JsonResponse|RedirectResponse
@@ -69,6 +78,14 @@ class LkpsController extends Controller
         $rows = $request->input('rows', []);
         $dynamicHeaders = $request->input('dynamic_headers', []);
         $summary = $request->input('summary_data', []);
+        if (!is_array($summary)) {
+            $summary = [];
+        }
+        foreach (['header_structure', 'row_merges', 'has_total', 'total_label_col', 'sum_cols', 'note'] as $k) {
+            if ($request->has($k) && !isset($summary[$k])) {
+                $summary[$k] = $request->input($k);
+            }
+        }
         $tableName = $request->input('table_name', "Tabel {$tableCode}");
 
         $requirement = Requirement::where('table_code', $tableCode)->first();
@@ -179,7 +196,8 @@ class LkpsController extends Controller
             $tableCode,
             $submission->table_name ?? "Tabel {$tableCode}",
             $headers,
-            $submission->table_rows
+            $submission->table_rows,
+            $submission->summary_data
         );
     }
 }

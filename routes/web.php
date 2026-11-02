@@ -125,6 +125,7 @@ Route::middleware(['auth', 'role:prodi'])->prefix('unit')->name('unit.')->group(
     // LKPS Input, Import, Export Data Tabel
     Route::get('lkps/{table_code}', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'show'])->name('lkps.show');
     Route::get('lkps/{table_code}/view', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'viewer'])->name('lkps.viewer');
+    Route::get('lkps/{table_code}/edit', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'edit'])->name('lkps.edit');
     Route::post('lkps/{table_code}/save', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'save'])->name('lkps.save');
     Route::post('lkps/{table_code}/import', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'import'])->name('lkps.import');
     Route::get('lkps/{table_code}/export', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'export'])->name('lkps.export');

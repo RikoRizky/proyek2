@@ -24,7 +24,7 @@
                 $isRevision = $lkps?->status === 'revision';
                 $isSubmitted = in_array($lkps?->status, ['submitted', 'uploaded']);
             @endphp
-            <div class="px-6 py-6 {{ $isRevision ? 'bg-rose-50/40' : '' }}" x-data="{ expanded: false }">
+            <div class="px-6 py-6 {{ $isRevision ? 'bg-rose-50/40' : '' }}">
                 <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div class="min-w-0 flex-1">
                         <div class="flex flex-wrap items-center gap-2">
@@ -96,15 +96,15 @@
                             Import Excel
                         </button>
 
-                        {{-- Tombol Edit/Buka di Web --}}
-                        <button type="button"
-                            @click="expanded = !expanded"
-                            class="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-violet-50 hover:text-violet-700 hover:border-violet-300">
-                            <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        {{-- Tombol Edit/Buka di Web (Halaman Penuh) --}}
+                        <a href="{{ route('unit.lkps.viewer', [$tableCode, 'mode' => 'edit']) }}"
+                            class="inline-flex items-center gap-1.5 rounded-xl border border-violet-200 bg-white px-3.5 py-2 text-xs font-bold text-violet-700 shadow-sm transition hover:bg-violet-50 hover:border-violet-300"
+                            title="Buka editor tabel di halaman penuh agar leluasa menggeser dan mengedit kolom banyak">
+                            <svg class="h-4 w-4 shrink-0 text-violet-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                             </svg>
-                            <span x-text="expanded ? 'Tutup Editor Web' : 'Input / Edit di Web'"></span>
-                        </button>
+                            <span>Input / Edit di Web</span>
+                        </a>
 
                         {{-- Tombol Unduh Excel --}}
                         @if ($lkps && $rowCount > 0)
@@ -120,23 +120,14 @@
                     </div>
                 </div>
 
-                {{-- Interactive Web Table Editor Section (Accordion) --}}
-                <div x-show="expanded" x-collapse style="display: none;" class="mt-6 border-t border-slate-200 pt-5">
-                    @include('unit.submissions.tables._editor', [
-                        'tableCode' => $tableCode,
-                        'req' => $req,
-                        'lkps' => $lkps,
-                    ])
-                </div>
-
-                {{-- Preview Singkat jika tidak sedang expanded --}}
+                {{-- Preview Singkat jika ada data --}}
                 @if ($lkps && $rowCount > 0)
-                    <div x-show="!expanded" class="mt-4 rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5 text-xs">
+                    <div class="mt-4 rounded-xl border border-slate-200/80 bg-slate-50/70 p-3.5 text-xs">
                         <div class="flex items-center justify-between text-slate-600 mb-2 font-medium">
                             <span>Pratinjau Data (menampilkan {{ min(3, $rowCount) }} dari {{ $rowCount }} baris):</span>
-                            <button type="button" @click="expanded = true" class="text-violet-600 hover:text-violet-700 font-bold underline">
+                            <a href="{{ route('unit.lkps.viewer', $tableCode) }}" class="text-violet-600 hover:text-violet-700 font-bold underline">
                                 Lihat / Edit Semua Baris →
-                            </button>
+                            </a>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-[11px] text-slate-700">

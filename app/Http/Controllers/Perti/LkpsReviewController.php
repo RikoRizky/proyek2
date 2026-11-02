@@ -122,7 +122,8 @@ class LkpsReviewController extends Controller
             $tableCode,
             $submission->table_name ?? "Tabel {$tableCode}",
             $headers,
-            $submission->table_rows
+            $submission->table_rows,
+            $submission->summary_data
         );
     }
 
