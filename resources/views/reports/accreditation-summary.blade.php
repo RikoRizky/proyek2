@@ -75,6 +75,9 @@
                         <tr>
                             <td style="padding-left: 16px;">
                                 <span style="font-weight: 500; color: #334155;">{{ $req['title'] }}</span>
+                                @if (!empty($req['detail_info']))
+                                    <span style="font-size: 8px; color: #4338ca; margin-left: 4px; font-weight: normal;">({{ $req['detail_info'] }})</span>
+                                @endif
                                 @if ($req['validation_notes'])
                                     <div class="notes-box">
                                         <strong>Catatan Revisi Perti:</strong> {{ $req['validation_notes'] }}

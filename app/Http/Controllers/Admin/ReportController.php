@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\SubmissionStatus;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
+use App\Models\LkpsSubmission;
 use App\Models\Module;
 use App\Models\Submission;
 use App\Models\User;
@@ -102,7 +103,27 @@ class ReportController extends Controller
             $revisionTotalCount = 0;
             $pendingValidationTotalCount = 0;
 
-            $moduleRows = $modules->map(function (Module $module) use ($unit, &$approvedTotalCount, &$revisionTotalCount, &$pendingValidationTotalCount) {
+            $latestSubmissions = Submission::query()
+                ->where('user_id', $unit->id)
+                ->latestForUnit()
+                ->get()
+                ->keyBy('requirement_id');
+
+            $lkpsSubmissions = LkpsSubmission::query()
+                ->where('user_id', $unit->id)
+                ->get();
+
+            $lkpsByCode = $lkpsSubmissions->whereNotNull('table_code')->keyBy('table_code');
+            $lkpsByReqId = $lkpsSubmissions->whereNotNull('requirement_id')->keyBy('requirement_id');
+
+            $moduleRows = $modules->map(function (Module $module) use (
+                $latestSubmissions,
+                $lkpsByCode,
+                $lkpsByReqId,
+                &$approvedTotalCount,
+                &$revisionTotalCount,
+                &$pendingValidationTotalCount
+            ) {
                 $uploaded = 0;
                 $approved = 0;
                 $revision = 0;
@@ -112,17 +133,57 @@ class ReportController extends Controller
                 $requirementDetails = [];
 
                 foreach ($module->requirements as $requirement) {
-                    $submission = Submission::query()
-                        ->where('requirement_id', $requirement->id)
-                        ->where('user_id', $unit->id)
-                        ->latestForUnit()
-                        ->first();
+                    $tableCode = $requirement->table_code;
+                    $isTableReq = $requirement->isTable() || !empty($tableCode);
+
+                    $lkps = $isTableReq
+                        ? (($tableCode ? $lkpsByCode->get($tableCode) : null) ?? $lkpsByReqId->get($requirement->id))
+                        : null;
+
+                    $submission = $latestSubmissions->get($requirement->id);
+
+                    $hasLkps = $lkps && !empty($lkps->table_rows);
+                    $hasDoc = $submission && $submission->status !== SubmissionStatus::Pending;
 
                     $statusLabel = 'Belum Diunggah';
                     $statusKey = 'pending';
+                    $validationNotes = null;
+                    $validatedAt = null;
+                    $detailInfo = null;
 
-                    if ($submission && $submission->status !== SubmissionStatus::Pending) {
+                    // Tentukan data utama berdasarkan tipe persyaratan
+                    $primaryType = $isTableReq
+                        ? ($hasLkps ? 'lkps' : ($hasDoc ? 'doc' : null))
+                        : ($hasDoc ? 'doc' : ($hasLkps ? 'lkps' : null));
+
+                    if ($primaryType === 'lkps') {
                         $uploaded++;
+                        $rowCount = count($lkps->table_rows);
+                        $detailInfo = "{$rowCount} baris data terisi";
+                        $validationNotes = $lkps->validation_notes;
+                        $validatedAt = $lkps->validated_at;
+
+                        if ($lkps->status === 'approved') {
+                            $approved++;
+                            $approvedTotalCount++;
+                            $statusLabel = 'Sesuai (Divalidasi)';
+                            $statusKey = 'approved';
+                        } elseif ($lkps->status === 'revision') {
+                            $revision++;
+                            $revisionTotalCount++;
+                            $statusLabel = 'Perlu Revisi';
+                            $statusKey = 'revision';
+                        } else {
+                            $pendingValidation++;
+                            $pendingValidationTotalCount++;
+                            $statusLabel = 'Menunggu Validasi';
+                            $statusKey = 'uploaded';
+                        }
+                    } elseif ($primaryType === 'doc') {
+                        $uploaded++;
+                        $validationNotes = $submission->validation_notes;
+                        $validatedAt = $submission->validated_at;
+
                         if ($submission->status === SubmissionStatus::Approved) {
                             $approved++;
                             $approvedTotalCount++;
@@ -145,8 +206,9 @@ class ReportController extends Controller
                         'title'            => $requirement->title,
                         'status_key'       => $statusKey,
                         'status_label'     => $statusLabel,
-                        'validation_notes' => $submission?->validation_notes,
-                        'validated_at'     => $submission?->validated_at,
+                        'validation_notes' => $validationNotes,
+                        'validated_at'     => $validatedAt,
+                        'detail_info'      => $detailInfo,
                     ];
                 }
 
