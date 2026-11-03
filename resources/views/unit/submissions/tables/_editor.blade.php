@@ -226,10 +226,13 @@
                                 <template x-for="(col, cIdx) in headers" :key="cIdx">
                                     <td class="py-1.5 px-2">
                                         <input type="text"
+                                            :id="'cell-' + rIdx + '-' + cIdx"
                                             :value="row.cells ? row.cells[cIdx] : ''"
                                             @input="setCellVal(row, cIdx, $event.target.value)"
+                                            @paste="handleExcelPaste($event, rIdx, cIdx)"
+                                            @keydown="handleKeyNavigation($event, rIdx, cIdx)"
                                             :placeholder="'Isi ' + col + '...'"
-                                            class="w-full rounded-lg border-slate-200 text-xs py-1.5 px-2.5 focus:border-violet-500 focus:ring-1 focus:ring-violet-500">
+                                            class="w-full rounded-lg border-slate-200 text-xs py-1.5 px-2.5 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 font-sans">
                                     </td>
                                 </template>
                                 <td class="py-2 px-2 text-center text-slate-300">·</td>

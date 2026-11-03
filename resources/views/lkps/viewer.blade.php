@@ -423,15 +423,16 @@
 
                 {{-- Toolbar Atas Editor --}}
                 <div class="shrink-0 bg-white border-b border-slate-200 px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-xs">
-                    <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <div class="flex items-center flex-wrap gap-2 text-xs text-slate-500">
                         <span class="font-medium text-slate-700">💡 Tip:</span>
-                        <span>Klik judul kolom untuk mengubah nama. Geser tabel ke kanan untuk melihat semua kolom.</span>
+                        <span>Paste langsung dari Excel (<kbd class="px-1.5 py-0.5 rounded bg-slate-100 font-mono text-[10px] text-slate-700 border border-slate-300">Cmd+V</kbd> / <kbd class="px-1.5 py-0.5 rounded bg-slate-100 font-mono text-[10px] text-slate-700 border border-slate-300">Ctrl+V</kbd>). <kbd class="px-1.5 py-0.5 rounded bg-slate-100 font-mono text-[10px] text-slate-700 border border-slate-300">Enter</kbd> baris baru.</span>
                         <span class="text-slate-300">|</span>
                         <span class="rounded-full bg-slate-100 px-2 py-0.5 font-bold text-slate-700"><span x-text="rows.length"></span> baris</span>
                         <span class="rounded-full bg-slate-100 px-2 py-0.5 font-bold text-slate-700"><span x-text="headers.length"></span> kolom</span>
-                        <template x-if="headerStructure">
-                            <span class="rounded-full bg-violet-100 px-2 py-0.5 font-bold text-violet-800">2 Tingkat Kolom Gabungan</span>
-                        </template>
+                        <span x-show="headerStructure" class="rounded-full bg-violet-100 px-2 py-0.5 font-bold text-violet-800">Kolom Gabungan Aktif</span>
+                        <span x-show="rowMerges && rowMerges.length > 0" class="rounded-full bg-indigo-100 px-2 py-0.5 font-bold text-indigo-800">
+                            <span x-text="rowMerges.length"></span> Baris Digabung
+                        </span>
                     </div>
 
                     <div class="flex flex-wrap items-center gap-2">
@@ -447,11 +448,9 @@
                         </button>
 
                         {{-- Tombol Pisahkan / Kelola Gabungan jika sedang ada gabungan kolom atau baris --}}
-                        <template x-if="headerStructure || (rowMerges && rowMerges.length > 0)">
-                            <button type="button" @click="openMergeModal('active')" class="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition" title="Lihat daftar gabungan kolom & baris, atau pisahkan kembali">
-                                <span>↺ Kelola Gabungan</span>
-                            </button>
-                        </template>
+                        <button x-show="headerStructure || (rowMerges && rowMerges.length > 0)" type="button" @click="openMergeModal('active')" class="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition" title="Lihat daftar gabungan kolom & baris, atau pisahkan kembali">
+                            <span>↺ Kelola Gabungan</span>
+                        </button>
 
                         @if ($tableCode === '2.B.1' || $tableCode === '2.B.2')
                             <button type="button" @click="addPlColumn()" class="inline-flex items-center gap-1 rounded-lg border border-violet-200 bg-violet-50/80 px-2.5 py-1.5 text-xs font-bold text-violet-700 hover:bg-violet-100 transition shadow-xs">
@@ -652,26 +651,27 @@
                                     <template x-for="(row, rIdx) in rows" :key="rIdx">
                                         <tr class="hover:bg-slate-50/70 transition" :class="row.is_total ? 'bg-slate-50/90 font-bold' : ''">
                                             <template x-for="(col, cIdx) in headers" :key="'cell-' + cIdx">
-                                                <template x-if="!isCellRowHidden(rIdx, cIdx)">
-                                                    <td class="py-2 px-2.5 border-r border-slate-100"
-                                                        :rowspan="getCellRowMerge(rIdx, cIdx) ? getCellRowMerge(rIdx, cIdx).rowspan : 1"
-                                                        :class="getCellRowMerge(rIdx, cIdx) ? 'bg-violet-50/50 align-middle ring-1 ring-inset ring-violet-200' : ''"
-                                                        :style="(headerStructure && headerStructure[1] && headerStructure[1].find(s => s.colIdx === cIdx)) ? 'min-width: ' + (headerStructure[1].find(s => s.colIdx === cIdx).width || '85px') : (cIdx === 0 && (headers[0] === 'No' || headers[0] === 'No.') ? 'min-width: 50px; width: 50px;' : 'min-width: 170px;')">
-                                                        <div class="relative">
-                                                            <input type="text"
-                                                                :value="row.cells ? row.cells[cIdx] : ''"
-                                                                @input="setCellVal(row, cIdx, $event.target.value)"
-                                                                :placeholder="row.is_total && cIdx === totalLabelCol ? 'Total' : 'Isi ' + col + '...'"
-                                                                class="w-full rounded-lg border-slate-200 text-xs py-2 px-3 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 bg-white shadow-2xs"
-                                                                :class="row.is_total ? 'font-bold text-slate-900 bg-slate-100/50' : (cIdx === 0 && (headers[0] === 'No' || headers[0] === 'No.') ? 'text-center font-bold text-slate-500' : '')">
-                                                            <template x-if="getCellRowMerge(rIdx, cIdx)">
-                                                                <span class="absolute -top-2 right-1 inline-flex items-center rounded bg-violet-200/90 px-1 py-0.5 text-[9px] font-bold text-violet-800 shadow-2xs">
-                                                                    Gabung <span x-text="getCellRowMerge(rIdx, cIdx).rowspan"></span> baris
-                                                                </span>
-                                                            </template>
-                                                        </div>
-                                                    </td>
-                                                </template>
+                                                <td x-show="!isCellRowHidden(rIdx, cIdx)"
+                                                    class="py-2 px-2.5 border-r border-slate-100"
+                                                    :rowspan="getCellRowMerge(rIdx, cIdx) ? getCellRowMerge(rIdx, cIdx).rowspan : 1"
+                                                    :class="getCellRowMerge(rIdx, cIdx) ? 'bg-violet-50/50 align-middle ring-1 ring-inset ring-violet-200' : ''"
+                                                    :style="(headerStructure && headerStructure[1] && headerStructure[1].find(s => s.colIdx === cIdx)) ? 'min-width: ' + (headerStructure[1].find(s => s.colIdx === cIdx).width || '85px') : (cIdx === 0 && (headers[0] === 'No' || headers[0] === 'No.') ? 'min-width: 50px; width: 50px;' : 'min-width: 170px;')">
+                                                    <div class="relative">
+                                                        <input type="text"
+                                                            :id="'cell-' + rIdx + '-' + cIdx"
+                                                            :value="row.cells ? row.cells[cIdx] : ''"
+                                                            @input="setCellVal(row, cIdx, $event.target.value)"
+                                                            @paste="handleExcelPaste($event, rIdx, cIdx)"
+                                                            @keydown="handleKeyNavigation($event, rIdx, cIdx)"
+                                                            :placeholder="row.is_total && cIdx === totalLabelCol ? 'Total' : 'Isi ' + col + '...'"
+                                                            class="w-full rounded-lg border-slate-200 text-xs py-2 px-3 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 bg-white shadow-2xs font-sans"
+                                                            :class="row.is_total ? 'font-bold text-slate-900 bg-slate-100/50' : (cIdx === 0 && (headers[0] === 'No' || headers[0] === 'No.') ? 'text-center font-bold text-slate-500' : '')">
+                                                        <span x-show="getCellRowMerge(rIdx, cIdx)"
+                                                            class="absolute -top-2 right-1 inline-flex items-center rounded bg-violet-200/90 px-1 py-0.5 text-[9px] font-bold text-violet-800 shadow-2xs pointer-events-none">
+                                                            Gabung <span x-text="getCellRowMerge(rIdx, cIdx) ? getCellRowMerge(rIdx, cIdx).rowspan : ''"></span> baris
+                                                        </span>
+                                                    </div>
+                                                </td>
                                             </template>
                                             <td x-show="!headerStructure || headerStructure.length < 2" class="py-2 px-2 text-center text-slate-300">·</td>
                                             <td class="py-2 px-3 text-center w-12">
@@ -684,7 +684,7 @@
                                     <tr x-show="rows.length === 0">
                                         <td :colspan="headers.length + 3" class="text-center py-12 text-slate-400">
                                             <p class="font-medium">Belum ada baris data pada tabel ini.</p>
-                                            <p class="text-xs mt-1">Klik tombol <span class="font-bold text-violet-600">+ Tambah Baris</span> di atas untuk mulai mengisi, atau gunakan tombol <span class="font-bold text-emerald-600">Import Excel</span>.</p>
+                                            <p class="text-xs mt-1">Klik tombol <span class="font-bold text-violet-600">+ Tambah Baris</span> di atas untuk mulai mengisi, atau tempel (Paste) langsung dari Excel.</p>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -880,59 +880,58 @@
                         <div x-show="mergeTab === 'active'" class="p-4 sm:p-6 space-y-5 text-xs">
                             {{-- Status Gabungan Kolom --}}
                             <div>
-                                <h4 class="font-bold text-slate-800 flex items-center justify-between mb-2">
-                                    <span>Gabungan Kolom (Header Colspan)</span>
-                                    <template x-if="headerStructure">
-                                        <button type="button" @click="unmergeColumns()" class="text-rose-600 hover:underline font-bold text-[11px]">
-                                            ↺ Pisahkan Semua Kolom
-                                        </button>
-                                    </template>
-                                </h4>
-                                <template x-if="headerStructure">
-                                    <div class="rounded-xl border border-violet-200 bg-violet-50/50 p-3 flex items-center justify-between">
-                                        <div>
-                                            <span class="font-bold text-violet-900">Header Bertingkat Aktif:</span>
-                                            <p class="text-slate-600 text-[11px] mt-0.5">Tabel saat ini memiliki 2 tingkat header dengan kolom gabungan.</p>
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-bold text-slate-800">Gabungan Kolom (Header Colspan)</h4>
+                                    <button x-show="columnGroups && columnGroups.length > 0" type="button" @click="unmergeColumns()" class="text-rose-600 hover:underline font-bold text-[11px]">
+                                        ↺ Pisahkan Semua Kolom
+                                    </button>
+                                </div>
+                                <div x-show="columnGroups && columnGroups.length > 0" class="space-y-2 max-h-48 overflow-y-auto">
+                                    <template x-for="(grp, gIdx) in columnGroups" :key="'grp-' + gIdx">
+                                        <div class="flex items-center justify-between rounded-xl border border-violet-200 bg-violet-50/50 p-2.5 shadow-2xs">
+                                            <div>
+                                                <span class="font-bold text-violet-900" x-text="grp.title"></span>
+                                                <p class="text-slate-500 text-[11px] mt-0.5">
+                                                    Kolom <strong x-text="grp.startCol + 1"></strong> s/d <strong x-text="grp.endCol + 1"></strong>
+                                                    (<span x-text="grp.endCol - grp.startCol + 1"></span> kolom digabung)
+                                                </p>
+                                            </div>
+                                            <button type="button" @click="removeColumnGroup(gIdx)" class="rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition shadow-2xs">
+                                                Pisahkan
+                                            </button>
                                         </div>
-                                        <button type="button" @click="unmergeColumns()" class="rounded-lg bg-white border border-rose-200 text-rose-600 px-3 py-1.5 font-bold hover:bg-rose-50 transition shadow-2xs">
-                                            Pisahkan
-                                        </button>
-                                    </div>
-                                </template>
-                                <template x-if="!headerStructure">
+                                    </template>
+                                </div>
+                                <div x-show="!columnGroups || columnGroups.length === 0">
                                     <p class="text-slate-400 italic">Tidak ada gabungan kolom header yang aktif (tabel 1 tingkat standar).</p>
-                                </template>
+                                </div>
                             </div>
 
                             {{-- Status Gabungan Baris --}}
                             <div>
                                 <div class="flex items-center justify-between mb-2">
                                     <h4 class="font-bold text-slate-800">Gabungan Baris Vertikal (Rowspan Sel)</h4>
-                                    <template x-if="rowMerges && rowMerges.length > 0">
-                                        <button type="button" @click="clearAllRowMerges()" class="text-rose-600 hover:underline font-bold text-[11px]">
-                                            Hapus Semua Gabungan Baris
-                                        </button>
+                                    <button x-show="rowMerges && rowMerges.length > 0" type="button" @click="clearAllRowMerges()" class="text-rose-600 hover:underline font-bold text-[11px]">
+                                        Hapus Semua Gabungan Baris
+                                    </button>
+                                </div>
+                                <div x-show="rowMerges && rowMerges.length > 0" class="space-y-2 max-h-48 overflow-y-auto">
+                                    <template x-for="(rm, rmIdx) in rowMerges" :key="'active-rm-' + rmIdx">
+                                        <div class="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-2.5 shadow-2xs">
+                                            <div>
+                                                <span class="font-bold text-slate-800" x-text="rm.colName"></span>:
+                                                <span class="text-slate-600">Baris <strong x-text="rm.startRow + 1"></strong> s/d <strong x-text="rm.endRow + 1"></strong></span>
+                                                <span class="ml-1 text-[11px] text-violet-700 font-semibold" x-text="'(Isi: ' + (rm.value || '-') + ')'"></span>
+                                            </div>
+                                            <button type="button" @click="removeRowMerge(rmIdx)" class="rounded-lg border border-slate-200 bg-white px-2 py-1 font-semibold text-rose-600 hover:bg-rose-50 transition shadow-2xs">
+                                                Hapus
+                                            </button>
+                                        </div>
                                     </template>
                                 </div>
-                                <template x-if="rowMerges && rowMerges.length > 0">
-                                    <div class="space-y-2 max-h-48 overflow-y-auto">
-                                        <template x-for="(rm, rmIdx) in rowMerges" :key="'active-rm-' + rmIdx">
-                                            <div class="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-2.5 shadow-2xs">
-                                                <div>
-                                                    <span class="font-bold text-slate-800" x-text="rm.colName"></span>:
-                                                    <span class="text-slate-600">Baris <strong x-text="rm.startRow + 1"></strong> s/d <strong x-text="rm.endRow + 1"></strong></span>
-                                                    <span class="ml-1 text-[11px] text-violet-700 font-semibold" x-text="'(Isi: ' + (rm.value || '-') + ')'"></span>
-                                                </div>
-                                                <button type="button" @click="removeRowMerge(rmIdx)" class="rounded-lg border border-slate-200 bg-white px-2 py-1 font-semibold text-rose-600 hover:bg-rose-50 transition shadow-2xs">
-                                                    Hapus
-                                                </button>
-                                            </div>
-                                        </template>
-                                    </div>
-                                </template>
-                                <template x-if="!rowMerges || rowMerges.length === 0">
+                                <div x-show="!rowMerges || rowMerges.length === 0">
                                     <p class="text-slate-400 italic">Belum ada baris yang digabungkan secara vertikal.</p>
-                                </template>
+                                </div>
                             </div>
 
                             <div class="flex items-center justify-end pt-2 border-t border-slate-100">

@@ -422,6 +422,20 @@
             initHeaderStructure = JSON.parse(JSON.stringify(schema.headerRows));
         }
 
+        // Extract initial column merge groups from header structure if any
+        const initialGroups = [];
+        if (initHeaderStructure && Array.isArray(initHeaderStructure[0])) {
+            initHeaderStructure[0].forEach(col => {
+                if (col.colspan && col.colspan > 1) {
+                    initialGroups.push({
+                        title: col.label,
+                        startCol: col.colIdx,
+                        endCol: col.colIdx + col.colspan - 1
+                    });
+                }
+            });
+        }
+
         // Normalize initial rows
         let startRows = [];
         if (initialRows && Array.isArray(initialRows) && initialRows.length > 0) {
@@ -472,6 +486,7 @@
             headers: startHeaders,
             rows: startRows,
             headerStructure: initHeaderStructure,
+            columnGroups: initialGroups,
             hasTotal: initialSummary && initialSummary.has_total !== undefined ? initialSummary.has_total : (schema && schema.hasTotal ? true : false),
             totalLabelCol: initialSummary && initialSummary.total_label_col !== undefined ? initialSummary.total_label_col : (schema && schema.totalLabelCol !== undefined ? schema.totalLabelCol : 1),
             sumCols: initialSummary && initialSummary.sum_cols ? initialSummary.sum_cols : (schema && schema.sumCols ? schema.sumCols : []),
@@ -531,6 +546,46 @@
                 this.selectedColumnsToMerge = [];
             },
 
+            rebuildHeaderStructure() {
+                if (!this.columnGroups || this.columnGroups.length === 0) {
+                    this.headerStructure = null;
+                    return;
+                }
+
+                const tier0 = [];
+                const tier1 = [];
+                const sortedGroups = [...this.columnGroups].sort((a, b) => a.startCol - b.startCol);
+
+                let colIdx = 0;
+                while (colIdx < this.headers.length) {
+                    const group = sortedGroups.find(g => g.startCol === colIdx);
+                    if (group) {
+                        const count = (group.endCol - group.startCol + 1);
+                        tier0.push({
+                            label: group.title,
+                            colspan: count,
+                            colIdx: group.startCol
+                        });
+                        for (let i = group.startCol; i <= group.endCol; i++) {
+                            tier1.push({
+                                label: this.headers[i] || ('Kolom ' + (i + 1)),
+                                colIdx: i
+                            });
+                        }
+                        colIdx = group.endCol + 1;
+                    } else {
+                        tier0.push({
+                            label: this.headers[colIdx] || ('Kolom ' + (colIdx + 1)),
+                            rowspan: 2,
+                            colIdx: colIdx
+                        });
+                        colIdx++;
+                    }
+                }
+
+                this.headerStructure = [tier0, tier1];
+            },
+
             applyMultiColumnMerge() {
                 if (this.selectedColumnsToMerge.length < 2) {
                     alert('Pilih minimal 2 kolom yang ingin digabungkan (bisa pilih 2, 3, 4, 8, atau lebih kolom).');
@@ -546,37 +601,28 @@
                 const endIdx = sorted[sorted.length - 1];
                 const title = this.mergeGroupTitle.trim();
 
-                const tier0 = [];
-                const tier1 = [];
+                if (!Array.isArray(this.columnGroups)) this.columnGroups = [];
+                // Filter out any existing group that overlaps with this range
+                this.columnGroups = this.columnGroups.filter(g => !(g.startCol <= endIdx && g.endCol >= startIdx));
 
-                // Columns before startIdx (rowspan 2)
-                for (let i = 0; i < startIdx; i++) {
-                    tier0.push({ label: this.headers[i], rowspan: 2, colIdx: i });
-                }
-
-                // Merged parent column (colspan = count)
-                tier0.push({
-                    label: title,
-                    colspan: (endIdx - startIdx + 1),
-                    colIdx: startIdx
+                this.columnGroups.push({
+                    title: title,
+                    startCol: startIdx,
+                    endCol: endIdx
                 });
 
-                // Columns after endIdx (rowspan 2)
-                for (let i = endIdx + 1; i < this.headers.length; i++) {
-                    tier0.push({ label: this.headers[i], rowspan: 2, colIdx: i });
-                }
-
-                // Sub-columns in tier 1
-                for (let i = startIdx; i <= endIdx; i++) {
-                    tier1.push({ label: this.headers[i], colIdx: i });
-                }
-
-                this.headerStructure = [tier0, tier1];
+                this.rebuildHeaderStructure();
                 this.showMergeModal = false;
+            },
+
+            removeColumnGroup(index) {
+                this.columnGroups.splice(index, 1);
+                this.rebuildHeaderStructure();
             },
 
             unmergeColumns() {
                 if (!confirm('Pisahkan semua gabungan kolom dan kembalikan ke judul kolom satu tingkat?')) return;
+                this.columnGroups = [];
                 this.headerStructure = null;
             },
 
@@ -656,6 +702,76 @@
                 return this.rowMerges.some(m => m.colIdx === cIdx && rIdx > m.startRow && rIdx <= m.endRow);
             },
 
+            // ── Excel-like Copy-Paste Handler (Direct TSV from Excel) ──
+            handleExcelPaste(e, startR, startC) {
+                const clipboardData = (e.clipboardData || window.clipboardData);
+                if (!clipboardData) return;
+                const text = clipboardData.getData('text');
+                if (!text || (!text.includes('\t') && !text.includes('\n'))) {
+                    // Single string paste, let default input behavior happen
+                    return;
+                }
+                e.preventDefault();
+
+                // Parse rows from newline
+                const rawLines = text.split(/\r?\n/);
+                const lines = rawLines.filter((l, idx) => l.trim() !== '' || idx < rawLines.length - 1);
+                if (lines.length === 0) return;
+
+                for (let r = 0; r < lines.length; r++) {
+                    const targetR = startR + r;
+                    // Auto-expand rows if needed
+                    while (targetR >= this.rows.length) {
+                        this.addRow();
+                    }
+
+                    const cols = lines[r].split('\t');
+                    for (let c = 0; c < cols.length; c++) {
+                        const targetC = startC + c;
+                        if (targetC < this.headers.length) {
+                            if (!this.rows[targetR].cells) {
+                                this.rows[targetR].cells = this.headers.map(() => '');
+                            }
+                            this.rows[targetR].cells[targetC] = cols[c].trim();
+                        }
+                    }
+                }
+
+                this.saveStatusMessage = `✓ Berhasil menempel ${lines.length} baris data dari Excel!`;
+                setTimeout(() => {
+                    if (this.saveStatusMessage.startsWith('✓ Berhasil menempel')) {
+                        this.saveStatusMessage = '';
+                    }
+                }, 4000);
+            },
+
+            // ── Excel-like Keyboard Navigation (Enter, Tab) ──
+            handleKeyNavigation(e, rIdx, cIdx) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const nextR = rIdx + 1;
+                    if (nextR >= this.rows.length) {
+                        this.addRow();
+                    }
+                    this.$nextTick(() => {
+                        const nextEl = document.getElementById(`cell-${nextR}-${cIdx}`);
+                        if (nextEl) {
+                            nextEl.focus();
+                            nextEl.select();
+                        }
+                    });
+                } else if (e.key === 'Tab' && !e.shiftKey) {
+                    if (cIdx + 1 >= this.headers.length && rIdx + 1 < this.rows.length) {
+                        e.preventDefault();
+                        const nextEl = document.getElementById(`cell-${rIdx + 1}-0`);
+                        if (nextEl) {
+                            nextEl.focus();
+                            nextEl.select();
+                        }
+                    }
+                }
+            },
+
             // ── Live Calculation & Total Row ──
             calcColumnSum(colIdx) {
                 return this.rows.reduce((sum, r) => {
@@ -696,6 +812,31 @@
                 });
             },
 
+            insertColumn(index, position = 'after') {
+                const targetIdx = position === 'before' ? index : index + 1;
+                const colName = prompt('Masukkan judul kolom baru:', 'Kolom ' + (this.headers.length + 1));
+                if (colName === null || colName.trim() === '') return;
+                const finalName = colName.trim();
+
+                this.headers.splice(targetIdx, 0, finalName);
+                this.rows.forEach(r => {
+                    if (!r.cells) r.cells = [];
+                    r.cells.splice(targetIdx, 0, '');
+                });
+
+                // Update rowMerges colIdx
+                this.rowMerges.forEach(m => {
+                    if (m.colIdx >= targetIdx) {
+                        m.colIdx += 1;
+                    }
+                });
+
+                if (this.headerStructure) {
+                    this.headerStructure = null;
+                    this.columnGroups = [];
+                }
+            },
+
             removeColumn(index) {
                 if (this.headers.length <= 1) {
                     alert('Tabel minimal harus memiliki 1 kolom.');
@@ -711,9 +852,18 @@
                         r.cells.splice(index, 1);
                     }
                 });
+                // Remove rowMerges on this column and shift columns > index
+                this.rowMerges = this.rowMerges.filter(m => m.colIdx !== index);
+                this.rowMerges.forEach(m => {
+                    if (m.colIdx > index) {
+                        m.colIdx -= 1;
+                    }
+                });
+
                 // If headerStructure active, reset it to avoid index mismatch
                 if (this.headerStructure) {
                     this.headerStructure = null;
+                    this.columnGroups = [];
                 }
             },
 
@@ -723,6 +873,18 @@
                     if (!confirm('Kembalikan tabel ke format standar resmi LAM INFOKOM (termasuk kolom gabungan dan baris standar)?')) return;
                     this.headers = [...sc.leafHeaders];
                     this.headerStructure = sc.headerRows ? JSON.parse(JSON.stringify(sc.headerRows)) : null;
+                    this.columnGroups = [];
+                    if (this.headerStructure && Array.isArray(this.headerStructure[0])) {
+                        this.headerStructure[0].forEach(col => {
+                            if (col.colspan && col.colspan > 1) {
+                                this.columnGroups.push({
+                                    title: col.label,
+                                    startCol: col.colIdx,
+                                    endCol: col.colIdx + col.colspan - 1
+                                });
+                            }
+                        });
+                    }
                     this.hasTotal = sc.hasTotal || false;
                     this.totalLabelCol = sc.totalLabelCol !== undefined ? sc.totalLabelCol : 1;
                     this.sumCols = sc.sumCols || [];
@@ -738,6 +900,7 @@
                 if (!confirm('Kembalikan judul kolom ke template standar LAM INFOKOM?')) return;
                 this.headers = [...def];
                 this.headerStructure = null;
+                this.columnGroups = [];
                 this.rows.forEach(r => {
                     if (!r.cells) r.cells = [];
                     while (r.cells.length < this.headers.length) {
@@ -752,8 +915,42 @@
                 this.rows.push({ cells: newCells });
             },
 
+            insertRow(index, position = 'below') {
+                const targetIdx = position === 'above' ? index : index + 1;
+                const newCells = this.headers.map(() => '');
+                this.rows.splice(targetIdx, 0, { cells: newCells });
+
+                // Update rowMerges index
+                this.rowMerges.forEach(m => {
+                    if (m.startRow >= targetIdx) {
+                        m.startRow += 1;
+                        m.endRow += 1;
+                    } else if (m.startRow < targetIdx && m.endRow >= targetIdx) {
+                        m.endRow += 1;
+                        m.rowspan += 1;
+                    }
+                });
+
+                this.$nextTick(() => {
+                    const nextEl = document.getElementById(`cell-${targetIdx}-0`);
+                    if (nextEl) nextEl.focus();
+                });
+            },
+
             removeRow(index) {
                 this.rows.splice(index, 1);
+                // Adjust row merges
+                this.rowMerges = this.rowMerges.filter(m => !(m.startRow <= index && m.endRow >= index && m.rowspan <= 2));
+                this.rowMerges.forEach(m => {
+                    if (m.startRow > index) {
+                        m.startRow -= 1;
+                        m.endRow -= 1;
+                    } else if (m.startRow <= index && m.endRow >= index) {
+                        m.endRow -= 1;
+                        m.rowspan -= 1;
+                    }
+                });
+
                 if (this.tableCode === '2.B.1') {
                     this.calcSummary2B1();
                 }

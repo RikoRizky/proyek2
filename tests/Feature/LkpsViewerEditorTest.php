@@ -140,4 +140,35 @@ class LkpsViewerEditorTest extends TestCase
         $this->assertCount(2, $sub->table_rows);
         $this->assertEquals(9, count($sub->dynamic_headers));
     }
+
+    public function test_viewer_has_excel_paste_and_navigation_features(): void
+    {
+        $prodi = User::factory()->create([
+            'role' => UserRole::Prodi,
+        ]);
+
+        $module = Module::create([
+            'name' => 'Kriteria 1: Budaya Mutu',
+            'sort_order' => 1,
+        ]);
+
+        Requirement::create([
+            'module_id' => $module->id,
+            'title' => 'Tabel 1.A.5: Tenaga Kependidikan',
+            'input_type' => 'table',
+            'table_code' => '1.A.5',
+            'sort_order' => 10,
+        ]);
+
+        $response = $this->actingAs($prodi)
+            ->get(route('unit.lkps.edit', '1.A.5'));
+
+        $response->assertOk();
+        $response->assertSee('handleExcelPaste', false);
+        $response->assertSee('handleKeyNavigation', false);
+        $response->assertSee('rebuildHeaderStructure', false);
+        $response->assertSee('columnGroups', false);
+        $response->assertSee('applyMultiColumnMerge', false);
+        $response->assertSee('applyMultiRowMerge', false);
+    }
 }
