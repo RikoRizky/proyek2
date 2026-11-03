@@ -146,6 +146,47 @@
 
     // Official LAM INFOKOM Table Schemas with Merged Headers & Rows
     const TABLE_SCHEMAS = {
+        '1.A.1': {
+            leafHeaders: ['Unit Kerja', 'Nama Ketua', 'Periode Jabatan', 'Pendidikan Terakhir', 'Jabatan Fungsional', 'Tugas Pokok & Fungsi'],
+            hasTotal: false,
+            note: 'Data yang ditulis dalam tabel ini termasuk Unit Penjaminan Mutu.',
+            defaultRows: [
+                { cells: ['', '', '', '', '', ''] },
+                { cells: ['', '', '', '', '', ''] },
+                { cells: ['', '', '', '', '', ''] },
+                { cells: ['', '', '', '', '', ''] },
+                { cells: ['', '', '', '', '', ''] }
+            ]
+        },
+        '1.A.2': {
+            leafHeaders: ['Sumber Pendanaan', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+            hasTotal: true,
+            totalLabelCol: 0,
+            sumCols: [1, 2, 3],
+            defaultRows: [
+                { cells: ['Mahasiswa (SPP)', '0', '0', '0', ''] },
+                { cells: ['Yayasan', '0', '0', '0', ''] },
+                { cells: ['PTN/PTS Lain', '0', '0', '0', ''] },
+                { cells: ['Pemerintah (Pusat/Daerah)', '0', '0', '0', ''] },
+                { cells: ['Industri/Masyarakat', '0', '0', '0', ''] },
+                { cells: ['Lainnya', '0', '0', '0', ''] }
+            ]
+        },
+        '1.A.3': {
+            leafHeaders: ['Penggunaan Dana', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+            hasTotal: true,
+            totalLabelCol: 0,
+            sumCols: [1, 2, 3],
+            defaultRows: [
+                { cells: ['Pendidikan', '0', '0', '0', ''] },
+                { cells: ['Penelitian', '0', '0', '0', ''] },
+                { cells: ['PKM', '0', '0', '0', ''] },
+                { cells: ['Investasi Prasarana', '0', '0', '0', ''] },
+                { cells: ['Investasi Sarana', '0', '0', '0', ''] },
+                { cells: ['Investasi SDM', '0', '0', '0', ''] },
+                { cells: ['Lainnya', '0', '0', '0', ''] }
+            ]
+        },
         '1.A.4': {
             headerRows: [
                 [
@@ -400,6 +441,225 @@
             hasTotal: true,
             totalLabelCol: 1,
             sumCols: [4, 5, 6, 7]
+        },
+        '2.A.2': {
+            headerRows: [
+                [
+                    { label: 'Asal Mahasiswa', rowspan: 2, colIdx: 0, width: '220px' },
+                    { label: 'Jumlah Mahasiswa Baru', colspan: 4, colIdx: 1 }
+                ],
+                [
+                    { label: 'TS-2', colIdx: 1, width: '100px' },
+                    { label: 'TS-1', colIdx: 2, width: '100px' },
+                    { label: 'TS', colIdx: 3, width: '100px' },
+                    { label: 'Link Bukti', colIdx: 4, width: '200px' }
+                ]
+            ],
+            leafHeaders: ['Asal Mahasiswa', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+            hasTotal: true,
+            totalLabelCol: 0,
+            sumCols: [1, 2, 3],
+            defaultRows: [
+                { cells: ['Kota/Kab sama dengan PS', '0', '0', '0', ''] },
+                { cells: ['Kota/Kabupaten Lain', '0', '0', '0', ''] },
+                { cells: ['Provinsi Lain', '0', '0', '0', ''] },
+                { cells: ['Negara Lain', '0', '0', '0', ''] }
+            ]
+        },
+        '2.A.3': {
+            leafHeaders: ['Kategori Mahasiswa Asing', 'TS-2', 'TS-1', 'TS', 'Jumlah'],
+            hasTotal: true,
+            totalLabelCol: 0,
+            sumCols: [1, 2, 3, 4],
+            defaultRows: [
+                { cells: ['Mahasiswa Baru', '0', '0', '0', '0'] },
+                { cells: ['Mahasiswa Aktif pada saat TS', '0', '0', '0', '0'] },
+                { cells: ['Lulus pada saat TS', '0', '0', '0', '0'] },
+                { cells: ['Mengundurkan Diri/DO pada saat TS', '0', '0', '0', '0'] }
+            ]
+        },
+        '2.B.4': {
+            leafHeaders: ['Tahun Lulus', 'Jumlah Lulusan', 'Jumlah Terlacak', 'Rata-rata Waktu Tunggu (Bulan)'],
+            hasTotal: false,
+            defaultRows: [
+                { cells: ['TS-2', '0', '0', '0'] },
+                { cells: ['TS-1', '0', '0', '0'] },
+                { cells: ['TS', '0', '0', '0'] }
+            ]
+        },
+        '2.C': {
+            leafHeaders: ['Tahun Akademik / Bentuk Pembelajaran', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+            hasTotal: false,
+            defaultRows: [
+                { cells: ['Jumlah Mahasiswa Aktif', '', '', '', ''] },
+                { cells: ['Micro-credensial', '', '', '', ''] },
+                { cells: ['RPL tipe A-2', '', '', '', ''] },
+                { cells: ['Pembelajaran di PS lain', '', '', '', ''] },
+                { cells: ['Magang/Praktik Kerja', '', '', '', ''] },
+                { cells: ['Lainnya', '', '', '', ''] }
+            ]
+        },
+        '2.D': {
+            headerRows: [
+                [
+                    { label: 'Sumber Rekognisi', rowspan: 2, colIdx: 0, width: '180px' },
+                    { label: 'Jenis Pengakuan Lulusan (Rekognisi)', rowspan: 2, colIdx: 1, width: '240px' },
+                    { label: 'Tahun Akademik', colspan: 3, colIdx: 2 },
+                    { label: 'Link Bukti', rowspan: 2, colIdx: 5, width: '200px' }
+                ],
+                [
+                    { label: 'TS-2', colIdx: 2, width: '90px' },
+                    { label: 'TS-1', colIdx: 3, width: '90px' },
+                    { label: 'TS', colIdx: 4, width: '90px' }
+                ]
+            ],
+            leafHeaders: ['Sumber Rekognisi', 'Jenis Pengakuan (Rekognisi)', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+            hasTotal: false,
+            defaultRows: [
+                { cells: ['Masyarakat', '', '', '', '', ''] },
+                { cells: ['Dunia Usaha', '', '', '', '', ''] },
+                { cells: ['Dunia Industri', '', '', '', '', ''] },
+                { cells: ['Dunia Kerja', '', '', '', '', ''] }
+            ]
+        },
+        '3.A.1': {
+            leafHeaders: ['Nama Prasarana', 'Daya Tampung', 'Luas Ruang (m²)', 'Kepemilikan (M/W)', 'Lisensi (L/P/T)', 'Perangkat', 'Link Bukti'],
+            hasTotal: false,
+            note: '● Prasarana diisi nama laboratorium. ● Perangkat yang dimiliki diisi perangkat keras, perangkat lunak, bandwidth, device, tool dan lain-lain.',
+            defaultRows: [
+                { cells: ['', '', '', '', '', '', ''] },
+                { cells: ['', '', '', '', '', '', ''] },
+                { cells: ['', '', '', '', '', '', ''] }
+            ]
+        },
+        '3.A.3': {
+            headerRows: [
+                [
+                    { label: 'Jenis Pengembangan DTPR', rowspan: 2, colIdx: 0, width: '220px' },
+                    { label: 'Nama DTPR', rowspan: 2, colIdx: 1, width: '200px' },
+                    { label: 'Jumlah', colspan: 3, colIdx: 2 },
+                    { label: 'Link Bukti', rowspan: 2, colIdx: 5, width: '200px' }
+                ],
+                [
+                    { label: 'TS-2', colIdx: 2, width: '90px' },
+                    { label: 'TS-1', colIdx: 3, width: '90px' },
+                    { label: 'TS', colIdx: 4, width: '90px' }
+                ]
+            ],
+            leafHeaders: ['Jenis Pengembangan DTPR', 'Nama DTPR', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+            hasTotal: false,
+            defaultRows: [
+                { cells: ['', '', '', '', '', ''] }
+            ]
+        },
+        '3.C.2': {
+            headerRows: [
+                [
+                    { label: 'No', rowspan: 2, colIdx: 0, width: '50px' },
+                    { label: 'Nama DTPR', rowspan: 2, colIdx: 1, width: '200px' },
+                    { label: 'Judul Publikasi', rowspan: 2, colIdx: 2, width: '260px' },
+                    { label: 'Jenis Publikasi', rowspan: 2, colIdx: 3, width: '150px' },
+                    { label: 'Tahun Terbit (Beri tanda √)', colspan: 3, colIdx: 4 },
+                    { label: 'Link Bukti', rowspan: 2, colIdx: 7, width: '200px' }
+                ],
+                [
+                    { label: 'TS-2', colIdx: 4, width: '90px' },
+                    { label: 'TS-1', colIdx: 5, width: '90px' },
+                    { label: 'TS', colIdx: 6, width: '90px' }
+                ]
+            ],
+            leafHeaders: ['No', 'Nama DTPR', 'Judul Publikasi', 'Jenis Publikasi', 'TS-2', 'TS-1', 'TS', 'Link Bukti']
+        },
+        '3.C.3': {
+            headerRows: [
+                [
+                    { label: 'No', rowspan: 2, colIdx: 0, width: '50px' },
+                    { label: 'Judul', rowspan: 2, colIdx: 1, width: '240px' },
+                    { label: 'Jenis HKI', rowspan: 2, colIdx: 2, width: '150px' },
+                    { label: 'Nama DTPR', rowspan: 2, colIdx: 3, width: '200px' },
+                    { label: 'Tahun Perolehan (Beri Tanda √)', colspan: 3, colIdx: 4 },
+                    { label: 'Link Bukti', rowspan: 2, colIdx: 7, width: '200px' }
+                ],
+                [
+                    { label: 'TS-2', colIdx: 4, width: '90px' },
+                    { label: 'TS-1', colIdx: 5, width: '90px' },
+                    { label: 'TS', colIdx: 6, width: '90px' }
+                ]
+            ],
+            leafHeaders: ['No', 'Judul', 'Jenis HKI', 'Nama DTPR', 'TS-2', 'TS-1', 'TS', 'Link Bukti']
+        },
+        '4.A.1': {
+            leafHeaders: ['Nama Prasarana PkM', 'Daya Tampung', 'Luas Ruang (m²)', 'Kepemilikan (M/W)', 'Lisensi (L/P/T)', 'Perangkat', 'Link Bukti'],
+            hasTotal: false,
+            note: '● Prasarana diisi nama laboratorium, nama bengkel dan lain-lain.',
+            defaultRows: [
+                { cells: ['', '', '', '', '', '', ''] },
+                { cells: ['', '', '', '', '', '', ''] }
+            ]
+        },
+        '4.C.2': {
+            headerRows: [
+                [
+                    { label: 'No', rowspan: 2, colIdx: 0, width: '50px' },
+                    { label: 'Nama DTPR (Ketua)', rowspan: 2, colIdx: 1, width: '200px' },
+                    { label: 'Judul', rowspan: 2, colIdx: 2, width: '260px' },
+                    { label: 'Diseminasi (L/N/I)', rowspan: 2, colIdx: 3, width: '150px' },
+                    { label: 'Tahun Terbit', colspan: 3, colIdx: 4 },
+                    { label: 'Link Bukti', rowspan: 2, colIdx: 7, width: '200px' }
+                ],
+                [
+                    { label: 'TS-2', colIdx: 4, width: '90px' },
+                    { label: 'TS-1', colIdx: 5, width: '90px' },
+                    { label: 'TS', colIdx: 6, width: '90px' }
+                ]
+            ],
+            leafHeaders: ['No', 'Nama DTPR (Ketua)', 'Judul', 'Diseminasi', 'TS-2', 'TS-1', 'TS', 'Link Bukti']
+        },
+        '4.C.3': {
+            headerRows: [
+                [
+                    { label: 'No', rowspan: 2, colIdx: 0, width: '50px' },
+                    { label: 'Judul PkM', rowspan: 2, colIdx: 1, width: '240px' },
+                    { label: 'Jenis HKI', rowspan: 2, colIdx: 2, width: '150px' },
+                    { label: 'Nama DTPR', rowspan: 2, colIdx: 3, width: '200px' },
+                    { label: 'Tahun Perolehan (Beri Tanda √)', colspan: 3, colIdx: 4 },
+                    { label: 'Link Bukti', rowspan: 2, colIdx: 7, width: '200px' }
+                ],
+                [
+                    { label: 'TS-2', colIdx: 4, width: '90px' },
+                    { label: 'TS-1', colIdx: 5, width: '90px' },
+                    { label: 'TS', colIdx: 6, width: '90px' }
+                ]
+            ],
+            leafHeaders: ['No', 'Judul PkM', 'Jenis HKI', 'Nama DTPR', 'TS-2', 'TS-1', 'TS', 'Link Bukti']
+        },
+        '5.1': {
+            leafHeaders: ['No', 'Jenis Tata Kelola', 'Nama Sistem Informasi', 'Akses (Lokal/Internet)', 'Unit Pengelola', 'Link Bukti'],
+            hasTotal: false,
+            defaultRows: [
+                { cells: ['1', 'Pendidikan', '', '', '', ''] },
+                { cells: ['2', 'Keuangan', '', '', '', ''] },
+                { cells: ['3', 'SDM', '', '', '', ''] },
+                { cells: ['4', 'Sarana Prasarana', '', '', '', ''] },
+                { cells: ['5', 'Sistem Penjaminan Mutu', '', '', '', ''] },
+                { cells: ['6', 'Kerjasama', '', '', '', ''] },
+                { cells: ['7', 'Kemahasiswaan', '', '', '', ''] }
+            ]
+        },
+        '5.2': {
+            leafHeaders: ['Nama Prasarana Pendidikan', 'Daya Tampung', 'Luas Ruang (m²)', 'Kepemilikan (M/W)', 'Lisensi (L/P/T)', 'Perangkat', 'Link Bukti'],
+            hasTotal: false,
+            defaultRows: [
+                { cells: ['', '', '', '', '', '', ''] },
+                { cells: ['', '', '', '', '', '', ''] }
+            ]
+        },
+        '6': {
+            leafHeaders: ['Visi PT', 'Visi UPPS', 'Visi Keilmuan PS', 'Misi PT', 'Misi UPPS'],
+            hasTotal: false,
+            defaultRows: [
+                { cells: ['', '', '', '', ''] }
+            ]
         }
     };
 
@@ -477,7 +737,8 @@
                 startHeaders.forEach(h => plMap[h] = 0);
                 startRows = [{ cpl: 'CPL 01', profil_lulusan: plMap }];
             } else {
-                startRows = [{ cells: startHeaders.map(() => '') }];
+                // Default 5 empty spreadsheet rows
+                startRows = Array.from({ length: 5 }, () => ({ cells: startHeaders.map(() => '') }));
             }
         }
 
@@ -495,9 +756,22 @@
             saving: false,
             saveStatusMessage: '',
 
+            // Excel Active Cell & Formula Bar tracking
+            activeRow: 0,
+            activeCol: 0,
+            activeCellVal: '',
+
+            // Paste Assistant Modal State
+            showPasteModal: false,
+            pasteRawText: '',
+            pasteMode: 'replace', // 'replace' | 'append'
+            pasteHasHeaders: false,
+            pastePreviewRows: [],
+            pastePreviewCols: [],
+
             // Merge Columns & Rows Modal State
             showMergeModal: false,
-            mergeTab: 'columns', // 'columns' | 'rows' | 'active'
+            mergeTab: 'rows', // 'rows' | 'columns' | 'active'
             mergeGroupTitle: '',
             selectedColumnsToMerge: [],
             rowMergeColIdx: 0,
@@ -509,10 +783,500 @@
                 if (this.tableCode === '2.B.1') {
                     this.calcSummary2B1();
                 }
+                if (this.rows.length > 0 && this.rows[0].cells) {
+                    this.activeCellVal = this.rows[0].cells[0] || '';
+                }
+            },
+
+            // ── Active Cell Tracking & Formula Bar ──
+            onCellFocus(r, c) {
+                this.activeRow = r;
+                this.activeCol = c;
+                if (this.rows[r] && this.rows[r].cells) {
+                    this.activeCellVal = this.rows[r].cells[c] || '';
+                } else {
+                    this.activeCellVal = '';
+                }
+            },
+
+            updateActiveCellValue(val) {
+                this.activeCellVal = val;
+                if (this.rows[this.activeRow]) {
+                    if (!this.rows[this.activeRow].cells) {
+                        this.rows[this.activeRow].cells = this.headers.map(() => '');
+                    }
+                    this.rows[this.activeRow].cells[this.activeCol] = val;
+                }
+            },
+
+            getActiveCellCoord() {
+                const colLetter = String.fromCharCode(65 + (this.activeCol % 26));
+                const rowNum = this.activeRow + 1;
+                return colLetter + rowNum;
+            },
+
+            getActiveColName() {
+                return this.headers[this.activeCol] || ('Kolom ' + (this.activeCol + 1));
+            },
+
+            focusCell(r, c) {
+                if (r < 0) r = 0;
+                if (r >= this.rows.length) r = this.rows.length - 1;
+                if (c < 0) c = 0;
+                if (c >= this.headers.length) c = this.headers.length - 1;
+
+                this.activeRow = r;
+                this.activeCol = c;
+                if (this.rows[r] && this.rows[r].cells) {
+                    this.activeCellVal = this.rows[r].cells[c] || '';
+                }
+
+                this.$nextTick(() => {
+                    const el = document.getElementById(`cell-${r}-${c}`);
+                    if (el) {
+                        el.focus();
+                        el.select();
+                        el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+                    }
+                });
+            },
+
+            // ── Full Excel Keyboard Navigation ──
+            handleKeyNavigation(e, rIdx, cIdx) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (e.shiftKey) {
+                        // Shift + Enter: Move Up
+                        if (rIdx > 0) this.focusCell(rIdx - 1, cIdx);
+                    } else {
+                        // Enter: Move Down (Auto-add row if at bottom, just like Excel!)
+                        const nextR = rIdx + 1;
+                        if (nextR >= this.rows.length) {
+                            this.addRow();
+                        }
+                        this.focusCell(nextR, cIdx);
+                    }
+                } else if (e.key === 'Tab') {
+                    if (e.shiftKey) {
+                        // Shift + Tab: Move Left
+                        if (cIdx > 0) {
+                            e.preventDefault();
+                            this.focusCell(rIdx, cIdx - 1);
+                        } else if (rIdx > 0) {
+                            e.preventDefault();
+                            this.focusCell(rIdx - 1, this.headers.length - 1);
+                        }
+                    } else {
+                        // Tab: Move Right (Wrap to next row if at end)
+                        if (cIdx + 1 < this.headers.length) {
+                            e.preventDefault();
+                            this.focusCell(rIdx, cIdx + 1);
+                        } else {
+                            e.preventDefault();
+                            const nextR = rIdx + 1;
+                            if (nextR >= this.rows.length) {
+                                this.addRow();
+                            }
+                            this.focusCell(nextR, 0);
+                        }
+                    }
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    const nextR = rIdx + 1;
+                    if (nextR < this.rows.length) {
+                        this.focusCell(nextR, cIdx);
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (rIdx > 0) {
+                        this.focusCell(rIdx - 1, cIdx);
+                    }
+                } else if (e.key === 'ArrowRight') {
+                    const input = e.target;
+                    if (input && (input.selectionStart === input.value.length && input.selectionEnd === input.value.length)) {
+                        if (cIdx + 1 < this.headers.length) {
+                            e.preventDefault();
+                            this.focusCell(rIdx, cIdx + 1);
+                        }
+                    }
+                } else if (e.key === 'ArrowLeft') {
+                    const input = e.target;
+                    if (input && (input.selectionStart === 0 && input.selectionEnd === 0)) {
+                        if (cIdx > 0) {
+                            e.preventDefault();
+                            this.focusCell(rIdx, cIdx - 1);
+                        }
+                    }
+                } else if (e.key === 'Escape') {
+                    if (e.target) e.target.blur();
+                }
+            },
+
+            // ── Robust TSV / CSV Parser for Excel Clipboard ──
+            parseTSV(text) {
+                const rows = [];
+                let currentRow = [];
+                let currentCell = '';
+                let insideQuote = false;
+
+                for (let i = 0; i < text.length; i++) {
+                    const char = text[i];
+                    const nextChar = text[i + 1];
+
+                    if (char === '"') {
+                        if (insideQuote && nextChar === '"') {
+                            currentCell += '"';
+                            i++;
+                        } else {
+                            insideQuote = !insideQuote;
+                        }
+                    } else if (char === '\t' && !insideQuote) {
+                        currentRow.push(currentCell.trim());
+                        currentCell = '';
+                    } else if ((char === '\r' || char === '\n') && !insideQuote) {
+                        if (char === '\r' && nextChar === '\n') {
+                            i++;
+                        }
+                        currentRow.push(currentCell.trim());
+                        if (currentRow.some(c => c !== '')) {
+                            rows.push(currentRow);
+                        }
+                        currentRow = [];
+                        currentCell = '';
+                    } else {
+                        currentCell += char;
+                    }
+                }
+                if (currentCell !== '' || currentRow.length > 0) {
+                    currentRow.push(currentCell.trim());
+                    if (currentRow.some(c => c !== '')) {
+                        rows.push(currentRow);
+                    }
+                }
+                return rows;
+            },
+
+            // ── Direct In-Cell Paste (Cmd+V / Ctrl+V) ──
+            handleExcelPaste(e, startR, startC) {
+                const clipboardData = (e.clipboardData || window.clipboardData);
+                if (!clipboardData) return;
+                const text = clipboardData.getData('text');
+                if (!text || (!text.includes('\t') && !text.includes('\n'))) {
+                    // Single string paste, let default input behavior happen
+                    return;
+                }
+                e.preventDefault();
+
+                const parsedRows = this.parseTSV(text);
+                if (parsedRows.length === 0) return;
+
+                for (let r = 0; r < parsedRows.length; r++) {
+                    const targetR = startR + r;
+                    while (targetR >= this.rows.length) {
+                        this.addRow();
+                    }
+
+                    const cols = parsedRows[r];
+                    for (let c = 0; c < cols.length; c++) {
+                        const targetC = startC + c;
+                        if (targetC < this.headers.length) {
+                            if (!this.rows[targetR].cells) {
+                                this.rows[targetR].cells = this.headers.map(() => '');
+                            }
+                            this.rows[targetR].cells[targetC] = cols[c];
+                        }
+                    }
+                }
+
+                // Update active cell val if affected
+                if (this.rows[startR] && this.rows[startR].cells) {
+                    this.activeCellVal = this.rows[startR].cells[startC] || '';
+                }
+
+                this.saveStatusMessage = `✓ Berhasil menempel ${parsedRows.length} baris data dari Excel!`;
+                setTimeout(() => {
+                    if (this.saveStatusMessage.startsWith('✓ Berhasil menempel')) {
+                        this.saveStatusMessage = '';
+                    }
+                }, 4000);
+            },
+
+            // ── Dedicated Paste Assistant Modal ──
+            openPasteModal() {
+                this.pasteRawText = '';
+                this.pastePreviewRows = [];
+                this.pastePreviewCols = [];
+                this.pasteHasHeaders = false;
+                this.pasteMode = 'replace';
+                this.showPasteModal = true;
+            },
+
+            closePasteModal() {
+                this.showPasteModal = false;
+            },
+
+            onPasteInputChange() {
+                if (!this.pasteRawText.trim()) {
+                    this.pastePreviewRows = [];
+                    this.pastePreviewCols = [];
+                    return;
+                }
+                const parsed = this.parseTSV(this.pasteRawText);
+                if (parsed.length > 0) {
+                    this.pastePreviewRows = parsed;
+                    const maxCols = Math.max(...parsed.map(r => r.length));
+                    this.pastePreviewCols = Array.from({ length: maxCols }, (_, i) => this.headers[i] || `Kolom ${i + 1}`);
+                }
+            },
+
+            applyPasteModal() {
+                if (this.pastePreviewRows.length === 0) {
+                    alert('Silakan tempel (Paste) data dari berkas Excel Anda terlebih dahulu.');
+                    return;
+                }
+                let dataRows = [...this.pastePreviewRows];
+                if (this.pasteHasHeaders && dataRows.length > 0) {
+                    dataRows = dataRows.slice(1);
+                }
+                if (dataRows.length === 0) {
+                    alert('Tidak ada baris data setelah melewati baris judul.');
+                    return;
+                }
+
+                if (this.pasteMode === 'replace') {
+                    this.rows = [];
+                    this.rowMerges = [];
+                }
+
+                dataRows.forEach(rowCols => {
+                    const cells = this.headers.map((_, i) => rowCols[i] !== undefined ? rowCols[i] : '');
+                    this.rows.push({ cells });
+                });
+
+                if (this.rows.length > 0 && this.rows[0].cells) {
+                    this.activeRow = 0;
+                    this.activeCol = 0;
+                    this.activeCellVal = this.rows[0].cells[0] || '';
+                }
+
+                this.showPasteModal = false;
+                this.saveStatusMessage = `✓ Berhasil menerapkan ${dataRows.length} baris data dari Excel!`;
+                setTimeout(() => {
+                    if (this.saveStatusMessage.startsWith('✓ Berhasil menerapkan')) {
+                        this.saveStatusMessage = '';
+                    }
+                }, 4000);
+            },
+
+            // ── Quick Row Operations ──
+            addRowsBatch(count) {
+                for (let i = 0; i < count; i++) {
+                    this.addRow();
+                }
+                this.saveStatusMessage = `✓ Ditambahkan ${count} baris baru.`;
+                setTimeout(() => { if (this.saveStatusMessage.includes('baris baru')) this.saveStatusMessage = ''; }, 3000);
+            },
+
+            removeEmptyRows() {
+                const initialLen = this.rows.length;
+                this.rows = this.rows.filter(r => {
+                    if (r.is_total) return true;
+                    if (!r.cells) return false;
+                    return r.cells.some(c => String(c).trim() !== '');
+                });
+                if (this.rows.length === 0) {
+                    this.addRow();
+                }
+                const removed = initialLen - this.rows.length;
+                this.saveStatusMessage = removed > 0 ? `✓ ${removed} baris kosong berhasil dibersihkan.` : 'Tidak ada baris kosong.';
+                setTimeout(() => { this.saveStatusMessage = ''; }, 3000);
+            },
+
+            clearAllRows() {
+                if (!confirm('Kosongkan semua data baris pada tabel ini?')) return;
+                this.rows = Array.from({ length: 5 }, () => ({ cells: this.headers.map(() => '') }));
+                this.rowMerges = [];
+                this.activeRow = 0;
+                this.activeCol = 0;
+                this.activeCellVal = '';
+                this.saveStatusMessage = '✓ Tabel telah dikosongkan.';
+                setTimeout(() => { this.saveStatusMessage = ''; }, 3000);
+            },
+
+            // ── Reset to Official LAM INFOKOM Template ──
+            resetToDefaultColumns() {
+                const sc = TABLE_SCHEMAS[this.tableCode];
+                if (sc) {
+                    if (!confirm(`Kembalikan Tabel ${this.tableCode} ke format standar resmi LAM INFOKOM? Data kustom dan gabungan kolom/baris yang belum disimpan akan dipulihkan ke template asli.`)) return;
+                    this.headers = [...sc.leafHeaders];
+                    this.headerStructure = sc.headerRows ? JSON.parse(JSON.stringify(sc.headerRows)) : null;
+                    this.columnGroups = [];
+                    this.rowMerges = [];
+                    this.hasTotal = sc.hasTotal || false;
+                    this.totalLabelCol = sc.totalLabelCol !== undefined ? sc.totalLabelCol : 1;
+                    this.sumCols = sc.sumCols || [];
+                    this.note = sc.note || '';
+                    if (sc.defaultRows) {
+                        this.rows = JSON.parse(JSON.stringify(sc.defaultRows));
+                    } else {
+                        this.rows = Array.from({ length: 5 }, () => ({ cells: this.headers.map(() => '') }));
+                    }
+                    this.activeRow = 0;
+                    this.activeCol = 0;
+                    this.activeCellVal = '';
+                    this.saveStatusMessage = '✓ Format standar resmi LAM INFOKOM berhasil dipulihkan!';
+                    setTimeout(() => { this.saveStatusMessage = ''; }, 4000);
+                    return;
+                }
+
+                const def = DEFAULT_TABLE_TEMPLATES[this.tableCode];
+                if (!def || def.length === 0) return;
+                if (!confirm('Kembalikan judul kolom ke template standar LAM INFOKOM?')) return;
+                this.headers = [...def];
+                this.headerStructure = null;
+                this.columnGroups = [];
+                this.rows.forEach(r => {
+                    if (!r.cells) r.cells = [];
+                    while (r.cells.length < this.headers.length) {
+                        r.cells.push('');
+                    }
+                });
+            },
+
+            // ── Generic Row Manipulation ──
+            addRow() {
+                const newCells = this.headers.map(() => '');
+                this.rows.push({ cells: newCells });
+            },
+
+            insertRow(index, position = 'below') {
+                const targetIdx = position === 'above' ? index : index + 1;
+                const newCells = this.headers.map(() => '');
+                this.rows.splice(targetIdx, 0, { cells: newCells });
+
+                // Update rowMerges index
+                this.rowMerges.forEach(m => {
+                    if (m.startRow >= targetIdx) {
+                        m.startRow += 1;
+                        m.endRow += 1;
+                    } else if (m.startRow < targetIdx && m.endRow >= targetIdx) {
+                        m.endRow += 1;
+                        m.rowspan += 1;
+                    }
+                });
+
+                this.$nextTick(() => {
+                    this.focusCell(targetIdx, 0);
+                });
+            },
+
+            removeRow(index) {
+                this.rows.splice(index, 1);
+                // Adjust row merges
+                this.rowMerges = this.rowMerges.filter(m => !(m.startRow <= index && m.endRow >= index && m.rowspan <= 2));
+                this.rowMerges.forEach(m => {
+                    if (m.startRow > index) {
+                        m.startRow -= 1;
+                        m.endRow -= 1;
+                    } else if (m.startRow <= index && m.endRow >= index) {
+                        m.endRow -= 1;
+                        m.rowspan -= 1;
+                    }
+                });
+
+                if (this.tableCode === '2.B.1') {
+                    this.calcSummary2B1();
+                }
+            },
+
+            setCellVal(row, cIdx, val) {
+                if (!row.cells) row.cells = [];
+                row.cells[cIdx] = val;
+                if (this.activeRow === this.rows.indexOf(row) && this.activeCol === cIdx) {
+                    this.activeCellVal = val;
+                }
+            },
+
+            // ── Live Calculation & Total Row ──
+            calcColumnSum(colIdx) {
+                return this.rows.reduce((sum, r) => {
+                    if (!r.cells || r.is_total) return sum;
+                    const val = parseFloat(r.cells[colIdx]);
+                    return sum + (isNaN(val) ? 0 : val);
+                }, 0);
+            },
+
+            addTotalRow() {
+                this.hasTotal = true;
+                if (!Array.isArray(this.sumCols)) this.sumCols = [];
+                const newCells = this.headers.map((_, i) => {
+                    if (i === this.totalLabelCol) return 'Total';
+                    if (this.sumCols.includes(i)) return String(this.calcColumnSum(i));
+                    // Auto-detect numeric columns if sumCols not configured
+                    const hasNumbers = this.rows.some(r => r.cells && !r.is_total && !isNaN(parseFloat(r.cells[i])) && String(r.cells[i]).trim() !== '');
+                    if (hasNumbers && !this.sumCols.includes(i) && i !== 0 && i !== this.totalLabelCol) {
+                        this.sumCols.push(i);
+                        return String(this.calcColumnSum(i));
+                    }
+                    return '';
+                });
+                this.rows.push({ cells: newCells, is_total: true });
+            },
+
+            removeTotalRows() {
+                this.rows = this.rows.filter(r => {
+                    if (r.is_total) return false;
+                    if (r.cells && r.cells.some(c => String(c).trim().toLowerCase() === 'total')) return false;
+                    return true;
+                });
+                this.hasTotal = false;
+                this.saveStatusMessage = '✓ Baris total telah dihapus.';
+                setTimeout(() => { this.saveStatusMessage = ''; }, 3000);
+            },
+
+            // ── Generic & Dynamic Column Manipulation ──
+            addColumn() {
+                const colName = prompt('Masukkan judul kolom baru:', 'Kolom ' + (this.headers.length + 1));
+                if (colName === null || colName.trim() === '') return;
+                const finalName = colName.trim();
+                this.headers.push(finalName);
+
+                this.rows.forEach(r => {
+                    if (!r.cells) r.cells = [];
+                    r.cells.push('');
+                });
+            },
+
+            removeColumn(index) {
+                if (this.headers.length <= 1) {
+                    alert('Tabel minimal harus memiliki 1 kolom.');
+                    return;
+                }
+                const colName = this.headers[index];
+                if (!confirm(`Hapus kolom "${colName}"? Data dalam kolom ini akan dihapus.`)) {
+                    return;
+                }
+                this.headers.splice(index, 1);
+                this.rows.forEach(r => {
+                    if (r.cells) {
+                        r.cells.splice(index, 1);
+                    }
+                });
+                this.rowMerges = this.rowMerges.filter(m => m.colIdx !== index);
+                this.rowMerges.forEach(m => {
+                    if (m.colIdx > index) {
+                        m.colIdx -= 1;
+                    }
+                });
+
+                if (this.headerStructure) {
+                    this.headerStructure = null;
+                    this.columnGroups = [];
+                }
             },
 
             // ── Interactive Merge Columns & Rows Feature ──
-            openMergeModal(defaultTab = 'columns') {
+            openMergeModal(defaultTab = 'rows') {
                 this.mergeTab = defaultTab;
                 this.mergeGroupTitle = '';
                 this.selectedColumnsToMerge = [];
@@ -526,7 +1290,91 @@
                 this.showMergeModal = false;
             },
 
-            // Column Selection & Merge (Bisa pilih > 2 kolom)
+            // Row Selection & Merge (Rowspan)
+            toggleRowToMerge(rIdx) {
+                rIdx = parseInt(rIdx);
+                const pos = this.selectedRowsToMerge.indexOf(rIdx);
+                if (pos > -1) {
+                    this.selectedRowsToMerge.splice(pos, 1);
+                } else {
+                    this.selectedRowsToMerge.push(rIdx);
+                }
+                this.selectedRowsToMerge.sort((a, b) => a - b);
+                if (this.selectedRowsToMerge.length > 0 && !this.rowMergeValue) {
+                    const firstRow = this.rows[this.selectedRowsToMerge[0]];
+                    if (firstRow && firstRow.cells) {
+                        this.rowMergeValue = firstRow.cells[this.rowMergeColIdx] || '';
+                    }
+                }
+            },
+
+            selectAllRowsToMerge() {
+                this.selectedRowsToMerge = this.rows.map((_, i) => i);
+            },
+
+            clearRowsToMerge() {
+                this.selectedRowsToMerge = [];
+                this.rowMergeValue = '';
+            },
+
+            applyMultiRowMerge() {
+                if (this.selectedRowsToMerge.length < 2) {
+                    alert('Pilih minimal 2 baris yang ingin digabungkan.');
+                    return;
+                }
+                const sorted = [...this.selectedRowsToMerge].sort((a, b) => a - b);
+                const startRow = sorted[0];
+                const endRow = sorted[sorted.length - 1];
+                const colIdx = parseInt(this.rowMergeColIdx);
+                const val = (this.rowMergeValue || '').trim();
+
+                if (this.rows[startRow] && this.rows[startRow].cells) {
+                    this.rows[startRow].cells[colIdx] = val;
+                }
+
+                this.rowMerges = this.rowMerges.filter(m => !(m.colIdx === colIdx && ((m.startRow >= startRow && m.startRow <= endRow) || (m.endRow >= startRow && m.endRow <= endRow))));
+
+                this.rowMerges.push({
+                    colIdx: colIdx,
+                    colName: this.headers[colIdx] || ('Kolom ' + (colIdx + 1)),
+                    startRow: startRow,
+                    endRow: endRow,
+                    rowspan: (endRow - startRow + 1),
+                    value: val
+                });
+
+                this.showMergeModal = false;
+                this.saveStatusMessage = `✓ Kolom "${this.headers[colIdx]}" baris ${startRow + 1} s/d ${endRow + 1} berhasil digabungkan!`;
+                setTimeout(() => { this.saveStatusMessage = ''; }, 3000);
+            },
+
+            removeRowMerge(index) {
+                this.rowMerges.splice(index, 1);
+            },
+
+            unmergeCell(rIdx, cIdx) {
+                const idx = this.rowMerges.findIndex(m => m.colIdx === cIdx && m.startRow === rIdx);
+                if (idx > -1) {
+                    this.rowMerges.splice(idx, 1);
+                    this.saveStatusMessage = '✓ Sel berhasil dipisahkan kembali.';
+                    setTimeout(() => { this.saveStatusMessage = ''; }, 2500);
+                }
+            },
+
+            clearAllRowMerges() {
+                if (!confirm('Hapus semua penggabungan baris?')) return;
+                this.rowMerges = [];
+            },
+
+            getCellRowMerge(rIdx, cIdx) {
+                return this.rowMerges.find(m => m.colIdx === cIdx && m.startRow === rIdx) || null;
+            },
+
+            isCellRowHidden(rIdx, cIdx) {
+                return this.rowMerges.some(m => m.colIdx === cIdx && rIdx > m.startRow && rIdx <= m.endRow);
+            },
+
+            // Column Selection & Merge (Colspan)
             toggleColumnToMerge(colIdx) {
                 colIdx = parseInt(colIdx);
                 const pos = this.selectedColumnsToMerge.indexOf(colIdx);
@@ -588,7 +1436,7 @@
 
             applyMultiColumnMerge() {
                 if (this.selectedColumnsToMerge.length < 2) {
-                    alert('Pilih minimal 2 kolom yang ingin digabungkan (bisa pilih 2, 3, 4, 8, atau lebih kolom).');
+                    alert('Pilih minimal 2 kolom yang ingin digabungkan.');
                     return;
                 }
                 if (!this.mergeGroupTitle || this.mergeGroupTitle.trim() === '') {
@@ -602,7 +1450,6 @@
                 const title = this.mergeGroupTitle.trim();
 
                 if (!Array.isArray(this.columnGroups)) this.columnGroups = [];
-                // Filter out any existing group that overlaps with this range
                 this.columnGroups = this.columnGroups.filter(g => !(g.startCol <= endIdx && g.endCol >= startIdx));
 
                 this.columnGroups.push({
@@ -624,341 +1471,6 @@
                 if (!confirm('Pisahkan semua gabungan kolom dan kembalikan ke judul kolom satu tingkat?')) return;
                 this.columnGroups = [];
                 this.headerStructure = null;
-            },
-
-            // Row Selection & Merge (Bisa pilih > 2 baris)
-            toggleRowToMerge(rIdx) {
-                rIdx = parseInt(rIdx);
-                const pos = this.selectedRowsToMerge.indexOf(rIdx);
-                if (pos > -1) {
-                    this.selectedRowsToMerge.splice(pos, 1);
-                } else {
-                    this.selectedRowsToMerge.push(rIdx);
-                }
-                this.selectedRowsToMerge.sort((a, b) => a - b);
-                // Pre-fill text with the value from the first selected row if empty
-                if (this.selectedRowsToMerge.length > 0 && !this.rowMergeValue) {
-                    const firstRow = this.rows[this.selectedRowsToMerge[0]];
-                    if (firstRow && firstRow.cells) {
-                        this.rowMergeValue = firstRow.cells[this.rowMergeColIdx] || '';
-                    }
-                }
-            },
-
-            selectAllRowsToMerge() {
-                this.selectedRowsToMerge = this.rows.map((_, i) => i);
-            },
-
-            clearRowsToMerge() {
-                this.selectedRowsToMerge = [];
-                this.rowMergeValue = '';
-            },
-
-            applyMultiRowMerge() {
-                if (this.selectedRowsToMerge.length < 2) {
-                    alert('Pilih minimal 2 baris yang ingin digabungkan (bisa pilih 2, 3, 4, 5, atau lebih baris).');
-                    return;
-                }
-                const sorted = [...this.selectedRowsToMerge].sort((a, b) => a - b);
-                const startRow = sorted[0];
-                const endRow = sorted[sorted.length - 1];
-                const colIdx = parseInt(this.rowMergeColIdx);
-                const val = (this.rowMergeValue || '').trim();
-
-                // Set value in the starting cell
-                if (this.rows[startRow] && this.rows[startRow].cells) {
-                    this.rows[startRow].cells[colIdx] = val;
-                }
-
-                // Filter out any overlapping merge in this column
-                this.rowMerges = this.rowMerges.filter(m => !(m.colIdx === colIdx && ((m.startRow >= startRow && m.startRow <= endRow) || (m.endRow >= startRow && m.endRow <= endRow))));
-
-                this.rowMerges.push({
-                    colIdx: colIdx,
-                    colName: this.headers[colIdx] || ('Kolom ' + (colIdx + 1)),
-                    startRow: startRow,
-                    endRow: endRow,
-                    rowspan: (endRow - startRow + 1),
-                    value: val
-                });
-
-                this.showMergeModal = false;
-            },
-
-            removeRowMerge(index) {
-                this.rowMerges.splice(index, 1);
-            },
-
-            clearAllRowMerges() {
-                if (!confirm('Hapus semua penggabungan baris?')) return;
-                this.rowMerges = [];
-            },
-
-            getCellRowMerge(rIdx, cIdx) {
-                return this.rowMerges.find(m => m.colIdx === cIdx && m.startRow === rIdx) || null;
-            },
-
-            isCellRowHidden(rIdx, cIdx) {
-                return this.rowMerges.some(m => m.colIdx === cIdx && rIdx > m.startRow && rIdx <= m.endRow);
-            },
-
-            // ── Excel-like Copy-Paste Handler (Direct TSV from Excel) ──
-            handleExcelPaste(e, startR, startC) {
-                const clipboardData = (e.clipboardData || window.clipboardData);
-                if (!clipboardData) return;
-                const text = clipboardData.getData('text');
-                if (!text || (!text.includes('\t') && !text.includes('\n'))) {
-                    // Single string paste, let default input behavior happen
-                    return;
-                }
-                e.preventDefault();
-
-                // Parse rows from newline
-                const rawLines = text.split(/\r?\n/);
-                const lines = rawLines.filter((l, idx) => l.trim() !== '' || idx < rawLines.length - 1);
-                if (lines.length === 0) return;
-
-                for (let r = 0; r < lines.length; r++) {
-                    const targetR = startR + r;
-                    // Auto-expand rows if needed
-                    while (targetR >= this.rows.length) {
-                        this.addRow();
-                    }
-
-                    const cols = lines[r].split('\t');
-                    for (let c = 0; c < cols.length; c++) {
-                        const targetC = startC + c;
-                        if (targetC < this.headers.length) {
-                            if (!this.rows[targetR].cells) {
-                                this.rows[targetR].cells = this.headers.map(() => '');
-                            }
-                            this.rows[targetR].cells[targetC] = cols[c].trim();
-                        }
-                    }
-                }
-
-                this.saveStatusMessage = `✓ Berhasil menempel ${lines.length} baris data dari Excel!`;
-                setTimeout(() => {
-                    if (this.saveStatusMessage.startsWith('✓ Berhasil menempel')) {
-                        this.saveStatusMessage = '';
-                    }
-                }, 4000);
-            },
-
-            // ── Excel-like Keyboard Navigation (Enter, Tab) ──
-            handleKeyNavigation(e, rIdx, cIdx) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    const nextR = rIdx + 1;
-                    if (nextR >= this.rows.length) {
-                        this.addRow();
-                    }
-                    this.$nextTick(() => {
-                        const nextEl = document.getElementById(`cell-${nextR}-${cIdx}`);
-                        if (nextEl) {
-                            nextEl.focus();
-                            nextEl.select();
-                        }
-                    });
-                } else if (e.key === 'Tab' && !e.shiftKey) {
-                    if (cIdx + 1 >= this.headers.length && rIdx + 1 < this.rows.length) {
-                        e.preventDefault();
-                        const nextEl = document.getElementById(`cell-${rIdx + 1}-0`);
-                        if (nextEl) {
-                            nextEl.focus();
-                            nextEl.select();
-                        }
-                    }
-                }
-            },
-
-            // ── Live Calculation & Total Row ──
-            calcColumnSum(colIdx) {
-                return this.rows.reduce((sum, r) => {
-                    if (!r.cells || r.is_total) return sum;
-                    const val = parseFloat(r.cells[colIdx]);
-                    return sum + (isNaN(val) ? 0 : val);
-                }, 0);
-            },
-
-            addTotalRow() {
-                this.hasTotal = true;
-                if (!Array.isArray(this.sumCols)) this.sumCols = [];
-                const newCells = this.headers.map((_, i) => {
-                    if (i === this.totalLabelCol) return 'Total';
-                    if (this.sumCols.includes(i)) return String(this.calcColumnSum(i));
-                    // Auto-detect numeric columns if sumCols not configured
-                    const hasNumbers = this.rows.some(r => r.cells && !r.is_total && !isNaN(parseFloat(r.cells[i])) && String(r.cells[i]).trim() !== '');
-                    if (hasNumbers && !this.sumCols.includes(i) && i !== 0 && i !== this.totalLabelCol) {
-                        this.sumCols.push(i);
-                        return String(this.calcColumnSum(i));
-                    }
-                    return '';
-                });
-                this.rows.push({ cells: newCells, is_total: true });
-            },
-
-            // ── Generic & Dynamic Column Manipulation ──
-            addColumn() {
-                const colName = prompt('Masukkan judul kolom baru:', 'Kolom ' + (this.headers.length + 1));
-                if (colName === null || colName.trim() === '') return;
-                const finalName = colName.trim();
-                this.headers.push(finalName);
-
-                // Add empty cell to every row
-                this.rows.forEach(r => {
-                    if (!r.cells) r.cells = [];
-                    r.cells.push('');
-                });
-            },
-
-            insertColumn(index, position = 'after') {
-                const targetIdx = position === 'before' ? index : index + 1;
-                const colName = prompt('Masukkan judul kolom baru:', 'Kolom ' + (this.headers.length + 1));
-                if (colName === null || colName.trim() === '') return;
-                const finalName = colName.trim();
-
-                this.headers.splice(targetIdx, 0, finalName);
-                this.rows.forEach(r => {
-                    if (!r.cells) r.cells = [];
-                    r.cells.splice(targetIdx, 0, '');
-                });
-
-                // Update rowMerges colIdx
-                this.rowMerges.forEach(m => {
-                    if (m.colIdx >= targetIdx) {
-                        m.colIdx += 1;
-                    }
-                });
-
-                if (this.headerStructure) {
-                    this.headerStructure = null;
-                    this.columnGroups = [];
-                }
-            },
-
-            removeColumn(index) {
-                if (this.headers.length <= 1) {
-                    alert('Tabel minimal harus memiliki 1 kolom.');
-                    return;
-                }
-                const colName = this.headers[index];
-                if (!confirm(`Hapus kolom "${colName}"? Data dalam kolom ini akan dihapus.`)) {
-                    return;
-                }
-                this.headers.splice(index, 1);
-                this.rows.forEach(r => {
-                    if (r.cells) {
-                        r.cells.splice(index, 1);
-                    }
-                });
-                // Remove rowMerges on this column and shift columns > index
-                this.rowMerges = this.rowMerges.filter(m => m.colIdx !== index);
-                this.rowMerges.forEach(m => {
-                    if (m.colIdx > index) {
-                        m.colIdx -= 1;
-                    }
-                });
-
-                // If headerStructure active, reset it to avoid index mismatch
-                if (this.headerStructure) {
-                    this.headerStructure = null;
-                    this.columnGroups = [];
-                }
-            },
-
-            resetToDefaultColumns() {
-                const sc = TABLE_SCHEMAS[this.tableCode];
-                if (sc) {
-                    if (!confirm('Kembalikan tabel ke format standar resmi LAM INFOKOM (termasuk kolom gabungan dan baris standar)?')) return;
-                    this.headers = [...sc.leafHeaders];
-                    this.headerStructure = sc.headerRows ? JSON.parse(JSON.stringify(sc.headerRows)) : null;
-                    this.columnGroups = [];
-                    if (this.headerStructure && Array.isArray(this.headerStructure[0])) {
-                        this.headerStructure[0].forEach(col => {
-                            if (col.colspan && col.colspan > 1) {
-                                this.columnGroups.push({
-                                    title: col.label,
-                                    startCol: col.colIdx,
-                                    endCol: col.colIdx + col.colspan - 1
-                                });
-                            }
-                        });
-                    }
-                    this.hasTotal = sc.hasTotal || false;
-                    this.totalLabelCol = sc.totalLabelCol !== undefined ? sc.totalLabelCol : 1;
-                    this.sumCols = sc.sumCols || [];
-                    this.note = sc.note || '';
-                    if (sc.defaultRows) {
-                        this.rows = JSON.parse(JSON.stringify(sc.defaultRows));
-                    }
-                    return;
-                }
-
-                const def = DEFAULT_TABLE_TEMPLATES[this.tableCode];
-                if (!def || def.length === 0) return;
-                if (!confirm('Kembalikan judul kolom ke template standar LAM INFOKOM?')) return;
-                this.headers = [...def];
-                this.headerStructure = null;
-                this.columnGroups = [];
-                this.rows.forEach(r => {
-                    if (!r.cells) r.cells = [];
-                    while (r.cells.length < this.headers.length) {
-                        r.cells.push('');
-                    }
-                });
-            },
-
-            // ── Generic Row Manipulation ──
-            addRow() {
-                const newCells = this.headers.map(() => '');
-                this.rows.push({ cells: newCells });
-            },
-
-            insertRow(index, position = 'below') {
-                const targetIdx = position === 'above' ? index : index + 1;
-                const newCells = this.headers.map(() => '');
-                this.rows.splice(targetIdx, 0, { cells: newCells });
-
-                // Update rowMerges index
-                this.rowMerges.forEach(m => {
-                    if (m.startRow >= targetIdx) {
-                        m.startRow += 1;
-                        m.endRow += 1;
-                    } else if (m.startRow < targetIdx && m.endRow >= targetIdx) {
-                        m.endRow += 1;
-                        m.rowspan += 1;
-                    }
-                });
-
-                this.$nextTick(() => {
-                    const nextEl = document.getElementById(`cell-${targetIdx}-0`);
-                    if (nextEl) nextEl.focus();
-                });
-            },
-
-            removeRow(index) {
-                this.rows.splice(index, 1);
-                // Adjust row merges
-                this.rowMerges = this.rowMerges.filter(m => !(m.startRow <= index && m.endRow >= index && m.rowspan <= 2));
-                this.rowMerges.forEach(m => {
-                    if (m.startRow > index) {
-                        m.startRow -= 1;
-                        m.endRow -= 1;
-                    } else if (m.startRow <= index && m.endRow >= index) {
-                        m.endRow -= 1;
-                        m.rowspan -= 1;
-                    }
-                });
-
-                if (this.tableCode === '2.B.1') {
-                    this.calcSummary2B1();
-                }
-            },
-
-            setCellVal(row, cIdx, val) {
-                if (!row.cells) row.cells = [];
-                row.cells[cIdx] = val;
             },
 
             // ── Tabel 2.B.1 Helpers ──
@@ -1022,7 +1534,6 @@
                 this.saving = true;
                 this.saveStatusMessage = 'Menyimpan data...';
 
-                // Format payload rows so both cells and header key/values exist
                 let payloadRows = [];
                 if (this.tableCode === '2.B.1' || this.tableCode === '2.B.2') {
                     payloadRows = this.rows;

@@ -21,6 +21,47 @@ class LkpsExcelService
     public static function getTableSchema(string $tableCode): ?array
     {
         $schemas = [
+            '1.A.1' => [
+                'leaf_headers' => ['Unit Kerja', 'Nama Ketua', 'Periode Jabatan', 'Pendidikan Terakhir', 'Jabatan Fungsional', 'Tugas Pokok & Fungsi'],
+                'has_total' => false,
+                'note' => 'Data yang ditulis dalam tabel ini termasuk Unit Penjaminan Mutu.',
+                'default_rows' => [
+                    ['cells' => ['', '', '', '', '', '']],
+                    ['cells' => ['', '', '', '', '', '']],
+                    ['cells' => ['', '', '', '', '', '']],
+                    ['cells' => ['', '', '', '', '', '']],
+                    ['cells' => ['', '', '', '', '', '']],
+                ],
+            ],
+            '1.A.2' => [
+                'leaf_headers' => ['Sumber Pendanaan', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+                'has_total' => true,
+                'total_label_col' => 0,
+                'sum_cols' => [1, 2, 3],
+                'default_rows' => [
+                    ['cells' => ['Mahasiswa (SPP)', '0', '0', '0', '']],
+                    ['cells' => ['Yayasan', '0', '0', '0', '']],
+                    ['cells' => ['PTN/PTS Lain', '0', '0', '0', '']],
+                    ['cells' => ['Pemerintah (Pusat/Daerah)', '0', '0', '0', '']],
+                    ['cells' => ['Industri/Masyarakat', '0', '0', '0', '']],
+                    ['cells' => ['Lainnya', '0', '0', '0', '']],
+                ],
+            ],
+            '1.A.3' => [
+                'leaf_headers' => ['Penggunaan Dana', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+                'has_total' => true,
+                'total_label_col' => 0,
+                'sum_cols' => [1, 2, 3],
+                'default_rows' => [
+                    ['cells' => ['Pendidikan', '0', '0', '0', '']],
+                    ['cells' => ['Penelitian', '0', '0', '0', '']],
+                    ['cells' => ['PKM', '0', '0', '0', '']],
+                    ['cells' => ['Investasi Prasarana', '0', '0', '0', '']],
+                    ['cells' => ['Investasi Sarana', '0', '0', '0', '']],
+                    ['cells' => ['Investasi SDM', '0', '0', '0', '']],
+                    ['cells' => ['Lainnya', '0', '0', '0', '']],
+                ],
+            ],
             '1.A.4' => [
                 'header_rows' => [
                     [
@@ -361,6 +402,153 @@ class LkpsExcelService
                 'leaf_headers' => ['No', 'Judul PkM', 'Jenis HKI', 'Nama DTPR', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
                 'merges_excel' => ['A2:A3', 'B2:B3', 'C2:C3', 'D2:D3', 'E2:G2', 'H2:H3'],
             ],
+            '2.A.2' => [
+                'header_rows' => [
+                    [
+                        ['label' => 'Asal Mahasiswa', 'rowspan' => 2, 'colIdx' => 0, 'width' => '220px'],
+                        ['label' => 'Jumlah Mahasiswa Baru', 'colspan' => 4, 'colIdx' => 1],
+                    ],
+                    [
+                        ['label' => 'TS-2', 'colIdx' => 1, 'width' => '100px'],
+                        ['label' => 'TS-1', 'colIdx' => 2, 'width' => '100px'],
+                        ['label' => 'TS', 'colIdx' => 3, 'width' => '100px'],
+                        ['label' => 'Link Bukti', 'colIdx' => 4, 'width' => '200px'],
+                    ],
+                ],
+                'leaf_headers' => ['Asal Mahasiswa', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+                'has_total' => true,
+                'total_label_col' => 0,
+                'sum_cols' => [1, 2, 3],
+                'default_rows' => [
+                    ['cells' => ['Kota/Kab sama dengan PS', '0', '0', '0', '']],
+                    ['cells' => ['Kota/Kabupaten Lain', '0', '0', '0', '']],
+                    ['cells' => ['Provinsi Lain', '0', '0', '0', '']],
+                    ['cells' => ['Negara Lain', '0', '0', '0', '']],
+                ],
+            ],
+            '2.A.3' => [
+                'leaf_headers' => ['Kategori Mahasiswa Asing', 'TS-2', 'TS-1', 'TS', 'Jumlah'],
+                'has_total' => true,
+                'total_label_col' => 0,
+                'sum_cols' => [1, 2, 3, 4],
+                'default_rows' => [
+                    ['cells' => ['Mahasiswa Baru', '0', '0', '0', '0']],
+                    ['cells' => ['Mahasiswa Aktif pada saat TS', '0', '0', '0', '0']],
+                    ['cells' => ['Lulus pada saat TS', '0', '0', '0', '0']],
+                    ['cells' => ['Mengundurkan Diri/DO pada saat TS', '0', '0', '0', '0']],
+                ],
+            ],
+            '2.B.4' => [
+                'leaf_headers' => ['Tahun Lulus', 'Jumlah Lulusan', 'Jumlah Terlacak', 'Rata-rata Waktu Tunggu (Bulan)'],
+                'has_total' => false,
+                'default_rows' => [
+                    ['cells' => ['TS-2', '0', '0', '0']],
+                    ['cells' => ['TS-1', '0', '0', '0']],
+                    ['cells' => ['TS', '0', '0', '0']],
+                ],
+            ],
+            '2.C' => [
+                'leaf_headers' => ['Tahun Akademik / Bentuk Pembelajaran', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+                'has_total' => false,
+                'default_rows' => [
+                    ['cells' => ['Jumlah Mahasiswa Aktif', '', '', '', '']],
+                    ['cells' => ['Micro-credensial', '', '', '', '']],
+                    ['cells' => ['RPL tipe A-2', '', '', '', '']],
+                    ['cells' => ['Pembelajaran di PS lain', '', '', '', '']],
+                    ['cells' => ['Magang/Praktik Kerja', '', '', '', '']],
+                    ['cells' => ['Lainnya', '', '', '', '']],
+                ],
+            ],
+            '2.D' => [
+                'header_rows' => [
+                    [
+                        ['label' => 'Sumber Rekognisi', 'rowspan' => 2, 'colIdx' => 0, 'width' => '180px'],
+                        ['label' => 'Jenis Pengakuan Lulusan (Rekognisi)', 'rowspan' => 2, 'colIdx' => 1, 'width' => '240px'],
+                        ['label' => 'Tahun Akademik', 'colspan' => 3, 'colIdx' => 2],
+                        ['label' => 'Link Bukti', 'rowspan' => 2, 'colIdx' => 5, 'width' => '200px'],
+                    ],
+                    [
+                        ['label' => 'TS-2', 'colIdx' => 2, 'width' => '90px'],
+                        ['label' => 'TS-1', 'colIdx' => 3, 'width' => '90px'],
+                        ['label' => 'TS', 'colIdx' => 4, 'width' => '90px'],
+                    ],
+                ],
+                'leaf_headers' => ['Sumber Rekognisi', 'Jenis Pengakuan (Rekognisi)', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+                'has_total' => false,
+                'default_rows' => [
+                    ['cells' => ['Masyarakat', '', '', '', '', '']],
+                    ['cells' => ['Dunia Usaha', '', '', '', '', '']],
+                    ['cells' => ['Dunia Industri', '', '', '', '', '']],
+                    ['cells' => ['Dunia Kerja', '', '', '', '', '']],
+                ],
+            ],
+            '3.A.1' => [
+                'leaf_headers' => ['Nama Prasarana', 'Daya Tampung', 'Luas Ruang (m²)', 'Kepemilikan (M/W)', 'Lisensi (L/P/T)', 'Perangkat', 'Link Bukti'],
+                'has_total' => false,
+                'note' => '● Prasarana diisi nama laboratorium. ● Perangkat yang dimiliki diisi perangkat keras, perangkat lunak, bandwidth, device, tool dan lain-lain.',
+                'default_rows' => [
+                    ['cells' => ['', '', '', '', '', '', '']],
+                    ['cells' => ['', '', '', '', '', '', '']],
+                    ['cells' => ['', '', '', '', '', '', '']],
+                ],
+            ],
+            '3.A.3' => [
+                'header_rows' => [
+                    [
+                        ['label' => 'Jenis Pengembangan DTPR', 'rowspan' => 2, 'colIdx' => 0, 'width' => '220px'],
+                        ['label' => 'Nama DTPR', 'rowspan' => 2, 'colIdx' => 1, 'width' => '200px'],
+                        ['label' => 'Jumlah', 'colspan' => 3, 'colIdx' => 2],
+                        ['label' => 'Link Bukti', 'rowspan' => 2, 'colIdx' => 5, 'width' => '200px'],
+                    ],
+                    [
+                        ['label' => 'TS-2', 'colIdx' => 2, 'width' => '90px'],
+                        ['label' => 'TS-1', 'colIdx' => 3, 'width' => '90px'],
+                        ['label' => 'TS', 'colIdx' => 4, 'width' => '90px'],
+                    ],
+                ],
+                'leaf_headers' => ['Jenis Pengembangan DTPR', 'Nama DTPR', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
+                'has_total' => false,
+                'default_rows' => [
+                    ['cells' => ['', '', '', '', '', '']],
+                ],
+            ],
+            '4.A.1' => [
+                'leaf_headers' => ['Nama Prasarana PkM', 'Daya Tampung', 'Luas Ruang (m²)', 'Kepemilikan (M/W)', 'Lisensi (L/P/T)', 'Perangkat', 'Link Bukti'],
+                'has_total' => false,
+                'note' => '● Prasarana diisi nama laboratorium, nama bengkel dan lain-lain.',
+                'default_rows' => [
+                    ['cells' => ['', '', '', '', '', '', '']],
+                    ['cells' => ['', '', '', '', '', '', '']],
+                ],
+            ],
+            '5.1' => [
+                'leaf_headers' => ['No', 'Jenis Tata Kelola', 'Nama Sistem Informasi', 'Akses (Lokal/Internet)', 'Unit Pengelola', 'Link Bukti'],
+                'has_total' => false,
+                'default_rows' => [
+                    ['cells' => ['1', 'Pendidikan', '', '', '', '']],
+                    ['cells' => ['2', 'Keuangan', '', '', '', '']],
+                    ['cells' => ['3', 'SDM', '', '', '', '']],
+                    ['cells' => ['4', 'Sarana Prasarana', '', '', '', '']],
+                    ['cells' => ['5', 'Sistem Penjaminan Mutu', '', '', '', '']],
+                    ['cells' => ['6', 'Kerjasama', '', '', '', '']],
+                    ['cells' => ['7', 'Kemahasiswaan', '', '', '', '']],
+                ],
+            ],
+            '5.2' => [
+                'leaf_headers' => ['Nama Prasarana Pendidikan', 'Daya Tampung', 'Luas Ruang (m²)', 'Kepemilikan (M/W)', 'Lisensi (L/P/T)', 'Perangkat', 'Link Bukti'],
+                'has_total' => false,
+                'default_rows' => [
+                    ['cells' => ['', '', '', '', '', '', '']],
+                    ['cells' => ['', '', '', '', '', '', '']],
+                ],
+            ],
+            '6' => [
+                'leaf_headers' => ['Visi PT', 'Visi UPPS', 'Visi Keilmuan PS', 'Misi PT', 'Misi UPPS'],
+                'has_total' => false,
+                'default_rows' => [
+                    ['cells' => ['', '', '', '', '']],
+                ],
+            ],
         ];
 
         return $schemas[$tableCode] ?? null;
@@ -572,12 +760,21 @@ class LkpsExcelService
      */
     private function parseTable1A1(array $data): array
     {
+        $schema = self::getTableSchema('1.A.1');
         $rows = [];
         for ($r = 4; $r <= count($data); $r++) {
             $row = $data[$r] ?? [];
             $unitKerja = trim((string)($row['A'] ?? ''));
             $namaKetua = trim((string)($row['B'] ?? ''));
-            if ($unitKerja === '' && $namaKetua === '') {
+            $c = trim((string)($row['C'] ?? ''));
+            $d = trim((string)($row['D'] ?? ''));
+            $e = trim((string)($row['E'] ?? ''));
+            $f = trim((string)($row['F'] ?? ''));
+
+            if ($unitKerja === '' && $namaKetua === '' && $c === '' && $d === '' && $e === '' && $f === '') {
+                continue;
+            }
+            if (str_starts_with(strtolower($unitKerja), 'keterangan') || str_starts_with(strtolower($unitKerja), 'catatan')) {
                 continue;
             }
 
@@ -585,24 +782,28 @@ class LkpsExcelService
                 'cells' => [
                     $unitKerja,
                     $namaKetua,
-                    trim((string)($row['C'] ?? '')),
-                    trim((string)($row['D'] ?? '')),
-                    trim((string)($row['E'] ?? '')),
-                    trim((string)($row['F'] ?? '')),
+                    $c,
+                    $d,
+                    $e,
+                    $f,
                 ],
                 'unit_kerja' => $unitKerja,
                 'nama_ketua' => $namaKetua,
-                'periode_jabatan' => trim((string)($row['C'] ?? '')),
-                'pendidikan_terakhir' => trim((string)($row['D'] ?? '')),
-                'jabatan_fungsional' => trim((string)($row['E'] ?? '')),
-                'tupoksi' => trim((string)($row['F'] ?? '')),
+                'periode_jabatan' => $c,
+                'pendidikan_terakhir' => $d,
+                'jabatan_fungsional' => $e,
+                'tupoksi' => $f,
             ];
         }
 
         return [
-            'dynamic_headers' => ['Unit Kerja', 'Nama Ketua', 'Periode Jabatan', 'Pendidikan Terakhir', 'Jabatan Fungsional', 'Tugas Pokok & Fungsi'],
+            'dynamic_headers' => $schema['leaf_headers'] ?? ['Unit Kerja', 'Nama Ketua', 'Periode Jabatan', 'Pendidikan Terakhir', 'Jabatan Fungsional', 'Tugas Pokok & Fungsi'],
             'table_rows' => $rows,
-            'summary_data' => ['total' => count($rows)],
+            'summary_data' => [
+                'total' => count($rows),
+                'note' => $schema['note'] ?? 'Data yang ditulis dalam tabel ini termasuk Unit Penjaminan Mutu.',
+                'has_total' => false,
+            ],
         ];
     }
 

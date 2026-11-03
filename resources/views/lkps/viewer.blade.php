@@ -421,11 +421,14 @@
             <div x-show="viewMode === 'edit'" class="flex-1 flex flex-col min-h-0 overflow-hidden"
                  x-data="lkpsTableEditor('{{ $tableCode }}', {{ $headersJson }}, {{ $rowsJson }}, {{ $summaryJson }})">
 
-                {{-- Toolbar Atas Editor --}}
+                {{-- Toolbar Atas Editor (Excel Style Toolbar) --}}
                 <div class="shrink-0 bg-white border-b border-slate-200 px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-xs">
                     <div class="flex items-center flex-wrap gap-2 text-xs text-slate-500">
-                        <span class="font-medium text-slate-700">💡 Tip:</span>
-                        <span>Paste langsung dari Excel (<kbd class="px-1.5 py-0.5 rounded bg-slate-100 font-mono text-[10px] text-slate-700 border border-slate-300">Cmd+V</kbd> / <kbd class="px-1.5 py-0.5 rounded bg-slate-100 font-mono text-[10px] text-slate-700 border border-slate-300">Ctrl+V</kbd>). <kbd class="px-1.5 py-0.5 rounded bg-slate-100 font-mono text-[10px] text-slate-700 border border-slate-300">Enter</kbd> baris baru.</span>
+                        <span class="inline-flex items-center gap-1 font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg>
+                            Editor Excel
+                        </span>
+                        <span>Klik sel &amp; ketik. Gunakan <kbd class="px-1.5 py-0.5 rounded bg-slate-100 font-mono text-[10px] text-slate-700 border border-slate-300">Panah</kbd> / <kbd class="px-1.5 py-0.5 rounded bg-slate-100 font-mono text-[10px] text-slate-700 border border-slate-300">Tab</kbd> / <kbd class="px-1.5 py-0.5 rounded bg-slate-100 font-mono text-[10px] text-slate-700 border border-slate-300">Enter</kbd> untuk navigasi.</span>
                         <span class="text-slate-300">|</span>
                         <span class="rounded-full bg-slate-100 px-2 py-0.5 font-bold text-slate-700"><span x-text="rows.length"></span> baris</span>
                         <span class="rounded-full bg-slate-100 px-2 py-0.5 font-bold text-slate-700"><span x-text="headers.length"></span> kolom</span>
@@ -436,44 +439,73 @@
                     </div>
 
                     <div class="flex flex-wrap items-center gap-2">
-                        <button type="button" @click="resetToDefaultColumns()" class="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition" title="Kembalikan nama kolom dan baris ke template standar LAM INFOKOM">
+                        {{-- Tombol Asisten Tempel dari Excel (Paste) --}}
+                        <button type="button" @click="openPasteModal()"
+                            class="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-800 hover:bg-emerald-100 transition shadow-xs"
+                            title="Tempel data yang disalin (Copy) dari berkas Excel secara langsung">
+                            <svg class="h-3.5 w-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+                            </svg>
+                            <span>Tempel dari Excel</span>
+                        </button>
+
+                        {{-- Tombol Tambah Baris Cepat (+1, +5, +10) --}}
+                        <div class="inline-flex rounded-lg border border-slate-200 bg-white shadow-xs p-0.5">
+                            <button type="button" @click="tableCode === '2.B.1' ? addRow2B1() : (tableCode === '2.B.2' ? addRow2B2() : addRow())"
+                                class="inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-bold text-violet-700 hover:bg-violet-50 transition" title="Tambah 1 baris kosong">
+                                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                                <span>+1 Baris</span>
+                            </button>
+                            <span class="text-slate-200 my-auto">|</span>
+                            <button type="button" @click="addRowsBatch(5)" class="rounded-md px-2 py-1 text-[11px] font-semibold text-slate-600 hover:bg-slate-50 transition" title="Tambah 5 baris">
+                                +5
+                            </button>
+                            <span class="text-slate-200 my-auto">|</span>
+                            <button type="button" @click="addRowsBatch(10)" class="rounded-md px-2 py-1 text-[11px] font-semibold text-slate-600 hover:bg-slate-50 transition" title="Tambah 10 baris">
+                                +10
+                            </button>
+                        </div>
+
+                        {{-- Tombol Kembalikan Format Standar LAM INFOKOM --}}
+                        <button type="button" @click="resetToDefaultColumns()" class="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-xs" title="Pulihkan nama kolom dan susunan tabel ke format template resmi LAM INFOKOM">
                             <svg class="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
                             Format Standar
                         </button>
 
-                        {{-- Tombol Gabungkan (Kolom / Baris) --}}
-                        <button type="button" @click="openMergeModal('columns')" class="inline-flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50/90 px-3 py-1.5 text-xs font-bold text-indigo-700 hover:bg-indigo-100 transition shadow-xs" title="Gabungkan beberapa kolom atau baris layaknya Excel (bisa lebih dari 2)">
-                            <span class="text-sm">🔲</span>
-                            <span>Gabungkan (Kolom / Baris)</span>
+                        {{-- Tombol Gabungkan Sel / Baris (Rowspan) --}}
+                        <button type="button" @click="openMergeModal('rows')" class="inline-flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50/90 px-3 py-1.5 text-xs font-bold text-indigo-700 hover:bg-indigo-100 transition shadow-xs" title="Gabungkan beberapa baris yang memiliki nilai sama secara vertikal (seperti Unit Kerja / Fakultas)">
+                            <span class="text-xs">🧱</span>
+                            <span>Gabung Baris</span>
                         </button>
 
-                        {{-- Tombol Pisahkan / Kelola Gabungan jika sedang ada gabungan kolom atau baris --}}
-                        <button x-show="headerStructure || (rowMerges && rowMerges.length > 0)" type="button" @click="openMergeModal('active')" class="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition" title="Lihat daftar gabungan kolom & baris, atau pisahkan kembali">
+                        {{-- Tombol Kelola Gabungan jika sedang ada gabungan kolom atau baris --}}
+                        <button x-show="headerStructure || (rowMerges && rowMerges.length > 0)" type="button" @click="openMergeModal('active')" class="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition shadow-xs" title="Lihat daftar gabungan kolom & baris, atau pisahkan kembali">
                             <span>↺ Kelola Gabungan</span>
                         </button>
 
-                        @if ($tableCode === '2.B.1' || $tableCode === '2.B.2')
-                            <button type="button" @click="addPlColumn()" class="inline-flex items-center gap-1 rounded-lg border border-violet-200 bg-violet-50/80 px-2.5 py-1.5 text-xs font-bold text-violet-700 hover:bg-violet-100 transition shadow-xs">
-                                <svg class="h-3.5 w-3.5 text-violet-600" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-                                + Tambah Kolom PL
+                        {{-- Tombol Baris Total (Hanya jika tabel relevan menjumlahkan angka) --}}
+                        <template x-if="hasTotal || (sumCols && sumCols.length > 0)">
+                            <button type="button" @click="addTotalRow()" class="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-xs" title="Tambahkan baris Total yang menjumlahkan kolom angka secara otomatis">
+                                <span class="font-bold text-violet-600 leading-none">∑</span>
+                                <span>+ Total</span>
                             </button>
-                        @else
-                            <button type="button" @click="addColumn()" class="inline-flex items-center gap-1 rounded-lg border border-violet-200 bg-violet-50/80 px-3 py-1.5 text-xs font-bold text-violet-700 hover:bg-violet-100 transition shadow-xs">
-                                <svg class="h-3.5 w-3.5 text-violet-600" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-                                + Tambah Kolom
-                            </button>
-                        @endif
+                        </template>
 
-                        <button type="button" @click="tableCode === '2.B.1' ? addRow2B1() : (tableCode === '2.B.2' ? addRow2B2() : addRow())" class="inline-flex items-center gap-1 rounded-lg bg-violet-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-violet-700 transition">
-                            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-                            + Tambah Baris
+                        {{-- Bersihkan Baris Kosong --}}
+                        <button type="button" @click="removeEmptyRows()" class="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition shadow-xs" title="Hapus baris yang seluruhnya kosong">
+                            <svg class="h-3 w-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
+                            <span>Bersihkan Kosong</span>
                         </button>
 
-                        <button type="button" @click="addTotalRow()" class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-xs" title="Tambahkan baris Total yang menjumlahkan kolom angka secara otomatis">
-                            <span class="font-bold text-violet-600 text-sm leading-none">∑</span>
-                            <span>+ Baris Total</span>
+                        {{-- Hapus Baris Total Tersasar (Hanya muncul jika tabel non-numerik menyimpan baris bertuliskan Total) --}}
+                        <button x-show="!hasTotal && rows.some(r => r.is_total || (r.cells && r.cells.some(c => String(c).trim().toLowerCase() === 'total')))"
+                            type="button" @click="removeTotalRows()"
+                            class="inline-flex items-center gap-1 rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-100 transition shadow-xs"
+                            title="Hapus baris yang berisi tulisan Total dari tabel ini">
+                            <span>🗑️ Hapus Baris Total</span>
                         </button>
 
+                        {{-- Simpan Data --}}
                         <button type="button" @click="saveTableData()" :disabled="saving"
                             class="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-1.5 text-xs font-bold text-white shadow-xs hover:from-emerald-700 hover:to-teal-700 transition disabled:opacity-50">
                             <svg x-show="!saving" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
@@ -488,57 +520,73 @@
                     </div>
                 </div>
 
-                {{-- Canvas Tabel Luas & Dapat Digeser-geser --}}
-                <div class="flex-1 overflow-auto bg-slate-100 p-4 sm:p-6">
-                    <div class="rounded-xl border border-slate-200 bg-white overflow-x-auto shadow-sm">
-                        <table class="w-full text-left text-xs divide-y divide-slate-200" style="min-width: max-content;">
+                {{-- Formula Bar (Bilah Rumus & Koordinat Sel Aktif Excel) --}}
+                <div class="shrink-0 bg-slate-50 border-b border-slate-300 px-4 sm:px-6 py-1.5 flex items-center gap-2 text-xs select-none">
+                    <div class="flex items-center gap-1 px-2 py-0.5 bg-white border border-slate-300 rounded font-mono text-slate-800 font-bold shadow-2xs min-w-[70px] justify-center" title="Koordinat Sel Aktif">
+                        <span class="text-emerald-700 text-[10px] uppercase font-bold">Sel</span>
+                        <span x-text="getActiveCellCoord()"></span>
+                    </div>
+                    <span class="px-2 py-0.5 rounded bg-slate-200/90 text-[11px] font-semibold text-slate-700 truncate max-w-[180px]" x-text="getActiveColName()" :title="getActiveColName()"></span>
+                    <span class="font-serif italic font-bold text-slate-400 select-none text-xs px-1">fx</span>
+                    <input type="text"
+                        :value="activeCellVal"
+                        @input="updateActiveCellValue($event.target.value)"
+                        placeholder="Klik sel pada tabel di bawah untuk mulai mengedit atau melihat isinya..."
+                        class="flex-1 rounded border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-800 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 shadow-2xs font-sans">
+                    <span x-show="saveStatusMessage" x-text="saveStatusMessage" class="text-xs font-bold text-emerald-700 animate-pulse shrink-0"></span>
+                </div>
+
+                {{-- Canvas Tabel Luas & Spreadsheet Grid --}}
+                <div class="flex-1 overflow-auto bg-slate-200/60 p-3 sm:p-5">
+                    <div class="rounded-lg border border-slate-300 bg-white inline-block min-w-full overflow-hidden shadow-sm">
+                        <table class="w-full text-left text-xs border-collapse divide-none" style="min-width: max-content;">
 
                             @if ($tableCode === '2.B.1')
                                 {{-- TABEL 2.B.1 KHUSUS --}}
-                                <thead class="bg-slate-50 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 shadow-xs">
+                                <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 z-10 border-b-2 border-slate-300 shadow-xs">
                                     <tr>
-                                        <th class="py-3 px-3 w-12 text-center bg-slate-100">No</th>
-                                        <th class="py-3 px-4 min-w-[260px]">Mata Kuliah</th>
-                                        <th class="py-3 px-3 w-20 text-center">SKS</th>
-                                        <th class="py-3 px-3 w-24 text-center">Semester</th>
+                                        <th class="py-2.5 px-3 w-12 text-center bg-slate-100 border-r border-b border-slate-300 font-mono text-[11px] text-slate-500">No</th>
+                                        <th class="py-2.5 px-4 min-w-[260px] border-r border-b border-slate-300">Mata Kuliah</th>
+                                        <th class="py-2.5 px-3 w-20 text-center border-r border-b border-slate-300">SKS</th>
+                                        <th class="py-2.5 px-3 w-24 text-center border-r border-b border-slate-300">Semester</th>
                                         <template x-for="(pl, plIdx) in headers" :key="plIdx">
-                                            <th class="py-2.5 px-2 text-center min-w-[110px] bg-violet-50/40 border-l border-violet-100">
+                                            <th class="py-2 px-2 text-center min-w-[110px] bg-violet-50/60 border-r border-b border-slate-300">
                                                 <div class="flex items-center justify-center gap-1">
                                                     <input type="text" x-model="headers[plIdx]"
-                                                        class="w-full text-center bg-transparent border border-transparent hover:border-slate-300 focus:border-violet-500 focus:bg-white text-xs font-bold text-violet-900 py-1 px-1 rounded transition"
+                                                        class="w-full text-center bg-transparent border-0 focus:bg-white text-xs font-bold text-violet-900 py-1 px-1 rounded transition"
                                                         title="Klik untuk mengubah nama Profil Lulusan">
                                                     <button type="button" @click="removePlColumn(plIdx)" class="text-slate-300 hover:text-rose-500 font-bold px-1" title="Hapus kolom PL">×</button>
                                                 </div>
                                             </th>
                                         </template>
-                                        <th class="py-3 px-3 w-12 text-center">Aksi</th>
+                                        <th class="py-2.5 px-3 w-12 text-center border-b border-slate-300">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-slate-100 bg-white">
+                                <tbody class="bg-white">
                                     <template x-for="(row, idx) in rows" :key="idx">
-                                        <tr class="hover:bg-slate-50/80 transition">
-                                            <td class="py-2.5 px-3 text-center font-bold text-slate-400 bg-slate-50/30" x-text="idx + 1"></td>
-                                            <td class="py-2 px-3 min-w-[260px]">
+                                        <tr class="hover:bg-slate-50 transition border-b border-slate-200">
+                                            <td class="py-2 px-3 text-center font-mono text-[11px] font-bold text-slate-400 bg-slate-50 border-r border-slate-200" x-text="idx + 1"></td>
+                                            <td class="py-1.5 px-2 min-w-[260px] border-r border-slate-200">
                                                 <input type="text" x-model="row.mata_kuliah" placeholder="Nama mata kuliah..."
-                                                    class="w-full rounded-lg border-slate-200 text-xs py-1.5 px-2.5 focus:border-violet-500 focus:ring-1 focus:ring-violet-500">
+                                                    class="w-full rounded border-slate-200 text-xs py-1 px-2 focus:border-violet-500 focus:ring-1 focus:ring-violet-500">
                                             </td>
-                                            <td class="py-2 px-3 w-20">
+                                            <td class="py-1.5 px-2 w-20 border-r border-slate-200">
                                                 <input type="number" min="0" max="10" x-model.number="row.sks" @input="calcSummary2B1()"
-                                                    class="w-full rounded-lg border-slate-200 text-xs py-1.5 px-2 text-center focus:border-violet-500 focus:ring-1 focus:ring-violet-500">
+                                                    class="w-full rounded border-slate-200 text-xs py-1 px-2 text-center focus:border-violet-500 focus:ring-1 focus:ring-violet-500">
                                             </td>
-                                            <td class="py-2 px-3 w-24">
+                                            <td class="py-1.5 px-2 w-24 border-r border-slate-200">
                                                 <input type="number" min="1" max="8" x-model.number="row.semester"
-                                                    class="w-full rounded-lg border-slate-200 text-xs py-1.5 px-2 text-center focus:border-violet-500 focus:ring-1 focus:ring-violet-500">
+                                                    class="w-full rounded border-slate-200 text-xs py-1 px-2 text-center focus:border-violet-500 focus:ring-1 focus:ring-violet-500">
                                             </td>
                                             <template x-for="(pl, plIdx) in headers" :key="plIdx">
-                                                <td class="py-2 px-2 text-center bg-violet-50/15 border-l border-violet-100/60 min-w-[110px]">
+                                                <td class="py-1.5 px-2 text-center bg-violet-50/10 border-r border-slate-200 min-w-[110px]">
                                                     <input type="checkbox"
                                                         :checked="row.profil_lulusan && (row.profil_lulusan[pl] == 1 || row.profil_lulusan[pl] === true)"
                                                         @change="togglePlCheck(row, pl, $event.target.checked)"
                                                         class="h-4 w-4 rounded border-slate-300 text-violet-600 focus:ring-violet-500">
                                                 </td>
                                             </template>
-                                            <td class="py-2 px-3 text-center w-12">
+                                            <td class="py-1.5 px-2 text-center w-12">
                                                 <button type="button" @click="removeRow(idx)" class="text-rose-400 hover:text-rose-600 p-1" title="Hapus baris">
                                                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
                                                 </button>
@@ -549,38 +597,38 @@
 
                             @elseif ($tableCode === '2.B.2')
                                 {{-- TABEL 2.B.2 KHUSUS --}}
-                                <thead class="bg-slate-50 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 shadow-xs">
+                                <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 z-10 border-b-2 border-slate-300 shadow-xs">
                                     <tr>
-                                        <th class="py-3 px-4 min-w-[320px]">Capaian Pembelajaran Lulusan (CPL)</th>
+                                        <th class="py-2.5 px-4 min-w-[320px] border-r border-b border-slate-300">Capaian Pembelajaran Lulusan (CPL)</th>
                                         <template x-for="(pl, plIdx) in headers" :key="plIdx">
-                                            <th class="py-2.5 px-2 text-center min-w-[110px] bg-violet-50/40 border-l border-violet-100">
+                                            <th class="py-2 px-2 text-center min-w-[110px] bg-violet-50/60 border-r border-b border-slate-300">
                                                 <div class="flex items-center justify-center gap-1">
                                                     <input type="text" x-model="headers[plIdx]"
-                                                        class="w-full text-center bg-transparent border border-transparent hover:border-slate-300 focus:border-violet-500 focus:bg-white text-xs font-bold text-violet-900 py-1 px-1 rounded transition"
+                                                        class="w-full text-center bg-transparent border-0 focus:bg-white text-xs font-bold text-violet-900 py-1 px-1 rounded transition"
                                                         title="Klik untuk mengubah nama Profil Lulusan">
                                                     <button type="button" @click="removePlColumn(plIdx)" class="text-slate-300 hover:text-rose-500 font-bold px-1">×</button>
                                                 </div>
                                             </th>
                                         </template>
-                                        <th class="py-3 px-3 w-12 text-center">Aksi</th>
+                                        <th class="py-2.5 px-3 w-12 text-center border-b border-slate-300">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-slate-100 bg-white">
+                                <tbody class="bg-white">
                                     <template x-for="(row, idx) in rows" :key="idx">
-                                        <tr class="hover:bg-slate-50/80 transition">
-                                            <td class="py-2.5 px-4 min-w-[320px]">
+                                        <tr class="hover:bg-slate-50 transition border-b border-slate-200">
+                                            <td class="py-1.5 px-3 min-w-[320px] border-r border-slate-200">
                                                 <input type="text" x-model="row.cpl" placeholder="Contoh: CPL 01 - Mampu merancang sistem..."
-                                                    class="w-full rounded-lg border-slate-200 text-xs py-1.5 px-2.5 focus:border-violet-500 focus:ring-1 focus:ring-violet-500">
+                                                    class="w-full rounded border-slate-200 text-xs py-1 px-2 focus:border-violet-500 focus:ring-1 focus:ring-violet-500">
                                             </td>
                                             <template x-for="(pl, plIdx) in headers" :key="plIdx">
-                                                <td class="py-2 px-2 text-center bg-violet-50/15 border-l border-violet-100/60 min-w-[110px]">
+                                                <td class="py-1.5 px-2 text-center bg-violet-50/10 border-r border-slate-200 min-w-[110px]">
                                                     <input type="checkbox"
                                                         :checked="row.profil_lulusan && (row.profil_lulusan[pl] == 1 || row.profil_lulusan[pl] === true)"
                                                         @change="togglePlCheck(row, pl, $event.target.checked)"
                                                         class="h-4 w-4 rounded border-slate-300 text-violet-600 focus:ring-violet-500">
                                                 </td>
                                             </template>
-                                            <td class="py-2 px-3 text-center w-12">
+                                            <td class="py-1.5 px-2 text-center w-12">
                                                 <button type="button" @click="removeRow(idx)" class="text-rose-400 hover:text-rose-600 p-1" title="Hapus baris">
                                                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
                                                 </button>
@@ -590,32 +638,32 @@
                                 </tbody>
 
                             @else
-                                {{-- TABEL UMUM / STANDAR / MULTI-LEVEL MERGED HEADERS --}}
-                                <thead class="bg-slate-50 text-slate-700 font-bold sticky top-0 z-10 border-b border-slate-200 shadow-xs">
-                                    {{-- Row 1 Multi-Tier (Jika Kolom Tergabung / 2 Tingkat) --}}
-                                    <tr x-show="headerStructure && headerStructure.length >= 2" class="divide-x divide-slate-200">
+                                {{-- TABEL UMUM / STANDAR EXCEL SPREADSHEET GRID --}}
+                                <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 z-20 border-b border-slate-300 shadow-xs select-none">
+                                    {{-- Multi-tier Tier 1 (Jika ada header gabungan bertingkat) --}}
+                                    <tr x-show="headerStructure && headerStructure.length >= 2">
+                                        <th rowspan="2" class="py-2 px-2 w-10 text-center bg-slate-200/90 text-slate-400 font-mono text-[11px] border-b border-r border-slate-300 sticky left-0 z-30">#</th>
                                         <template x-for="(col, cIdx) in (headerStructure ? headerStructure[0] : [])" :key="'h0-' + cIdx">
                                             <th :rowspan="col.rowspan || 1"
                                                 :colspan="col.colspan || 1"
-                                                :style="col.width ? 'min-width: ' + col.width : 'min-width: 120px;'"
-                                                class="py-2.5 px-3 text-center border-b border-slate-200"
-                                                :class="(col.colspan || 1) > 1 ? 'bg-violet-100 text-violet-900 border-b-2 border-violet-400 font-bold' : 'bg-slate-50 text-slate-700 font-bold'">
-                                                <div class="flex items-center justify-center gap-1">
-                                                    <input type="text" x-model="col.label"
-                                                        class="w-full text-center border-0 bg-transparent text-xs font-bold p-0 focus:ring-0 focus:bg-white rounded transition"
-                                                        :class="(col.colspan || 1) > 1 ? 'text-violet-900' : 'text-slate-800'"
-                                                        title="Klik untuk mengubah nama header ini">
-                                                </div>
+                                                :style="col.width ? 'min-width: ' + col.width : 'min-width: 110px;'"
+                                                class="py-2 px-2.5 text-center border-b border-r border-slate-300 font-bold text-xs"
+                                                :class="(col.colspan || 1) > 1 ? 'bg-violet-100 text-violet-900 border-b-2 border-violet-400' : 'bg-slate-100 text-slate-800'">
+                                                <input type="text" x-model="col.label"
+                                                    class="w-full text-center border-0 bg-transparent text-xs font-bold p-0 focus:ring-0 focus:bg-white rounded transition"
+                                                    :class="(col.colspan || 1) > 1 ? 'text-violet-900' : 'text-slate-800'"
+                                                    title="Klik untuk mengubah nama header ini">
                                             </th>
                                         </template>
-                                        <th rowspan="2" class="py-3 px-3 w-12 text-center text-slate-400 font-semibold bg-slate-50 border-b border-slate-200">Hapus</th>
+                                        <th rowspan="2" class="py-2 px-2 w-10 text-center text-slate-400 font-semibold bg-slate-100 border-b border-slate-300">Aksi</th>
                                     </tr>
 
-                                    {{-- Row 2 Sub-Kolom Multi-Tier --}}
-                                    <tr x-show="headerStructure && headerStructure.length >= 2" class="divide-x divide-slate-200 bg-slate-50/90">
+                                    {{-- Multi-tier Tier 2 (Sub-Kolom) --}}
+                                    <tr x-show="headerStructure && headerStructure.length >= 2" class="bg-slate-100">
                                         <template x-for="(subCol, sIdx) in (headerStructure && headerStructure[1] ? headerStructure[1] : [])" :key="'h1-' + sIdx">
                                             <th :style="subCol.width ? 'min-width: ' + subCol.width : 'min-width: 85px;'"
-                                                class="py-2 px-2 text-center border-b border-slate-200 text-slate-700 font-bold text-xs">
+                                                class="py-1.5 px-2 text-center border-b border-r border-slate-300 text-slate-700 font-bold text-xs"
+                                                :class="activeCol === subCol.colIdx ? 'bg-emerald-100 text-emerald-900 border-b-2 border-emerald-600' : ''">
                                                 <input type="text" x-model="subCol.label"
                                                     @input="if (headers[subCol.colIdx] !== undefined) headers[subCol.colIdx] = subCol.label"
                                                     class="w-full text-center border-0 bg-transparent text-xs font-bold text-slate-800 p-0 focus:ring-0 focus:bg-white rounded transition"
@@ -624,90 +672,116 @@
                                         </template>
                                     </tr>
 
-                                    {{-- Single-tier Header (Tabel Standar 1 Baris Header) --}}
+                                    {{-- Header 1 Baris Standar (Excel Column Letters & Names) --}}
                                     <tr x-show="!headerStructure || headerStructure.length < 2">
+                                        {{-- Top-Left Corner Box --}}
+                                        <th class="py-2 px-2 w-10 text-center bg-slate-200/90 text-slate-400 font-mono text-[11px] border-b border-r border-slate-300 sticky left-0 z-30">#</th>
                                         <template x-for="(col, cIdx) in headers" :key="'col-' + cIdx">
-                                            <th class="py-2.5 px-3 min-w-[170px] border-r border-slate-200/80 bg-slate-50">
-                                                <div class="flex items-center justify-between gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 focus-within:border-violet-500 focus-within:ring-1 focus-within:ring-violet-500 shadow-2xs">
-                                                    <input type="text" x-model="headers[cIdx]"
-                                                        class="w-full border-0 text-xs font-bold text-slate-800 p-0 focus:ring-0 focus:outline-none"
-                                                        title="Klik untuk mengubah nama judul kolom ini">
+                                            <th class="py-2 px-3 border-b border-r border-slate-300 transition"
+                                                :class="activeCol === cIdx ? 'bg-emerald-100 text-emerald-900 border-b-2 border-emerald-600' : 'bg-slate-100 text-slate-700'"
+                                                :style="(cIdx === 0 && (headers[0] === 'No' || headers[0] === 'No.')) ? 'min-width: 50px; width: 50px;' : 'min-width: 170px;'">
+                                                <div class="flex items-center justify-between gap-1">
+                                                    <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                                                        <span class="text-[10px] font-mono text-slate-400 font-bold shrink-0" x-text="String.fromCharCode(65 + (cIdx % 26))"></span>
+                                                        <input type="text" x-model="headers[cIdx]"
+                                                            class="w-full border-0 text-xs font-bold p-0 bg-transparent focus:ring-0 focus:bg-white focus:outline-none rounded"
+                                                            :class="activeCol === cIdx ? 'text-emerald-900' : 'text-slate-800'"
+                                                            title="Klik untuk mengubah nama judul kolom ini">
+                                                    </div>
                                                     <button type="button" @click="removeColumn(cIdx)"
-                                                        class="text-slate-300 hover:text-rose-600 p-0.5 rounded transition shrink-0"
+                                                        class="text-slate-300 hover:text-rose-600 p-0.5 rounded transition shrink-0 opacity-60 hover:opacity-100"
                                                         title="Hapus kolom ini">
-                                                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+                                                        <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
                                                     </button>
                                                 </div>
                                             </th>
                                         </template>
-                                        <th class="py-2 px-2 w-10 text-center bg-slate-50">
-                                            <button type="button" @click="addColumn()" class="flex h-7 w-7 items-center justify-center rounded-lg bg-violet-100 text-violet-700 hover:bg-violet-200 transition font-bold" title="Tambah kolom baru">+</button>
+                                        <th class="py-2 px-2 w-10 text-center bg-slate-100 border-b border-slate-300">
+                                            <button type="button" @click="addColumn()" class="flex h-6 w-6 mx-auto items-center justify-center rounded bg-violet-100 text-violet-700 hover:bg-violet-200 transition font-bold text-xs" title="Tambah kolom baru">+</button>
                                         </th>
-                                        <th class="py-3 px-3 w-12 text-center text-slate-400 font-semibold bg-slate-50">Hapus</th>
                                     </tr>
                                 </thead>
 
-                                <tbody class="divide-y divide-slate-100 bg-white">
+                                {{-- Spreadsheet Grid Data Cells --}}
+                                <tbody class="bg-white">
                                     <template x-for="(row, rIdx) in rows" :key="rIdx">
-                                        <tr class="hover:bg-slate-50/70 transition" :class="row.is_total ? 'bg-slate-50/90 font-bold' : ''">
+                                        <tr class="hover:bg-slate-50/60 transition group" :class="row.is_total ? 'bg-slate-100/70 font-bold' : ''">
+                                            {{-- Sticky Row Number Column (Excel Style) --}}
+                                            <td class="py-1.5 px-2 text-center font-mono text-[11px] select-none border-b border-r border-slate-300 sticky left-0 z-10 transition"
+                                                :class="activeRow === rIdx ? 'bg-emerald-100 text-emerald-900 font-bold' : 'bg-slate-100/90 text-slate-500'">
+                                                <div class="flex items-center justify-center gap-0.5">
+                                                    <span x-text="rIdx + 1"></span>
+                                                    <button type="button" @click="removeRow(rIdx)"
+                                                        class="hidden group-hover:inline text-rose-400 hover:text-rose-600 text-[10px] ml-0.5"
+                                                        title="Hapus baris ini">×</button>
+                                                </div>
+                                            </td>
+
+                                            {{-- Data Cells --}}
                                             <template x-for="(col, cIdx) in headers" :key="'cell-' + cIdx">
                                                 <td x-show="!isCellRowHidden(rIdx, cIdx)"
-                                                    class="py-2 px-2.5 border-r border-slate-100"
+                                                    class="p-0 border-b border-r border-slate-200 relative transition-all"
                                                     :rowspan="getCellRowMerge(rIdx, cIdx) ? getCellRowMerge(rIdx, cIdx).rowspan : 1"
-                                                    :class="getCellRowMerge(rIdx, cIdx) ? 'bg-violet-50/50 align-middle ring-1 ring-inset ring-violet-200' : ''"
+                                                    :class="[
+                                                        (activeRow === rIdx && activeCol === cIdx) ? 'ring-2 ring-inset ring-emerald-600 bg-emerald-50/20 z-10' : '',
+                                                        getCellRowMerge(rIdx, cIdx) ? 'bg-indigo-50/40 align-middle ring-1 ring-inset ring-indigo-200' : ''
+                                                    ]"
                                                     :style="(headerStructure && headerStructure[1] && headerStructure[1].find(s => s.colIdx === cIdx)) ? 'min-width: ' + (headerStructure[1].find(s => s.colIdx === cIdx).width || '85px') : (cIdx === 0 && (headers[0] === 'No' || headers[0] === 'No.') ? 'min-width: 50px; width: 50px;' : 'min-width: 170px;')">
-                                                    <div class="relative">
+                                                    <div class="relative w-full h-full flex items-center">
                                                         <input type="text"
                                                             :id="'cell-' + rIdx + '-' + cIdx"
                                                             :value="row.cells ? row.cells[cIdx] : ''"
+                                                            @focus="onCellFocus(rIdx, cIdx)"
                                                             @input="setCellVal(row, cIdx, $event.target.value)"
                                                             @paste="handleExcelPaste($event, rIdx, cIdx)"
                                                             @keydown="handleKeyNavigation($event, rIdx, cIdx)"
-                                                            :placeholder="row.is_total && cIdx === totalLabelCol ? 'Total' : 'Isi ' + col + '...'"
-                                                            class="w-full rounded-lg border-slate-200 text-xs py-2 px-3 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 bg-white shadow-2xs font-sans"
-                                                            :class="row.is_total ? 'font-bold text-slate-900 bg-slate-100/50' : (cIdx === 0 && (headers[0] === 'No' || headers[0] === 'No.') ? 'text-center font-bold text-slate-500' : '')">
+                                                            class="w-full h-full py-2 px-2.5 text-xs text-slate-900 bg-transparent border-0 outline-none focus:outline-none focus:ring-0 font-sans"
+                                                            :class="[
+                                                                row.is_total ? 'font-bold text-slate-900' : '',
+                                                                (cIdx === 0 && (headers[0] === 'No' || headers[0] === 'No.')) ? 'text-center font-bold text-slate-500' : ''
+                                                            ]">
+                                                        {{-- Merged Row Indicator Badge & Unmerge Button --}}
                                                         <span x-show="getCellRowMerge(rIdx, cIdx)"
-                                                            class="absolute -top-2 right-1 inline-flex items-center rounded bg-violet-200/90 px-1 py-0.5 text-[9px] font-bold text-violet-800 shadow-2xs pointer-events-none">
-                                                            Gabung <span x-text="getCellRowMerge(rIdx, cIdx) ? getCellRowMerge(rIdx, cIdx).rowspan : ''"></span> baris
+                                                            class="absolute top-1 right-1 inline-flex items-center gap-1 rounded bg-indigo-100/90 px-1 py-0.5 text-[9px] font-bold text-indigo-800 pointer-events-auto">
+                                                            <span>Gabung <span x-text="getCellRowMerge(rIdx, cIdx) ? getCellRowMerge(rIdx, cIdx).rowspan : ''"></span> baris</span>
+                                                            <button type="button" @click.stop="unmergeCell(rIdx, cIdx)" class="text-rose-500 hover:text-rose-700 font-bold ml-0.5" title="Pisahkan gabungan sel ini">↺</button>
                                                         </span>
                                                     </div>
                                                 </td>
                                             </template>
-                                            <td x-show="!headerStructure || headerStructure.length < 2" class="py-2 px-2 text-center text-slate-300">·</td>
-                                            <td class="py-2 px-3 text-center w-12">
-                                                <button type="button" @click="removeRow(rIdx)" class="text-rose-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition" title="Hapus baris ini">
-                                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
-                                                </button>
+                                            {{-- Row Action Cell --}}
+                                            <td class="py-1 px-1.5 text-center border-b border-slate-200 w-10">
+                                                <button type="button" @click="insertRow(rIdx, 'below')" class="text-slate-300 hover:text-emerald-600 p-1 rounded hover:bg-slate-100 transition" title="Sisipkan baris baru di bawah">+</button>
                                             </td>
                                         </tr>
                                     </template>
                                     <tr x-show="rows.length === 0">
-                                        <td :colspan="headers.length + 3" class="text-center py-12 text-slate-400">
-                                            <p class="font-medium">Belum ada baris data pada tabel ini.</p>
-                                            <p class="text-xs mt-1">Klik tombol <span class="font-bold text-violet-600">+ Tambah Baris</span> di atas untuk mulai mengisi, atau tempel (Paste) langsung dari Excel.</p>
+                                        <td :colspan="headers.length + 2" class="text-center py-12 text-slate-400 border-b border-slate-200">
+                                            <p class="font-medium text-slate-600">Belum ada baris data pada tabel ini.</p>
+                                            <p class="text-xs mt-1">Klik tombol <span class="font-bold text-emerald-700">+1 Baris</span> di toolbar atau gunakan tombol <span class="font-bold text-emerald-700">Tempel dari Excel</span>.</p>
                                         </td>
                                     </tr>
                                 </tbody>
                             @endif
 
                             {{-- Footer Live Sum / Total Row --}}
-                            <tfoot class="border-t-2 border-slate-200 bg-slate-50/90 font-semibold text-slate-700">
+                            <tfoot class="border-t-2 border-slate-300 bg-slate-100/90 font-semibold text-slate-700">
                                 <tr x-show="hasTotal">
+                                    <td class="py-2 px-2 text-center font-mono font-bold text-slate-500 border-r border-slate-300 bg-slate-200/80">∑</td>
                                     <template x-for="(col, cIdx) in headers" :key="'foot-' + cIdx">
-                                        <td class="py-2.5 px-3 text-center border-r border-slate-200">
-                                            <span x-show="cIdx === totalLabelCol" class="font-black text-slate-800 text-xs uppercase tracking-wider">Total</span>
-                                            <span x-show="sumCols.includes(cIdx)" class="font-bold text-violet-700 text-xs" x-text="calcColumnSum(cIdx)"></span>
+                                        <td class="py-2 px-2.5 text-center border-r border-slate-200">
+                                            <span x-show="cIdx === totalLabelCol" class="font-black text-slate-900 text-xs uppercase tracking-wider">Total</span>
+                                            <span x-show="sumCols.includes(cIdx)" class="font-bold text-emerald-800 text-xs font-mono" x-text="calcColumnSum(cIdx)"></span>
                                             <span x-show="cIdx !== totalLabelCol && !sumCols.includes(cIdx)" class="text-slate-300">-</span>
                                         </td>
                                     </template>
-                                    <td x-show="!headerStructure || headerStructure.length < 2"></td>
-                                    <td class="w-12"></td>
+                                    <td class="w-10"></td>
                                 </tr>
                                 <tr>
-                                    <td :colspan="headers.length + 3" class="py-2 px-4 bg-slate-100/70">
+                                    <td :colspan="headers.length + 2" class="py-2 px-4 bg-slate-100">
                                         <div class="flex items-center justify-between text-xs text-slate-600">
                                             <span>Total: <strong x-text="rows.length"></strong> baris data terisi</span>
-                                            <span><strong x-text="headers.length"></strong> kolom aktif (dapat digeser ke kanan)</span>
+                                            <span><strong x-text="headers.length"></strong> kolom aktif (geser ke kanan untuk melihat semua kolom)</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -721,8 +795,108 @@
                             <span>Keterangan / Catatan Kaki Tabel:</span>
                             <span class="text-[11px] font-normal text-amber-700">Akan tercetak di bawah tabel dan diexport ke berkas Excel</span>
                         </div>
-                        <input type="text" x-model="note" placeholder="Contoh: *) Pustakawan adalah staf perpustakaan yang memiliki ijazah atau sertifikat kompetensi..."
+                        <input type="text" x-model="note" placeholder="Contoh: *) Data yang ditulis dalam tabel ini termasuk Unit Penjaminan Mutu..."
                             class="w-full rounded-lg border-amber-200 bg-white text-xs py-2 px-3 text-slate-800 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 shadow-2xs">
+                    </div>
+                </div>
+
+                {{-- Modal Asisten Tempel dari Excel (Paste Assistant Modal) --}}
+                <div x-show="showPasteModal" x-cloak
+                    class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex min-h-screen items-center justify-center p-4">
+                    <div class="w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl transition-all">
+                        {{-- Header Modal --}}
+                        <div class="border-b border-emerald-100 bg-emerald-50/80 p-4 sm:p-5 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white font-bold text-base shadow-xs">📋</span>
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-900">Tempel Data Langsung dari Excel</h3>
+                                    <p class="text-xs text-slate-500">Salin (Copy) tabel di berkas Excel Anda (<kbd class="px-1 py-0.5 rounded bg-slate-200 font-mono text-[10px]">Cmd+C</kbd> / <kbd class="px-1 py-0.5 rounded bg-slate-200 font-mono text-[10px]">Ctrl+C</kbd>), lalu tempel di sini.</p>
+                                </div>
+                            </div>
+                            <button type="button" @click="closePasteModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg p-1">✕</button>
+                        </div>
+
+                        <div class="p-4 sm:p-6 space-y-4 text-xs">
+                            {{-- Area Tempel / Textarea --}}
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5 font-bold text-slate-700">
+                                    <label for="excel-paste-input">1. Tempel (Paste) Teks Tabel dari Excel:</label>
+                                    <span class="text-[11px] text-slate-400 font-normal">Tekan Cmd+V atau Ctrl+V pada kotak di bawah</span>
+                                </div>
+                                <textarea id="excel-paste-input"
+                                    x-model="pasteRawText"
+                                    @input="onPasteInputChange()"
+                                    rows="6"
+                                    placeholder="Klik di sini lalu tekan Cmd+V atau Ctrl+V..."
+                                    class="w-full rounded-xl border border-slate-300 p-3 font-mono text-xs text-slate-800 placeholder-slate-400 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 shadow-2xs"></textarea>
+                            </div>
+
+                            {{-- Pilihan Opsi Penerapan --}}
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                                <div>
+                                    <span class="block font-bold text-slate-800 mb-1.5">2. Mode Penerapan Data:</span>
+                                    <div class="space-y-1.5">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="radio" x-model="pasteMode" value="replace" class="text-emerald-600 focus:ring-emerald-500">
+                                            <span><strong>Ganti seluruh isi tabel</strong> (Hapus data lama)</span>
+                                        </label>
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="radio" x-model="pasteMode" value="append" class="text-emerald-600 focus:ring-emerald-500">
+                                            <span><strong>Tambahkan di bawah</strong> data yang sudah ada</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="block font-bold text-slate-800 mb-1.5">3. Baris Judul (Header):</span>
+                                    <label class="flex items-start gap-2 cursor-pointer mt-1">
+                                        <input type="checkbox" x-model="pasteHasHeaders" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 mt-0.5">
+                                        <span class="text-slate-600 leading-snug">Baris pertama berisi nama kolom / judul (jangan dimasukkan sebagai data baris).</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            {{-- Live Preview Parsed Grid --}}
+                            <div x-show="pastePreviewRows.length > 0" class="space-y-1.5">
+                                <div class="flex items-center justify-between text-xs font-bold text-slate-800">
+                                    <span>Pratinjau Data Terdeteksi: <span class="text-emerald-700" x-text="(pasteHasHeaders ? pastePreviewRows.length - 1 : pastePreviewRows.length) + ' baris terdeteksi'"></span></span>
+                                    <span class="text-slate-400 font-normal">Kolom tujuan: <span x-text="headers.length"></span> kolom</span>
+                                </div>
+                                <div class="max-h-48 overflow-auto rounded-xl border border-slate-200 bg-white shadow-2xs">
+                                    <table class="w-full text-left text-[11px] divide-y divide-slate-200">
+                                        <thead class="bg-slate-100 font-bold text-slate-600 sticky top-0">
+                                            <tr>
+                                                <th class="py-1.5 px-2 w-8 text-center bg-slate-200">#</th>
+                                                <template x-for="(col, cIdx) in headers" :key="'preview-col-' + cIdx">
+                                                    <th class="py-1.5 px-2 border-r border-slate-200 truncate max-w-[140px]" x-text="col"></th>
+                                                </template>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-100">
+                                            <template x-for="(pRow, rIdx) in (pasteHasHeaders ? pastePreviewRows.slice(1, 6) : pastePreviewRows.slice(0, 5))" :key="'preview-row-' + rIdx">
+                                                <tr class="hover:bg-slate-50">
+                                                    <td class="py-1 px-2 text-center text-slate-400 bg-slate-50 font-mono" x-text="rIdx + 1"></td>
+                                                    <template x-for="(h, cIdx) in headers" :key="'pr-cell-' + cIdx">
+                                                        <td class="py-1 px-2 border-r border-slate-100 text-slate-700 truncate max-w-[140px]" x-text="pRow[cIdx] || '-'"></td>
+                                                    </template>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p x-show="pastePreviewRows.length > 5" class="text-[11px] text-slate-400 italic text-right">Menampilkan 5 baris pertama dari total <span x-text="pastePreviewRows.length"></span> baris.</p>
+                            </div>
+
+                            {{-- Footer Aksi Modal --}}
+                            <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+                                <button type="button" @click="closePasteModal()" class="rounded-xl px-4 py-2 font-semibold text-slate-600 hover:bg-slate-100 transition">
+                                    Batal
+                                </button>
+                                <button type="button" @click="applyPasteModal()" :disabled="pastePreviewRows.length === 0"
+                                    class="rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-2 font-bold text-white shadow-xs hover:from-emerald-700 hover:to-teal-700 transition disabled:opacity-50">
+                                    ✓ Terapkan ke Tabel
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
