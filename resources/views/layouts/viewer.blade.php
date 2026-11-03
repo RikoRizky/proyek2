@@ -66,7 +66,7 @@
                     </header>
                 @endisset
 
-                <div class="flex min-h-0 flex-1 flex-col overflow-hidden bg-slate-200/80">
+                <div class="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden w-full max-w-full bg-slate-200/80">
                     {{ $slot }}
                 </div>
         </div>

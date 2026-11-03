@@ -114,7 +114,7 @@
         '1.A.1': ['Unit Kerja', 'Nama Ketua', 'Periode Jabatan', 'Pendidikan Terakhir', 'Jabatan Fungsional', 'Tugas Pokok & Fungsi'],
         '1.A.2': ['Sumber Pendanaan', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
         '1.A.3': ['Penggunaan Dana', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
-        '1.A.4': ['No', 'Nama DTPR', 'PS Sendiri', 'PS Lain PT Sendiri', 'PT Lain', 'SKS Penelitian', 'SKS PkM', 'SKS Manajemen PT Sendiri', 'SKS Manajemen PT Lain', 'Total SKS'],
+        '1.A.4': ['No', 'Nama DTPR', 'SKS Pengajaran (PS Sendiri)', 'SKS Pengajaran (PS Lain PT Sendiri)', 'SKS Pengajaran (PT Lain)', 'SKS Penelitian', 'SKS Pengabdian (PkM)', 'SKS Manajemen (PT Sendiri)', 'SKS Manajemen (PT Lain)', 'Total SKS'],
         '1.A.5': ['No', 'Jenis Tenaga Kependidikan', 'S3', 'S2', 'S1', 'D4', 'D3', 'D2', 'D1', 'SMA/SMK/MA', 'Unit Kerja'],
         '1.B':   ['Unit SPMI', 'Nama Unit SPMI', 'Dokumen SPMI', 'Auditor Certified', 'Auditor Non-Certified', 'Frekuensi Audit/Tahun', 'Bukti Certified', 'Laporan Audit'],
         '2.A.1': ['TS', 'Daya Tampung', 'Pendaftar', 'Afirmasi', 'Kebutuhan Khusus', 'Mhs Baru Reguler', 'Mhs Baru RPL', 'Mhs Aktif Reguler', 'Mhs Aktif RPL'],
@@ -160,7 +160,7 @@
         },
         '1.A.2': {
             leafHeaders: ['Sumber Pendanaan', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
-            hasTotal: true,
+            hasTotal: false,
             totalLabelCol: 0,
             sumCols: [1, 2, 3],
             defaultRows: [
@@ -174,7 +174,7 @@
         },
         '1.A.3': {
             leafHeaders: ['Penggunaan Dana', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
-            hasTotal: true,
+            hasTotal: false,
             totalLabelCol: 0,
             sumCols: [1, 2, 3],
             defaultRows: [
@@ -188,26 +188,8 @@
             ]
         },
         '1.A.4': {
-            headerRows: [
-                [
-                    { label: 'No.', rowspan: 2, colIdx: 0, width: '50px' },
-                    { label: 'Nama DTPR', rowspan: 2, colIdx: 1, width: '220px' },
-                    { label: 'SKS Pengajaran¹) Pada', colspan: 3, colIdx: 2 },
-                    { label: 'SKS Penelitian²)', rowspan: 2, colIdx: 5, width: '130px' },
-                    { label: 'SKS Pengabdian kepada Masyarakat²)', rowspan: 2, colIdx: 6, width: '150px' },
-                    { label: 'SKS Manajemen³)', colspan: 2, colIdx: 7 },
-                    { label: 'Total SKS', rowspan: 2, colIdx: 9, width: '110px' }
-                ],
-                [
-                    { label: 'PS Sendiri', colIdx: 2, width: '110px' },
-                    { label: 'PS Lain, PT Sendiri', colIdx: 3, width: '140px' },
-                    { label: 'PT Lain', colIdx: 4, width: '110px' },
-                    { label: 'PT Sendiri', colIdx: 7, width: '110px' },
-                    { label: 'PT Lain', colIdx: 8, width: '110px' }
-                ]
-            ],
-            leafHeaders: ['No', 'Nama DTPR', 'PS Sendiri', 'PS Lain PT Sendiri', 'PT Lain', 'SKS Penelitian', 'SKS PkM', 'SKS Manajemen PT Sendiri', 'SKS Manajemen PT Lain', 'Total SKS'],
-            hasTotal: true,
+            leafHeaders: ['No', 'Nama DTPR', 'SKS Pengajaran (PS Sendiri)', 'SKS Pengajaran (PS Lain PT Sendiri)', 'SKS Pengajaran (PT Lain)', 'SKS Penelitian', 'SKS Pengabdian (PkM)', 'SKS Manajemen (PT Sendiri)', 'SKS Manajemen (PT Lain)', 'Total SKS'],
+            hasTotal: false,
             totalLabelCol: 1,
             sumCols: [2, 3, 4, 5, 6, 7, 8, 9],
             note: '1) SKS pengajaran sama dengan sks mata kuliah yang diajarkan. 2) SKS penelitian dan pengabdian kepada masyarakat dihitung sesuai dengan peraturan yang berlaku di PT. 3) SKS manajemen dihitung sesuai jabatan.'
@@ -238,7 +220,7 @@
                 { cells: ['3.', 'Administrasi', '0', '0', '0', '0', '0', '0', '0', '0', ''] },
                 { cells: ['4.', 'Lainnya', '0', '0', '0', '0', '0', '0', '0', '0', ''] }
             ],
-            hasTotal: true,
+            hasTotal: false,
             totalLabelCol: 1,
             sumCols: [2, 3, 4, 5, 6, 7, 8, 9],
             note: '*) Pustakawan adalah staf perpustakaan yang memiliki ijazah atau sertifikat kompetensi pada bidang ilmu perpustakaan.'
@@ -291,7 +273,7 @@
                 { cells: ['TS-1', '', '', '', '', '', '', '', ''] },
                 { cells: ['TS', '', '', '', '', '', '', '', ''] }
             ],
-            hasTotal: true,
+            hasTotal: false,
             totalLabelCol: 0,
             sumCols: [1, 2, 3, 4, 5, 6, 7, 8]
         },
@@ -317,7 +299,7 @@
                 { cells: ['TS-1', '', '', '', '', '', '', ''] },
                 { cells: ['TS', '', '', '', '', '', '', ''] }
             ],
-            hasTotal: true,
+            hasTotal: false,
             totalLabelCol: 0,
             sumCols: [1, 2, 3, 4, 5, 6, 7]
         },
@@ -346,7 +328,7 @@
                 { cells: ['6', 'Kepemimpinan', '', '', '', '', ''] },
                 { cells: ['7', 'Etos Kerja', '', '', '', '', ''] }
             ],
-            hasTotal: true,
+            hasTotal: false,
             totalLabelCol: 1,
             sumCols: [2, 3, 4, 5]
         },
@@ -370,7 +352,7 @@
                 ]
             ],
             leafHeaders: ['No', 'Nama DTPR (Ketua)', 'Judul Penelitian', 'Mhs Terlibat', 'Jenis Hibah', 'Sumber (L/N/I)', 'Durasi (Tahun)', 'Dana TS-2', 'Dana TS-1', 'Dana TS', 'Link Bukti'],
-            hasTotal: true,
+            hasTotal: false,
             totalLabelCol: 2,
             sumCols: [3, 6, 7, 8, 9]
         },
@@ -394,7 +376,7 @@
                 ]
             ],
             leafHeaders: ['No', 'Nama DTPR (Ketua PkM)', 'Judul PkM', 'Mhs Terlibat', 'Jenis Hibah', 'Sumber (L/N/I)', 'Durasi (Tahun)', 'Dana TS-2', 'Dana TS-1', 'Dana TS', 'Link Bukti'],
-            hasTotal: true,
+            hasTotal: false,
             totalLabelCol: 2,
             sumCols: [3, 6, 7, 8, 9]
         },
@@ -416,7 +398,7 @@
                 ]
             ],
             leafHeaders: ['No', 'Judul Kerjasama', 'Mitra Kerja Sama', 'Sumber (L/N/I)', 'Durasi (Tahun)', 'Dana TS-2', 'Dana TS-1', 'Dana TS', 'Link Bukti'],
-            hasTotal: true,
+            hasTotal: false,
             totalLabelCol: 1,
             sumCols: [4, 5, 6, 7]
         },
@@ -438,7 +420,7 @@
                 ]
             ],
             leafHeaders: ['No', 'Judul Kerjasama PkM', 'Mitra Kerja Sama', 'Sumber (L/N/I)', 'Durasi (Tahun)', 'Dana TS-2', 'Dana TS-1', 'Dana TS', 'Link Bukti'],
-            hasTotal: true,
+            hasTotal: false,
             totalLabelCol: 1,
             sumCols: [4, 5, 6, 7]
         },
@@ -456,7 +438,7 @@
                 ]
             ],
             leafHeaders: ['Asal Mahasiswa', 'TS-2', 'TS-1', 'TS', 'Link Bukti'],
-            hasTotal: true,
+            hasTotal: false,
             totalLabelCol: 0,
             sumCols: [1, 2, 3],
             defaultRows: [
@@ -468,7 +450,7 @@
         },
         '2.A.3': {
             leafHeaders: ['Kategori Mahasiswa Asing', 'TS-2', 'TS-1', 'TS', 'Jumlah'],
-            hasTotal: true,
+            hasTotal: false,
             totalLabelCol: 0,
             sumCols: [1, 2, 3, 4],
             defaultRows: [
@@ -675,11 +657,10 @@
         }
 
         // Header structure (multi-level merged headers)
+        // By default keep false/null so user has full freedom like standard Excel
         let initHeaderStructure = null;
-        if (initialSummary && initialSummary.header_structure) {
+        if (initialSummary && initialSummary.header_structure && Array.isArray(initialSummary.header_structure) && initialSummary.header_structure.length >= 2) {
             initHeaderStructure = JSON.parse(JSON.stringify(initialSummary.header_structure));
-        } else if ((!initialHeaders || initialHeaders.length === 0 || (schema && schema.leafHeaders && schema.leafHeaders.length === initialHeaders.length)) && schema && schema.headerRows) {
-            initHeaderStructure = JSON.parse(JSON.stringify(schema.headerRows));
         }
 
         // Extract initial column merge groups from header structure if any
@@ -748,7 +729,7 @@
             rows: startRows,
             headerStructure: initHeaderStructure,
             columnGroups: initialGroups,
-            hasTotal: initialSummary && initialSummary.has_total !== undefined ? initialSummary.has_total : (schema && schema.hasTotal ? true : false),
+            hasTotal: (initialSummary && initialSummary.has_total === true) ? true : false,
             totalLabelCol: initialSummary && initialSummary.total_label_col !== undefined ? initialSummary.total_label_col : (schema && schema.totalLabelCol !== undefined ? schema.totalLabelCol : 1),
             sumCols: initialSummary && initialSummary.sum_cols ? initialSummary.sum_cols : (schema && schema.sumCols ? schema.sumCols : []),
             note: initialSummary && initialSummary.note ? initialSummary.note : (schema && schema.note ? schema.note : ''),
@@ -809,14 +790,26 @@
                 }
             },
 
+            getColLetter(idx) {
+                let s = '';
+                let num = idx;
+                while (num >= 0) {
+                    s = String.fromCharCode((num % 26) + 65) + s;
+                    num = Math.floor(num / 26) - 1;
+                }
+                return s;
+            },
+
             getActiveCellCoord() {
-                const colLetter = String.fromCharCode(65 + (this.activeCol % 26));
+                const colLetter = this.getColLetter(this.activeCol);
                 const rowNum = this.activeRow + 1;
                 return colLetter + rowNum;
             },
 
             getActiveColName() {
-                return this.headers[this.activeCol] || ('Kolom ' + (this.activeCol + 1));
+                const colLetter = this.getColLetter(this.activeCol);
+                const name = this.headers[this.activeCol] || ('Kolom ' + (this.activeCol + 1));
+                return `${colLetter}: ${name}`;
             },
 
             focusCell(r, c) {
@@ -1231,6 +1224,31 @@
                 });
                 this.hasTotal = false;
                 this.saveStatusMessage = '✓ Baris total telah dihapus.';
+                setTimeout(() => { this.saveStatusMessage = ''; }, 3000);
+            },
+
+            toggleTotalRow() {
+                this.hasTotal = !this.hasTotal;
+                if (this.hasTotal) {
+                    if (!Array.isArray(this.sumCols) || this.sumCols.length === 0) {
+                        this.sumCols = [];
+                        this.headers.forEach((h, i) => {
+                            if (i !== this.totalLabelCol && this.rows.some(r => r.cells && !isNaN(parseFloat(r.cells[i])) && String(r.cells[i]).trim() !== '')) {
+                                this.sumCols.push(i);
+                            }
+                        });
+                    }
+                    this.saveStatusMessage = '✓ Baris Total diaktifkan.';
+                } else {
+                    this.saveStatusMessage = '✓ Baris Total dinonaktifkan.';
+                }
+                setTimeout(() => { if (this.saveStatusMessage.includes('Baris Total')) this.saveStatusMessage = ''; }, 3000);
+            },
+
+            clearColumnGroups() {
+                this.headerStructure = null;
+                this.columnGroups = [];
+                this.saveStatusMessage = '✓ Gabungan kolom dilepas, kolom kembali ke mode bebas.';
                 setTimeout(() => { this.saveStatusMessage = ''; }, 3000);
             },
 
