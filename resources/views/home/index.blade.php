@@ -59,6 +59,27 @@
             gap: 16px;
         }
 
+        .siladata-nav-brand-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none !important;
+            line-height: 1;
+        }
+
+        .siladata-nav-logo {
+            height: 36px;
+            width: 36px;
+            object-fit: contain;
+            display: block;
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .siladata-nav-brand-wrap:hover .siladata-nav-logo {
+            transform: scale(1.05);
+        }
+
         .siladata-nav-brand {
             font-size: 23px;
             font-weight: 900;
@@ -635,6 +656,10 @@
             #siladata-hero-nav {
                 padding: 10px 18px;
             }
+            .siladata-nav-logo {
+                height: 28px;
+                width: 28px;
+            }
             .siladata-nav-brand {
                 font-size: 20px;
             }
@@ -718,9 +743,12 @@
 
         <div class="siladata-hero-container">
             {{-- Floating Pill Navbar --}}
-            <nav id="siladata-hero-nav">
+            <nav id="siladata-hero-nav" class="siladata-floating-nav">
                 <div class="siladata-nav-left">
-                    <a href="{{ url('/') }}" class="siladata-nav-brand">SILADATA</a>
+                    <a href="{{ url('/') }}" class="siladata-nav-brand-wrap">
+                        <img src="{{ asset('images/logo-new.png') }}?v={{ file_exists(public_path('images/logo-new.png')) ? filemtime(public_path('images/logo-new.png')) : time() }}" alt="SILADATA" class="siladata-nav-logo" />
+                        <span class="siladata-nav-brand">SILADATA</span>
+                    </a>
                     <div class="siladata-nav-divider"></div>
                     <span class="siladata-nav-subtitle">Sistem Layanan Dokumen Akreditasi</span>
                 </div>
@@ -905,9 +933,9 @@
                             </div>
                         </div>
 
-                        {{-- 3. Woman / Person Visual Cutout (HANYA INI YANG GAMBAR) --}}
+                        {{-- 3. Woman / Person Visual Cutout (Aktor Karakter Utama) --}}
                         <img
-                            src="{{ asset('images/hero-woman-clean.png') }}?v={{ filemtime(public_path('images/hero-woman-clean.png')) }}"
+                            src="{{ asset('images/aktor.png') }}?v={{ file_exists(public_path('images/aktor.png')) ? filemtime(public_path('images/aktor.png')) : time() }}"
                             alt="Sistem Dokumen Akreditasi Perguruan Tinggi SILADATA"
                             class="siladata-woman-img"
                         />

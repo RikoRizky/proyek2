@@ -93,13 +93,179 @@
     <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+    {{-- Shared SILADATA Floating Pill Navbar Styles (Presisi & Identik Baik Sebelum Maupun Sesudah Scroll) --}}
+    <style>
+        .siladata-nav-wrapper {
+            max-width: 1180px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 28px;
+            box-sizing: border-box;
+        }
+
+        .siladata-floating-nav {
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(225, 218, 204, 0.85);
+            border-radius: 9999px;
+            padding: 12px 30px;
+            box-shadow: 0 10px 30px rgba(17, 28, 46, 0.07);
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            box-sizing: border-box;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            position: relative;
+            z-index: 50;
+        }
+
+        .siladata-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .siladata-nav-brand-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none !important;
+            line-height: 1;
+        }
+
+        .siladata-nav-logo {
+            height: 36px;
+            width: 36px;
+            object-fit: contain;
+            display: block;
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .siladata-nav-brand-wrap:hover .siladata-nav-logo {
+            transform: scale(1.05);
+        }
+
+        .siladata-nav-brand {
+            font-size: 23px;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            color: #111C2E !important;
+            text-decoration: none;
+            line-height: 1;
+        }
+
+        .siladata-nav-divider {
+            width: 1px;
+            height: 18px;
+            background-color: #E2D9CC;
+            display: none;
+        }
+
+        .siladata-nav-subtitle {
+            display: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: #475467;
+            letter-spacing: -0.01em;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .siladata-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 26px;
+        }
+
+        .siladata-nav-link {
+            font-size: 14.5px;
+            font-weight: 600;
+            color: #111C2E !important;
+            text-decoration: none;
+            transition: color 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .siladata-nav-link:hover {
+            color: #E87A36 !important;
+        }
+
+        .siladata-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #111C2E;
+            color: #FFFFFF !important;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 9.5px 28px;
+            border-radius: 9999px;
+            text-decoration: none;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(17, 28, 46, 0.15);
+            transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .siladata-nav-btn:hover {
+            background-color: #1B2B43;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(17, 28, 46, 0.22);
+        }
+
+        @media (min-width: 640px) {
+            .siladata-floating-nav {
+                padding: 13px 34px;
+            }
+            .siladata-nav-brand {
+                font-size: 24px;
+            }
+            .siladata-nav-divider {
+                display: block;
+            }
+            .siladata-nav-subtitle {
+                display: inline-block;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .siladata-nav-wrapper {
+                padding: 0 16px;
+            }
+            .siladata-floating-nav {
+                padding: 10px 18px;
+            }
+            .siladata-nav-logo {
+                height: 28px;
+                width: 28px;
+            }
+            .siladata-nav-brand {
+                font-size: 20px;
+            }
+            .siladata-nav-right {
+                gap: 16px;
+            }
+            .siladata-nav-link {
+                font-size: 13.5px;
+            }
+            .siladata-nav-btn {
+                padding: 7.5px 20px;
+                font-size: 13px;
+            }
+        }
+    </style>
 </head>
 <body class="font-sans text-slate-900 antialiased" style="background-color: #ECE8DD; margin: 0; padding: 0;">
     {{-- Floating Pill Navbar (Sticky on scroll for home, always on other pages) --}}
     @if(request()->routeIs('home'))
         {{-- Sticky Nav for Home: appears smoothly when user scrolls down past hero banner --}}
         <header x-data="{ scrolled: false }"
-                x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 150 })"
+                x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 120 })"
                 x-show="scrolled"
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0 -translate-y-4"
@@ -107,41 +273,53 @@
                 x-transition:leave="transition ease-in duration-150"
                 x-transition:leave-start="opacity-100 translate-y-0"
                 x-transition:leave-end="opacity-0 -translate-y-4"
-                class="fixed top-4 left-0 right-0 z-50 mx-auto px-4 pointer-events-none"
-                style="max-width: 1180px; width: 100%; display: none;">
-            <div class="pointer-events-auto flex items-center justify-between"
-                 style="background-color: rgba(255, 255, 255, 0.98); border-radius: 9999px; padding: 12px 32px; border: 1px solid rgba(229, 223, 209, 0.85); box-shadow: 0 10px 35px rgba(17, 28, 46, 0.08); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);">
-                <a href="{{ route('home') }}" class="flex items-center gap-3.5 group" style="text-decoration: none;">
-                    <span style="font-size: 23px; font-weight: 900; letter-spacing: -0.03em; color: #111C2E; font-family: 'Plus Jakarta Sans', sans-serif;">SILADATA</span>
-                    <span class="hidden sm:inline" style="font-size: 13.5px; color: #475467; font-weight: 500;">Sistem Layanan Dokumen Akreditasi</span>
-                </a>
-                <div class="flex items-center gap-6">
-                    <a href="{{ route('harga') }}" style="font-size: 14.5px; font-weight: 600; color: #111C2E; text-decoration: none;">Harga</a>
-                    @auth
-                        <a href="{{ route('dashboard') }}" style="display: inline-flex; align-items: center; justify-content: center; background-color: #111C2E; color: #FFFFFF; font-size: 14px; font-weight: 700; border-radius: 9999px; padding: 9px 26px; text-decoration: none; box-shadow: 0 4px 12px rgba(17, 28, 46, 0.15);">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" style="display: inline-flex; align-items: center; justify-content: center; background-color: #111C2E; color: #FFFFFF; font-size: 14px; font-weight: 700; border-radius: 9999px; padding: 9px 26px; text-decoration: none; box-shadow: 0 4px 12px rgba(17, 28, 46, 0.15);">Masuk</a>
-                    @endauth
-                </div>
+                class="fixed top-4 sm:top-6 left-0 right-0 z-50 pointer-events-none siladata-nav-wrapper"
+                style="display: none;">
+            <div class="pointer-events-auto w-full">
+                <nav class="siladata-floating-nav">
+                    <div class="siladata-nav-left">
+                        <a href="{{ route('home') }}" class="siladata-nav-brand-wrap">
+                            <img src="{{ asset('images/logo-new.png') }}?v={{ file_exists(public_path('images/logo-new.png')) ? filemtime(public_path('images/logo-new.png')) : time() }}" alt="SILADATA" class="siladata-nav-logo" />
+                            <span class="siladata-nav-brand">SILADATA</span>
+                        </a>
+                        <div class="siladata-nav-divider"></div>
+                        <span class="siladata-nav-subtitle">Sistem Layanan Dokumen Akreditasi</span>
+                    </div>
+
+                    <div class="siladata-nav-right">
+                        <a href="{{ route('harga') }}" class="siladata-nav-link">Harga</a>
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="siladata-nav-btn">Dashboard</a>
+                        @else
+                            <a href="{{ route('login') }}" class="siladata-nav-btn">Masuk</a>
+                        @endauth
+                    </div>
+                </nav>
             </div>
         </header>
     @else
         {{-- Floating Nav for Other Pages (Harga, Discussion, etc.) --}}
-        <header class="sticky top-4 z-50 mx-auto w-full px-4 mb-4" style="max-width: 1180px;">
-            <div class="flex items-center justify-between"
-                 style="background-color: rgba(255, 255, 255, 0.98); border-radius: 9999px; padding: 12px 32px; border: 1px solid rgba(229, 223, 209, 0.85); box-shadow: 0 8px 30px rgba(17, 28, 46, 0.06); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);">
-                <a href="{{ route('home') }}" class="flex items-center gap-3.5 group" style="text-decoration: none;">
-                    <span style="font-size: 23px; font-weight: 900; letter-spacing: -0.03em; color: #111C2E; font-family: 'Plus Jakarta Sans', sans-serif;">SILADATA</span>
-                    <span class="hidden sm:inline" style="font-size: 13.5px; color: #475467; font-weight: 500;">Sistem Layanan Dokumen Akreditasi</span>
-                </a>
-                <div class="flex items-center gap-6">
-                    <a href="{{ route('harga') }}" style="font-size: 14.5px; font-weight: 600; color: #111C2E; text-decoration: none;">Harga</a>
-                    @auth
-                        <a href="{{ route('dashboard') }}" style="display: inline-flex; align-items: center; justify-content: center; background-color: #111C2E; color: #FFFFFF; font-size: 14px; font-weight: 700; border-radius: 9999px; padding: 9px 26px; text-decoration: none; box-shadow: 0 4px 12px rgba(17, 28, 46, 0.15);">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" style="display: inline-flex; align-items: center; justify-content: center; background-color: #111C2E; color: #FFFFFF; font-size: 14px; font-weight: 700; border-radius: 9999px; padding: 9px 26px; text-decoration: none; box-shadow: 0 4px 12px rgba(17, 28, 46, 0.15);">Masuk</a>
-                    @endauth
-                </div>
+        <header class="sticky top-4 sm:top-6 z-50 pointer-events-none siladata-nav-wrapper mb-6">
+            <div class="pointer-events-auto w-full">
+                <nav class="siladata-floating-nav">
+                    <div class="siladata-nav-left">
+                        <a href="{{ route('home') }}" class="siladata-nav-brand-wrap">
+                            <img src="{{ asset('images/logo-new.png') }}?v={{ file_exists(public_path('images/logo-new.png')) ? filemtime(public_path('images/logo-new.png')) : time() }}" alt="SILADATA" class="siladata-nav-logo" />
+                            <span class="siladata-nav-brand">SILADATA</span>
+                        </a>
+                        <div class="siladata-nav-divider"></div>
+                        <span class="siladata-nav-subtitle">Sistem Layanan Dokumen Akreditasi</span>
+                    </div>
+
+                    <div class="siladata-nav-right">
+                        <a href="{{ route('harga') }}" class="siladata-nav-link">Harga</a>
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="siladata-nav-btn">Dashboard</a>
+                        @else
+                            <a href="{{ route('login') }}" class="siladata-nav-btn">Masuk</a>
+                        @endauth
+                    </div>
+                </nav>
             </div>
         </header>
     @endif
