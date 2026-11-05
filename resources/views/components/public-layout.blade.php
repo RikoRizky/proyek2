@@ -94,12 +94,37 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 
-    {{-- Shared SILADATA Floating Pill Navbar Styles (Presisi & Identik Baik Sebelum Maupun Sesudah Scroll) --}}
+    {{-- Shared SILADATA Floating Pill Navbar Styles (Presisi & 100% Identik Baik Sebelum Maupun Sesudah Scroll) --}}
     <style>
-        .siladata-nav-wrapper {
+        [x-cloak] { display: none !important; }
+
+        .siladata-sticky-wrapper {
+            position: fixed;
+            top: 24px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
             max-width: 1180px;
             width: 100%;
             margin: 0 auto;
+            padding: 0 28px;
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+
+        .siladata-sticky-wrapper .siladata-floating-nav,
+        .siladata-sticky-wrapper a,
+        .siladata-sticky-wrapper button {
+            pointer-events: auto !important;
+        }
+
+        .siladata-other-header {
+            position: sticky;
+            top: 24px;
+            z-index: 1000;
+            max-width: 1180px;
+            width: 100%;
+            margin: 0 auto 24px auto;
             padding: 0 28px;
             box-sizing: border-box;
         }
@@ -108,7 +133,7 @@
             display: flex !important;
             align-items: center;
             justify-content: space-between;
-            background-color: rgba(255, 255, 255, 0.98);
+            background-color: #FFFFFF !important;
             border: 1px solid rgba(225, 218, 204, 0.85);
             border-radius: 9999px;
             padding: 12px 30px;
@@ -121,20 +146,27 @@
             -webkit-backdrop-filter: blur(14px);
             font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
             position: relative;
-            z-index: 50;
         }
 
         .siladata-nav-left {
             display: flex;
             align-items: center;
-            gap: 16px;
         }
 
         .siladata-nav-brand-wrap {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 16px;
             text-decoration: none !important;
+            line-height: 1;
+            cursor: pointer !important;
+            pointer-events: auto !important;
+        }
+
+        .siladata-nav-brand-main {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             line-height: 1;
         }
 
@@ -145,10 +177,11 @@
             display: block;
             flex-shrink: 0;
             transition: transform 0.2s ease;
+            pointer-events: none !important;
         }
 
         .siladata-nav-brand-wrap:hover .siladata-nav-logo {
-            transform: scale(1.05);
+            transform: scale(1.06);
         }
 
         .siladata-nav-brand {
@@ -190,6 +223,8 @@
             text-decoration: none;
             transition: color 0.15s ease;
             white-space: nowrap;
+            cursor: pointer !important;
+            pointer-events: auto !important;
         }
 
         .siladata-nav-link:hover {
@@ -210,6 +245,8 @@
             white-space: nowrap;
             box-shadow: 0 4px 12px rgba(17, 28, 46, 0.15);
             transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+            cursor: pointer !important;
+            pointer-events: auto !important;
         }
 
         .siladata-nav-btn:hover {
@@ -234,7 +271,9 @@
         }
 
         @media (max-width: 767px) {
-            .siladata-nav-wrapper {
+            .siladata-sticky-wrapper,
+            .siladata-other-header {
+                top: 16px;
                 padding: 0 16px;
             }
             .siladata-floating-nav {
@@ -267,60 +306,20 @@
         <header x-data="{ scrolled: false }"
                 x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 120 })"
                 x-show="scrolled"
+                x-cloak
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0 -translate-y-4"
                 x-transition:enter-end="opacity-100 translate-y-0"
                 x-transition:leave="transition ease-in duration-150"
                 x-transition:leave-start="opacity-100 translate-y-0"
                 x-transition:leave-end="opacity-0 -translate-y-4"
-                class="fixed top-4 sm:top-6 left-0 right-0 z-50 pointer-events-none siladata-nav-wrapper"
-                style="display: none;">
-            <div class="pointer-events-auto w-full">
-                <nav class="siladata-floating-nav">
-                    <div class="siladata-nav-left">
-                        <a href="{{ route('home') }}" class="siladata-nav-brand-wrap">
-                            <img src="{{ asset('images/logo-new.png') }}?v={{ file_exists(public_path('images/logo-new.png')) ? filemtime(public_path('images/logo-new.png')) : time() }}" alt="SILADATA" class="siladata-nav-logo" />
-                            <span class="siladata-nav-brand">SILADATA</span>
-                        </a>
-                        <div class="siladata-nav-divider"></div>
-                        <span class="siladata-nav-subtitle">Sistem Layanan Dokumen Akreditasi</span>
-                    </div>
-
-                    <div class="siladata-nav-right">
-                        <a href="{{ route('harga') }}" class="siladata-nav-link">Harga</a>
-                        @auth
-                            <a href="{{ route('dashboard') }}" class="siladata-nav-btn">Dashboard</a>
-                        @else
-                            <a href="{{ route('login') }}" class="siladata-nav-btn">Masuk</a>
-                        @endauth
-                    </div>
-                </nav>
-            </div>
+                class="siladata-sticky-wrapper">
+            <x-siladata-navbar />
         </header>
     @else
         {{-- Floating Nav for Other Pages (Harga, Discussion, etc.) --}}
-        <header class="sticky top-4 sm:top-6 z-50 pointer-events-none siladata-nav-wrapper mb-6">
-            <div class="pointer-events-auto w-full">
-                <nav class="siladata-floating-nav">
-                    <div class="siladata-nav-left">
-                        <a href="{{ route('home') }}" class="siladata-nav-brand-wrap">
-                            <img src="{{ asset('images/logo-new.png') }}?v={{ file_exists(public_path('images/logo-new.png')) ? filemtime(public_path('images/logo-new.png')) : time() }}" alt="SILADATA" class="siladata-nav-logo" />
-                            <span class="siladata-nav-brand">SILADATA</span>
-                        </a>
-                        <div class="siladata-nav-divider"></div>
-                        <span class="siladata-nav-subtitle">Sistem Layanan Dokumen Akreditasi</span>
-                    </div>
-
-                    <div class="siladata-nav-right">
-                        <a href="{{ route('harga') }}" class="siladata-nav-link">Harga</a>
-                        @auth
-                            <a href="{{ route('dashboard') }}" class="siladata-nav-btn">Dashboard</a>
-                        @else
-                            <a href="{{ route('login') }}" class="siladata-nav-btn">Masuk</a>
-                        @endauth
-                    </div>
-                </nav>
-            </div>
+        <header class="siladata-other-header">
+            <x-siladata-navbar />
         </header>
     @endif
 

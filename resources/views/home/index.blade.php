@@ -34,119 +34,6 @@
             box-sizing: border-box;
         }
 
-        /* Floating Pill Navbar */
-        #siladata-hero-nav {
-            display: flex !important;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #FFFFFF;
-            border: 1px solid rgba(225, 218, 204, 0.85);
-            border-radius: 9999px;
-            padding: 12px 30px;
-            box-shadow: 0 10px 30px rgba(17, 28, 46, 0.07);
-            width: 100%;
-            max-width: 100%;
-            margin: 0 auto;
-            box-sizing: border-box;
-            flex-shrink: 0;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-
-        .siladata-nav-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .siladata-nav-brand-wrap {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none !important;
-            line-height: 1;
-        }
-
-        .siladata-nav-logo {
-            height: 36px;
-            width: 36px;
-            object-fit: contain;
-            display: block;
-            flex-shrink: 0;
-            transition: transform 0.2s ease;
-        }
-
-        .siladata-nav-brand-wrap:hover .siladata-nav-logo {
-            transform: scale(1.05);
-        }
-
-        .siladata-nav-brand {
-            font-size: 23px;
-            font-weight: 900;
-            letter-spacing: -0.03em;
-            color: #111C2E !important;
-            text-decoration: none;
-            line-height: 1;
-        }
-
-        .siladata-nav-divider {
-            width: 1px;
-            height: 18px;
-            background-color: #E2D9CC;
-            display: none;
-        }
-
-        .siladata-nav-subtitle {
-            display: none;
-            font-size: 13.5px;
-            font-weight: 500;
-            color: #475467;
-            letter-spacing: -0.01em;
-            line-height: 1;
-            white-space: nowrap;
-        }
-
-        .siladata-nav-right {
-            display: flex;
-            align-items: center;
-            gap: 26px;
-        }
-
-        .siladata-nav-link {
-            font-size: 14.5px;
-            font-weight: 600;
-            color: #111C2E !important;
-            text-decoration: none;
-            transition: color 0.15s ease;
-            white-space: nowrap;
-        }
-
-        .siladata-nav-link:hover {
-            color: #E87A36 !important;
-        }
-
-        .siladata-nav-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #111C2E;
-            color: #FFFFFF !important;
-            font-size: 14px;
-            font-weight: 700;
-            padding: 9.5px 28px;
-            border-radius: 9999px;
-            text-decoration: none;
-            white-space: nowrap;
-            box-shadow: 0 4px 12px rgba(17, 28, 46, 0.15);
-            transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
-        }
-
-        .siladata-nav-btn:hover {
-            background-color: #1B2B43;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(17, 28, 46, 0.22);
-        }
-
         /* 2-Column Hero Grid (Centered vertically in remaining viewport space) */
         .siladata-hero-row {
             display: flex;
@@ -597,21 +484,6 @@
         }
 
         /* Responsive Breakpoints */
-        @media (min-width: 640px) {
-            #siladata-hero-nav {
-                padding: 13px 34px;
-            }
-            .siladata-nav-brand {
-                font-size: 24px;
-            }
-            .siladata-nav-divider {
-                display: block;
-            }
-            .siladata-nav-subtitle {
-                display: inline-block;
-            }
-        }
-
         @media (min-width: 1024px) {
             .siladata-hero-row {
                 padding: 28px 0 20px 0;
@@ -652,26 +524,6 @@
             }
             .siladata-hero-container {
                 padding: 16px 16px 0 16px;
-            }
-            #siladata-hero-nav {
-                padding: 10px 18px;
-            }
-            .siladata-nav-logo {
-                height: 28px;
-                width: 28px;
-            }
-            .siladata-nav-brand {
-                font-size: 20px;
-            }
-            .siladata-nav-right {
-                gap: 16px;
-            }
-            .siladata-nav-link {
-                font-size: 13.5px;
-            }
-            .siladata-nav-btn {
-                padding: 7.5px 20px;
-                font-size: 13px;
             }
             .siladata-hero-row {
                 flex-direction: column;
@@ -742,26 +594,8 @@
         </div>
 
         <div class="siladata-hero-container">
-            {{-- Floating Pill Navbar --}}
-            <nav id="siladata-hero-nav" class="siladata-floating-nav">
-                <div class="siladata-nav-left">
-                    <a href="{{ url('/') }}" class="siladata-nav-brand-wrap">
-                        <img src="{{ asset('images/logo-new.png') }}?v={{ file_exists(public_path('images/logo-new.png')) ? filemtime(public_path('images/logo-new.png')) : time() }}" alt="SILADATA" class="siladata-nav-logo" />
-                        <span class="siladata-nav-brand">SILADATA</span>
-                    </a>
-                    <div class="siladata-nav-divider"></div>
-                    <span class="siladata-nav-subtitle">Sistem Layanan Dokumen Akreditasi</span>
-                </div>
-
-                <div class="siladata-nav-right">
-                    <a href="{{ route('harga') }}" class="siladata-nav-link">Harga</a>
-                    @auth
-                        <a href="{{ route('dashboard') }}" class="siladata-nav-btn">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="siladata-nav-btn">Masuk</a>
-                    @endauth
-                </div>
-            </nav>
+            {{-- Floating Pill Navbar (Hero Header - Identik dengan Nav Scroll) --}}
+            <x-siladata-navbar id="siladata-hero-nav" />
 
             {{-- Hero 2-Column Content --}}
             <div class="siladata-hero-row">
