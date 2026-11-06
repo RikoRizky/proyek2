@@ -56,7 +56,7 @@
         }
     }" class="relative flex-grow pb-16">
         <!-- Header Banner -->
-        <div class="bg-violet-700 pt-16 pb-32 text-center text-white px-4 sm:px-6 lg:px-8">
+        <div class="bg-violet-700 pt-28 sm:pt-32 pb-32 text-center text-white px-4 sm:px-6 lg:px-8">
             <div class="mx-auto max-w-3xl">
                 <h1 class="text-3xl font-extrabold sm:text-4xl">
                     Diskusi dengan tim kami dan dapatkan solusi terbaik

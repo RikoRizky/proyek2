@@ -27,7 +27,7 @@
             max-width: 1180px;
             width: 100%;
             margin: 0 auto;
-            padding: 24px 28px 0 28px;
+            padding: 100px 28px 0 28px;
             flex: 1 1 auto;
             display: flex;
             flex-direction: column;
@@ -523,7 +523,7 @@
                 min-height: auto;
             }
             .siladata-hero-container {
-                padding: 16px 16px 0 16px;
+                padding: 82px 16px 0 16px;
             }
             .siladata-hero-row {
                 flex-direction: column;
@@ -594,9 +594,6 @@
         </div>
 
         <div class="siladata-hero-container">
-            {{-- Floating Pill Navbar (Hero Header - Identik dengan Nav Scroll) --}}
-            <x-siladata-navbar id="siladata-hero-nav" />
-
             {{-- Hero 2-Column Content --}}
             <div class="siladata-hero-row">
                 {{-- Left Column: Typography & CTAs --}}

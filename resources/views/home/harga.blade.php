@@ -16,7 +16,7 @@
         <div class="pointer-events-none absolute inset-x-0 bottom-0 h-48 z-[1]"
              style="background: linear-gradient(to bottom, transparent, #f5f3ff);"></div>
 
-    <section class="relative overflow-hidden py-20 sm:py-24 text-center">
+    <section class="relative overflow-hidden pt-28 pb-20 sm:pt-32 sm:pb-24 text-center">
         <div class="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <span class="inline-flex rounded-full bg-violet-100 px-4 py-1.5 text-sm font-semibold text-violet-700">
                 Harga Layanan

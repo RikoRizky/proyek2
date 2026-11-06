@@ -300,28 +300,10 @@
     </style>
 </head>
 <body class="font-sans text-slate-900 antialiased" style="background-color: #ECE8DD; margin: 0; padding: 0;">
-    {{-- Floating Pill Navbar (Sticky on scroll for home, always on other pages) --}}
-    @if(request()->routeIs('home'))
-        {{-- Sticky Nav for Home: appears smoothly when user scrolls down past hero banner --}}
-        <header x-data="{ scrolled: false }"
-                x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 120 })"
-                x-show="scrolled"
-                x-cloak
-                x-transition:enter="transition ease-out duration-200"
-                x-transition:enter-start="opacity-0 -translate-y-4"
-                x-transition:enter-end="opacity-100 translate-y-0"
-                x-transition:leave="transition ease-in duration-150"
-                x-transition:leave-start="opacity-100 translate-y-0"
-                x-transition:leave-end="opacity-0 -translate-y-4"
-                class="siladata-sticky-wrapper">
-            <x-siladata-navbar />
-        </header>
-    @else
-        {{-- Floating Nav for Other Pages (Harga, Discussion, etc.) --}}
-        <header class="siladata-other-header">
-            <x-siladata-navbar />
-        </header>
-    @endif
+    {{-- Floating Pill Navbar (Satu-satunya Navbar: Selalu Ada dan Melayang Mengikuti Scroll) --}}
+    <header class="siladata-sticky-wrapper">
+        <x-siladata-navbar />
+    </header>
 
     <div class="relative min-h-screen flex flex-col" style="background-color: #ECE8DD;">
         <main class="relative flex-grow">
