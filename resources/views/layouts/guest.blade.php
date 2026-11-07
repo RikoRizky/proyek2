@@ -72,7 +72,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Akses Ditolak',
+                    title: '{{ session('error_title', 'Perhatian') }}',
                     text: "{!! session('error') !!}",
                     confirmButtonColor: '#7c3aed',
                 });
@@ -92,6 +92,15 @@
             });
         </script>
         @endif
+
+        <script>
+            // Safari / Browser BFCache: otomatis reload jika kembali ke halaman lama agar CSRF token selalu segar
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    window.location.reload();
+                }
+            });
+        </script>
 
     </body>
 </html>

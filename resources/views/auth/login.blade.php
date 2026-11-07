@@ -6,7 +6,7 @@
 
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}" class="space-y-5">
+    <form method="POST" action="{{ route('login') }}" class="space-y-5" onsubmit="const btn = this.querySelector('button[type=submit]'); if (btn) { btn.disabled = true; btn.classList.add('opacity-70', 'cursor-not-allowed'); }">
         @csrf
 
         <div>
