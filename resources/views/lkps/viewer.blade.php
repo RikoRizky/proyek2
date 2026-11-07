@@ -45,6 +45,25 @@
         if (empty($rows) && !empty($schema['default_rows'])) {
             $rows = $schema['default_rows'];
         }
+
+        // Pastikan struktur header mencakup semua kolom dinamis jika sebelumnya sudah ditambah kolom
+        if ($hasMultiHeader && !empty($headers)) {
+            $coveredCols = 0;
+            foreach ($headerStructure[0] as $hCol) {
+                $coveredCols += ($hCol['colspan'] ?? 1);
+            }
+            if (count($headers) > $coveredCols) {
+                for ($c = $coveredCols; $c < count($headers); $c++) {
+                    $headerStructure[0][] = [
+                        'label' => $headers[$c] ?? ('Kolom ' . ($c + 1)),
+                        'rowspan' => 2,
+                        'colIdx' => $c,
+                        'width' => '170px',
+                    ];
+                }
+            }
+        }
+
         $rowCount = count($rows);
         $rowsJson = json_encode($rows);
         $headersJson = json_encode($headers);
@@ -697,13 +716,25 @@
                                                 :style="col.width ? 'min-width: ' + col.width : 'min-width: 110px;'"
                                                 class="py-2 px-2.5 text-center border-b-2 border-r border-slate-300 font-bold text-xs sticky top-0 z-20"
                                                 :class="(col.colspan || 1) > 1 ? 'bg-violet-100 text-violet-900 border-b-2 border-violet-400' : 'bg-slate-100 text-slate-800'">
-                                                <input type="text" x-model="col.label"
-                                                    class="w-full text-center border-0 bg-transparent text-xs font-bold p-0 focus:ring-0 focus:bg-white rounded transition"
-                                                    :class="(col.colspan || 1) > 1 ? 'text-violet-900' : 'text-slate-800'"
-                                                    title="Klik untuk mengubah nama header ini">
+                                                <div class="flex items-center justify-between gap-1">
+                                                    <input type="text" x-model="col.label"
+                                                        @input="onHeaderTier0Input(col)"
+                                                        class="w-full text-center border-0 bg-transparent text-xs font-bold p-0 focus:ring-0 focus:bg-white rounded transition"
+                                                        :class="(col.colspan || 1) > 1 ? 'text-violet-900' : 'text-slate-800'"
+                                                        title="Klik untuk mengubah nama header ini">
+                                                    <template x-if="col.colIdx !== undefined && (!col.colspan || col.colspan === 1) && headers.length > 1">
+                                                        <button type="button" @click="removeColumn(col.colIdx)"
+                                                            class="text-slate-300 hover:text-rose-600 p-0.5 rounded transition shrink-0 opacity-60 hover:opacity-100 font-bold text-xs"
+                                                            title="Hapus kolom ini">
+                                                            <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+                                                        </button>
+                                                    </template>
+                                                </div>
                                             </th>
                                         </template>
-                                        <th rowspan="2" class="py-2 px-2 w-10 text-center text-slate-400 font-semibold bg-slate-100 border-b-2 border-slate-300 sticky top-0 right-0 z-20">Aksi</th>
+                                        <th rowspan="2" class="py-2 px-2 w-10 text-center bg-slate-100 border-b-2 border-slate-300 sticky top-0 z-20">
+                                            <button type="button" @click="addColumn()" class="flex h-6 w-6 mx-auto items-center justify-center rounded bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition font-bold text-xs" title="Tambah kolom baru">+</button>
+                                        </th>
                                     </tr>
 
                                     {{-- Multi-tier Tier 2 (Sub-Kolom) --}}
@@ -774,7 +805,7 @@
                                                         (activeRow === rIdx && activeCol === cIdx) ? 'ring-2 ring-inset ring-emerald-600 bg-emerald-50/20 z-10' : '',
                                                         getCellRowMerge(rIdx, cIdx) ? 'bg-indigo-50/30' : ''
                                                     ]"
-                                                    :style="(headerStructure && headerStructure[1] && headerStructure[1].find(s => s.colIdx === cIdx)) ? 'min-width: ' + (headerStructure[1].find(s => s.colIdx === cIdx).width || '85px') : (cIdx === 0 && (headers[0] === 'No' || headers[0] === 'No.') ? 'min-width: 60px; width: 60px;' : 'min-width: 170px;')">
+                                                    :style="getCellColWidth(cIdx)">
                                                     <div class="relative w-full h-full flex items-center group">
                                                         <input type="text"
                                                             :id="'cell-' + rIdx + '-' + cIdx"

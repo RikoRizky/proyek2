@@ -661,19 +661,44 @@
         let initHeaderStructure = null;
         if (initialSummary && initialSummary.header_structure && Array.isArray(initialSummary.header_structure) && initialSummary.header_structure.length >= 2) {
             initHeaderStructure = JSON.parse(JSON.stringify(initialSummary.header_structure));
+        } else if (schema && schema.headerRows) {
+            initHeaderStructure = JSON.parse(JSON.stringify(schema.headerRows));
+        }
+
+        // Pastikan initHeaderStructure mencakup semua kolom jika sebelumnya sudah ditambah kolom
+        if (initHeaderStructure && Array.isArray(initHeaderStructure[0])) {
+            let coveredCols = 0;
+            initHeaderStructure[0].forEach(col => {
+                coveredCols += (col.colspan || 1);
+            });
+            if (startHeaders.length > coveredCols) {
+                for (let c = coveredCols; c < startHeaders.length; c++) {
+                    initHeaderStructure[0].push({
+                        label: startHeaders[c] || ('Kolom ' + (c + 1)),
+                        rowspan: 2,
+                        colIdx: c,
+                        width: '170px'
+                    });
+                }
+            }
         }
 
         // Extract initial column merge groups from header structure if any
         const initialGroups = [];
+        let runningColIdx = 0;
         if (initHeaderStructure && Array.isArray(initHeaderStructure[0])) {
             initHeaderStructure[0].forEach(col => {
-                if (col.colspan && col.colspan > 1) {
+                const cIdx = col.colIdx !== undefined ? col.colIdx : runningColIdx;
+                col.colIdx = cIdx;
+                const span = col.colspan || 1;
+                if (span > 1) {
                     initialGroups.push({
                         title: col.label,
-                        startCol: col.colIdx,
-                        endCol: col.colIdx + col.colspan - 1
+                        startCol: cIdx,
+                        endCol: cIdx + span - 1
                     });
                 }
+                runningColIdx = cIdx + span;
             });
         }
 
@@ -767,6 +792,66 @@
                 if (this.rows.length > 0 && this.rows[0].cells) {
                     this.activeCellVal = this.rows[0].cells[0] || '';
                 }
+                this.syncHeaderStructure();
+            },
+
+            getCellColWidth(cIdx) {
+                if (this.headerStructure) {
+                    if (this.headerStructure[1]) {
+                        const sub = this.headerStructure[1].find(s => s.colIdx === cIdx);
+                        if (sub && sub.width) return 'min-width: ' + sub.width;
+                    }
+                    if (this.headerStructure[0]) {
+                        const top = this.headerStructure[0].find(t => t.colIdx === cIdx && (!t.colspan || t.colspan === 1));
+                        if (top && top.width) return 'min-width: ' + top.width;
+                    }
+                }
+                if (cIdx === 0 && (this.headers[0] === 'No' || this.headers[0] === 'No.')) {
+                    return 'min-width: 60px; width: 60px;';
+                }
+                return 'min-width: 170px;';
+            },
+
+            onHeaderTier0Input(col) {
+                if ((col.colspan || 1) > 1) {
+                    const group = this.columnGroups ? this.columnGroups.find(g => g.startCol === col.colIdx) : null;
+                    if (group) group.title = col.label;
+                } else if (col.colIdx !== undefined && this.headers[col.colIdx] !== undefined) {
+                    this.headers[col.colIdx] = col.label;
+                }
+            },
+
+            syncHeaderStructure() {
+                if (!this.headerStructure || !Array.isArray(this.headerStructure) || this.headerStructure.length < 2) {
+                    return;
+                }
+                if (this.columnGroups && this.columnGroups.length > 0) {
+                    this.rebuildHeaderStructure();
+                    return;
+                }
+                if (!this.headerStructure[0]) this.headerStructure[0] = [];
+                const tier0 = this.headerStructure[0];
+                const coveredColIndices = new Set();
+                tier0.forEach(col => {
+                    const start = col.colIdx !== undefined ? col.colIdx : 0;
+                    const span = col.colspan || 1;
+                    for (let i = start; i < start + span; i++) {
+                        coveredColIndices.add(i);
+                    }
+                });
+
+                for (let cIdx = 0; cIdx < this.headers.length; cIdx++) {
+                    if (!coveredColIndices.has(cIdx)) {
+                        tier0.push({
+                            label: this.headers[cIdx] || ('Kolom ' + (cIdx + 1)),
+                            rowspan: 2,
+                            colIdx: cIdx,
+                            width: (cIdx === 0 && (this.headers[0] === 'No' || this.headers[0] === 'No.')) ? '50px' : '170px'
+                        });
+                        coveredColIndices.add(cIdx);
+                    }
+                }
+                tier0.sort((a, b) => (a.colIdx || 0) - (b.colIdx || 0));
             },
 
             // ── Active Cell Tracking & Formula Bar ──
@@ -1104,6 +1189,22 @@
                     this.headers = [...sc.leafHeaders];
                     this.headerStructure = sc.headerRows ? JSON.parse(JSON.stringify(sc.headerRows)) : null;
                     this.columnGroups = [];
+                    if (this.headerStructure && Array.isArray(this.headerStructure[0])) {
+                        let runCol = 0;
+                        this.headerStructure[0].forEach(col => {
+                            const cIdx = col.colIdx !== undefined ? col.colIdx : runCol;
+                            col.colIdx = cIdx;
+                            const span = col.colspan || 1;
+                            if (span > 1) {
+                                this.columnGroups.push({
+                                    title: col.label,
+                                    startCol: cIdx,
+                                    endCol: cIdx + span - 1
+                                });
+                            }
+                            runCol = cIdx + span;
+                        });
+                    }
                     this.rowMerges = [];
                     this.hasTotal = sc.hasTotal || false;
                     this.totalLabelCol = sc.totalLabelCol !== undefined ? sc.totalLabelCol : 1;
@@ -1257,12 +1358,20 @@
                 const colName = prompt('Masukkan judul kolom baru:', 'Kolom ' + (this.headers.length + 1));
                 if (colName === null || colName.trim() === '') return;
                 const finalName = colName.trim();
+                const newColIdx = this.headers.length;
                 this.headers.push(finalName);
 
                 this.rows.forEach(r => {
                     if (!r.cells) r.cells = [];
                     r.cells.push('');
                 });
+
+                if (this.headerStructure && Array.isArray(this.headerStructure) && this.headerStructure.length >= 2) {
+                    this.syncHeaderStructure();
+                }
+
+                this.saveStatusMessage = `✓ Kolom "${finalName}" berhasil ditambahkan.`;
+                setTimeout(() => { if (this.saveStatusMessage.includes(finalName)) this.saveStatusMessage = ''; }, 3000);
             },
 
             removeColumn(index) {
@@ -1287,10 +1396,29 @@
                     }
                 });
 
-                if (this.headerStructure) {
-                    this.headerStructure = null;
-                    this.columnGroups = [];
+                if (this.headerStructure && Array.isArray(this.headerStructure) && this.headerStructure.length >= 2) {
+                    if (this.columnGroups && this.columnGroups.length > 0) {
+                        this.columnGroups.forEach(g => {
+                            if (index < g.startCol) {
+                                g.startCol--;
+                                g.endCol--;
+                            } else if (index >= g.startCol && index <= g.endCol) {
+                                g.endCol--;
+                            }
+                        });
+                        this.columnGroups = this.columnGroups.filter(g => g.startCol < g.endCol);
+                        this.syncHeaderStructure();
+                    } else {
+                        this.headerStructure[0] = (this.headerStructure[0] || []).filter(c => c.colIdx !== index);
+                        this.headerStructure[0].forEach(c => {
+                            if (c.colIdx > index) c.colIdx--;
+                        });
+                        this.syncHeaderStructure();
+                    }
                 }
+
+                this.saveStatusMessage = `✓ Kolom "${colName}" dihapus.`;
+                setTimeout(() => { if (this.saveStatusMessage.includes(colName)) this.saveStatusMessage = ''; }, 3000);
             },
 
             // ── Interactive Merge Columns & Rows Feature ──
@@ -1418,6 +1546,9 @@
                     return;
                 }
 
+                const prevTier0 = (this.headerStructure && this.headerStructure[0]) ? this.headerStructure[0] : [];
+                const prevTier1 = (this.headerStructure && this.headerStructure[1]) ? this.headerStructure[1] : [];
+
                 const tier0 = [];
                 const tier1 = [];
                 const sortedGroups = [...this.columnGroups].sort((a, b) => a.startCol - b.startCol);
@@ -1427,23 +1558,30 @@
                     const group = sortedGroups.find(g => g.startCol === colIdx);
                     if (group) {
                         const count = (group.endCol - group.startCol + 1);
+                        const prevCol = prevTier0.find(c => c.colIdx === group.startCol && (c.colspan || 1) > 1);
                         tier0.push({
                             label: group.title,
                             colspan: count,
-                            colIdx: group.startCol
+                            colIdx: group.startCol,
+                            width: prevCol?.width || undefined
                         });
                         for (let i = group.startCol; i <= group.endCol; i++) {
+                            const prevSub = prevTier1.find(s => s.colIdx === i);
                             tier1.push({
                                 label: this.headers[i] || ('Kolom ' + (i + 1)),
-                                colIdx: i
+                                colIdx: i,
+                                width: prevSub?.width || '85px'
                             });
                         }
                         colIdx = group.endCol + 1;
                     } else {
+                        const prevCol = prevTier0.find(c => c.colIdx === colIdx && (!c.colspan || c.colspan === 1));
+                        const defaultWidth = (colIdx === 0 && (this.headers[0] === 'No' || this.headers[0] === 'No.')) ? '50px' : '170px';
                         tier0.push({
                             label: this.headers[colIdx] || ('Kolom ' + (colIdx + 1)),
                             rowspan: 2,
-                            colIdx: colIdx
+                            colIdx: colIdx,
+                            width: prevCol?.width || defaultWidth
                         });
                         colIdx++;
                     }
