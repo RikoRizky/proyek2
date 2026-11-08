@@ -53,25 +53,44 @@
             {{-- Saran Pencarian Cepat (Quick Chips) --}}
             <div class="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
                 <span class="font-semibold text-slate-500 mr-1">Contoh cari cepat:</span>
-                <button type="button" @click="setQuery('Kriteria 1')" class="rounded-lg bg-slate-100 px-2.5 py-1 text-slate-700 hover:bg-violet-100 hover:text-violet-700 font-medium transition">
+                <button type="button" @click="setQuery('Kriteria 1')"
+                    :class="searchQuery.toLowerCase().includes('kriteria 1') ? 'bg-violet-600 text-white shadow-xs font-bold' : 'bg-slate-100 text-slate-700 hover:bg-violet-100 hover:text-violet-700 font-medium'"
+                    class="rounded-lg px-2.5 py-1 transition">
                     Kriteria 1
                 </button>
-                <button type="button" @click="setQuery('Kriteria 2')" class="rounded-lg bg-slate-100 px-2.5 py-1 text-slate-700 hover:bg-violet-100 hover:text-violet-700 font-medium transition">
+                <button type="button" @click="setQuery('Kriteria 2')"
+                    :class="searchQuery.toLowerCase().includes('kriteria 2') ? 'bg-violet-600 text-white shadow-xs font-bold' : 'bg-slate-100 text-slate-700 hover:bg-violet-100 hover:text-violet-700 font-medium'"
+                    class="rounded-lg px-2.5 py-1 transition">
                     Kriteria 2
                 </button>
-                <button type="button" @click="setQuery('[PELAKSANAAN] Penerapan Tata Kelola & Kegiatan SPMI')" class="rounded-lg bg-slate-100 px-2.5 py-1 text-slate-700 hover:bg-violet-100 hover:text-violet-700 font-medium transition">
+                <button type="button" @click="setQuery('Kriteria 3')"
+                    :class="searchQuery.toLowerCase().includes('kriteria 3') ? 'bg-violet-600 text-white shadow-xs font-bold' : 'bg-slate-100 text-slate-700 hover:bg-violet-100 hover:text-violet-700 font-medium'"
+                    class="rounded-lg px-2.5 py-1 transition">
+                    Kriteria 3
+                </button>
+                <button type="button" @click="setQuery('[PELAKSANAAN] Penerapan Tata Kelola & Kegiatan SPMI')"
+                    :class="searchQuery.includes('[PELAKSANAAN]') ? 'bg-violet-600 text-white shadow-xs font-bold' : 'bg-slate-100 text-slate-700 hover:bg-violet-100 hover:text-violet-700 font-medium'"
+                    class="rounded-lg px-2.5 py-1 transition">
                     [PELAKSANAAN] Penerapan Tata Kelola
                 </button>
-                <button type="button" @click="setQuery('Tabel 1.A.1')" class="rounded-lg bg-slate-100 px-2.5 py-1 text-slate-700 hover:bg-violet-100 hover:text-violet-700 font-medium transition">
+                <button type="button" @click="setQuery('Tabel 1.A.1')"
+                    :class="searchQuery.toLowerCase().includes('1.a.1') ? 'bg-violet-600 text-white shadow-xs font-bold' : 'bg-slate-100 text-slate-700 hover:bg-violet-100 hover:text-violet-700 font-medium'"
+                    class="rounded-lg px-2.5 py-1 transition">
                     Tabel 1.A.1
                 </button>
-                <button type="button" @click="setQuery('[PENETAPAN]')" class="rounded-lg bg-slate-100 px-2.5 py-1 text-slate-700 hover:bg-violet-100 hover:text-violet-700 font-medium transition">
+                <button type="button" @click="setQuery('[PENETAPAN]')"
+                    :class="searchQuery.includes('[PENETAPAN]') ? 'bg-violet-600 text-white shadow-xs font-bold' : 'bg-slate-100 text-slate-700 hover:bg-violet-100 hover:text-violet-700 font-medium'"
+                    class="rounded-lg px-2.5 py-1 transition">
                     [PENETAPAN]
                 </button>
-                <button type="button" @click="selectedStatus = 'revision'" class="rounded-lg bg-rose-50 px-2.5 py-1 text-rose-700 hover:bg-rose-100 font-medium transition">
+                <button type="button" @click="toggleStatus('revision')"
+                    :class="selectedStatus === 'revision' ? 'bg-rose-600 text-white shadow-xs font-bold ring-2 ring-rose-400' : 'bg-rose-50 text-rose-700 hover:bg-rose-100 font-medium'"
+                    class="rounded-lg px-2.5 py-1 transition">
                     ⚠️ Perlu Revisi
                 </button>
-                <button type="button" @click="selectedStatus = 'uploaded'" class="rounded-lg bg-amber-50 px-2.5 py-1 text-amber-700 hover:bg-amber-100 font-medium transition">
+                <button type="button" @click="toggleStatus('uploaded')"
+                    :class="selectedStatus === 'uploaded' ? 'bg-amber-600 text-white shadow-xs font-bold ring-2 ring-amber-400' : 'bg-amber-50 text-amber-700 hover:bg-amber-100 font-medium'"
+                    class="rounded-lg px-2.5 py-1 transition">
                     ⏳ Perlu Divalidasi
                 </button>
             </div>
@@ -313,6 +332,8 @@
 
     <script>
         function pertiSearchApp(itemsData, initialQ, initialProdi) {
+            const romanMap = { 'i': 1, 'ii': 2, 'iii': 3, 'iv': 4, 'v': 5, 'vi': 6, 'vii': 7 };
+
             return {
                 items: itemsData,
                 searchQuery: initialQ || '',
@@ -328,8 +349,19 @@
                 },
 
                 get filteredItems() {
-                    const q = this.normalize(this.searchQuery);
-                    const queryWords = q ? q.split(/\s+/).filter(Boolean) : [];
+                    const rawQ = this.normalize(this.searchQuery);
+
+                    // Check if query contains a specific kriteria / modul number: e.g. "kriteria 2", "kiteria 2", "kriteria ii", "modul 2"
+                    let targetKriteriaNum = null;
+                    const kriteriaMatch = rawQ.match(/\b(?:kriteria|modul)\s*(\d+|vii|vi|iv|v|iii|ii|i)(?!\.\d+)\b/i);
+                    if (kriteriaMatch) {
+                        const matchedVal = kriteriaMatch[1].toLowerCase();
+                        targetKriteriaNum = romanMap[matchedVal] || parseInt(matchedVal, 10);
+                    }
+
+                    // Remove the kriteria pattern from search words so remaining words can be searched
+                    const cleanedQ = rawQ.replace(/\b(?:kriteria|modul)\s*(\d+|vii|vi|iv|v|iii|ii|i)(?!\.\d+)\b/gi, ' ').trim();
+                    const queryWords = cleanedQ ? cleanedQ.split(/\s+/).filter(Boolean) : [];
 
                     return this.items.filter(item => {
                         // Filter Type
@@ -337,8 +369,8 @@
                             return false;
                         }
 
-                        // Filter Module
-                        if (this.selectedModule !== 'all' && String(item.module_id) !== String(this.selectedModule)) {
+                        // Filter Module (only applies if query does not already specify an explicit kriteria)
+                        if (targetKriteriaNum === null && this.selectedModule !== 'all' && String(item.module_id) !== String(this.selectedModule)) {
                             return false;
                         }
 
@@ -350,7 +382,18 @@
                             if (this.selectedStatus === 'unsubmitted' && item.status !== 'unsubmitted') return false;
                         }
 
-                        // Keyword Query Filter (match all words)
+                        // Explicit Kriteria matching: if user searched "Kriteria 2", ONLY items belonging to Kriteria 2 must match
+                        if (targetKriteriaNum !== null) {
+                            const itemOrder = Number(item.module_order);
+                            const matchesOrder = itemOrder === targetKriteriaNum;
+                            const matchesShort = (item.module_short || '').toLowerCase().includes('kriteria ' + targetKriteriaNum);
+                            const matchesName = (item.module_name || '').toLowerCase().includes('kriteria ' + targetKriteriaNum);
+                            if (!matchesOrder && !matchesShort && !matchesName) {
+                                return false;
+                            }
+                        }
+
+                        // Keyword Query Filter for remaining words (all words must match)
                         if (queryWords.length > 0) {
                             const haystack = this.normalize(item.search_text);
                             const matches = queryWords.every(word => haystack.includes(word));
@@ -362,7 +405,18 @@
                 },
 
                 setQuery(term) {
-                    this.searchQuery = term;
+                    if (this.searchQuery === term) {
+                        this.searchQuery = '';
+                    } else {
+                        this.searchQuery = term;
+                        if (/kriteria|modul/i.test(term)) {
+                            this.selectedModule = 'all';
+                        }
+                    }
+                },
+
+                toggleStatus(st) {
+                    this.selectedStatus = this.selectedStatus === st ? 'all' : st;
                 },
 
                 resetFilters() {
