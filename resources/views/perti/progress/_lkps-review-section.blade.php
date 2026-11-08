@@ -21,7 +21,7 @@
                 $isRevision = $lkps?->status === 'revision';
                 $isSubmitted = in_array($lkps?->status, ['submitted', 'uploaded']);
             @endphp
-            <li class="p-6 transition hover:bg-slate-50/60 {{ $isRevision ? 'bg-rose-50/30' : '' }}" x-data="{ expanded: false }">
+            <li id="table-{{ $tableCode }}" class="p-6 transition hover:bg-slate-50/60 scroll-mt-20 {{ $isRevision ? 'bg-rose-50/30' : '' }}" x-data="{ expanded: false }">
                 <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
                     <div class="min-w-0 flex-1">
                         <div class="flex flex-wrap items-center gap-2">
@@ -189,97 +189,4 @@
     </ul>
 @endif
 
-{{-- Modal Validasi Tabel LKPS untuk Perti --}}
-<div id="perti-validate-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" role="dialog" aria-modal="true">
-    <div class="fixed inset-0 transition-opacity" style="background: rgba(10,10,20,0.82)" onclick="closePertiValidateTableModal()"></div>
-    <div class="flex min-h-screen items-center justify-center p-4 sm:p-6">
-        <div class="relative overflow-hidden transform transition-all duration-300 scale-95 opacity-0 rounded-2xl shadow-2xl ring-1 ring-white/10 w-full"
-            style="width: 480px; max-width: calc(100vw - 2rem); background: #fff;" id="perti-validate-box">
-            <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #1e1b4b 100%); padding: 1.25rem 1.5rem 1.5rem;">
-                <div class="flex items-start justify-between gap-3">
-                    <div>
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-violet-400" id="pv-code-label">TABEL</span>
-                        <h3 id="pv-title-label" class="text-base font-bold text-white mt-1">Validasi Data Tabel</h3>
-                    </div>
-                    <button type="button" onclick="closePertiValidateTableModal()" class="text-slate-400 hover:text-white">×</button>
-                </div>
-            </div>
-            <form id="pv-form" method="POST" action="" class="p-6 space-y-4">
-                @csrf
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Keputusan Validasi</label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <label class="flex items-center gap-2.5 rounded-xl border border-slate-200 p-3 cursor-pointer hover:bg-slate-50 transition">
-                            <input type="radio" name="status" value="approved" id="pv-status-approved" class="text-emerald-600 focus:ring-emerald-500">
-                            <div>
-                                <span class="block text-xs font-bold text-emerald-800">Sesuai (Disetujui)</span>
-                                <span class="block text-[11px] text-slate-500">Data tabel lengkap & valid</span>
-                            </div>
-                        </label>
-                        <label class="flex items-center gap-2.5 rounded-xl border border-slate-200 p-3 cursor-pointer hover:bg-slate-50 transition">
-                            <input type="radio" name="status" value="revision" id="pv-status-revision" class="text-rose-600 focus:ring-rose-500">
-                            <div>
-                                <span class="block text-xs font-bold text-rose-800">Perlu Revisi</span>
-                                <span class="block text-[11px] text-slate-500">Ada data yang keliru</span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Catatan / Arahan Perbaikan (Opsional)</label>
-                    <textarea name="validation_notes" id="pv-notes" rows="3" placeholder="Tuliskan catatan perbaikan untuk prodi jika ada..."
-                        class="w-full rounded-xl border-slate-200 text-xs py-2 px-3 focus:border-violet-500 focus:ring-1 focus:ring-violet-500"></textarea>
-                </div>
-
-                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
-                    <button type="button" onclick="closePertiValidateTableModal()" class="rounded-xl px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
-                        Batal
-                    </button>
-                    <button type="submit" class="rounded-xl bg-violet-600 px-5 py-2 text-xs font-bold text-white hover:bg-violet-700 transition shadow-sm">
-                        Simpan Hasil Validasi
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-    function openPertiValidateTableModal(tableCode, tableTitle, currentStatus, currentNotes) {
-        const modal = document.getElementById('perti-validate-modal');
-        const box = document.getElementById('perti-validate-box');
-        const form = document.getElementById('pv-form');
-        const codeLabel = document.getElementById('pv-code-label');
-        const titleLabel = document.getElementById('pv-title-label');
-        const notesArea = document.getElementById('pv-notes');
-
-        codeLabel.textContent = 'TABEL ' + tableCode;
-        titleLabel.textContent = 'Validasi ' + tableTitle;
-        form.action = '/perti/prodis/{{ $prodi->id }}/lkps/' + encodeURIComponent(tableCode) + '/validate';
-        notesArea.value = currentNotes || '';
-
-        if (currentStatus === 'revision') {
-            document.getElementById('pv-status-revision').checked = true;
-        } else {
-            document.getElementById('pv-status-approved').checked = true;
-        }
-
-        modal.classList.remove('hidden');
-        setTimeout(() => {
-            box.classList.remove('scale-95', 'opacity-0');
-            box.classList.add('scale-100', 'opacity-100');
-        }, 10);
-    }
-
-    function closePertiValidateTableModal() {
-        const modal = document.getElementById('perti-validate-modal');
-        const box = document.getElementById('perti-validate-box');
-        box.classList.remove('scale-100', 'opacity-100');
-        box.classList.add('scale-95', 'opacity-0');
-        setTimeout(() => {
-            modal.classList.add('hidden');
-        }, 200);
-    }
-</script>
 

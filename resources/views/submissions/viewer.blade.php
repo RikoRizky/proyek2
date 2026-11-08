@@ -37,21 +37,13 @@
         </div>
 
         <div class="flex items-center gap-2">
-            @if ($routePrefix === 'perti' && $submission->status !== \App\Enums\SubmissionStatus::Approved)
-                <form action="{{ route('perti.submissions.validate', $submission) }}" method="POST" class="inline">
-                    @csrf
-                    <input type="hidden" name="status" value="approved">
-                    <button type="submit" class="inline-flex items-center gap-1 rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 hover:bg-emerald-100 transition shadow-sm">
-                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
-                        Setujui (Sesuai)
-                    </button>
-                </form>
-
+            @if ($routePrefix === 'perti')
                 <button type="button"
-                    id="btnViewerRevision"
-                    class="inline-flex items-center gap-1 rounded-lg border border-rose-300 bg-rose-50 px-3 py-1.5 text-xs font-bold text-rose-700 hover:bg-rose-100 transition shadow-sm">
-                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125"/></svg>
-                    {{ $submission->status === \App\Enums\SubmissionStatus::Revision ? 'Edit Catatan Revisi' : 'Perlu Revisi' }}
+                    id="btnViewerValidate"
+                    onclick="openViewerValidationModal('{{ $submission->status === \App\Enums\SubmissionStatus::Approved ? 'approved' : ($submission->status === \App\Enums\SubmissionStatus::Revision ? 'revision' : 'approved') }}')"
+                    class="inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-violet-700 transition">
+                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                    <span>Validasi Dokumen</span>
                 </button>
             @endif
 
@@ -432,28 +424,37 @@
     @endif
 
     @if ($routePrefix === 'perti')
-        {{-- Revision Modal in Viewer --}}
-        <div id="viewerRevisionModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm transition-opacity">
-            <div class="flex min-h-full items-center justify-center p-4">
-                <div class="w-full max-w-lg overflow-hidden rounded-2xl bg-white p-6 shadow-2xl transition-all">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                        <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                            <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-rose-100 text-rose-600">
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.008v.008H12v-.008Z"/></svg>
-                            </span>
-                            Catatan Perlu Revisi
-                        </h3>
-                        <button type="button" onclick="closeViewerRevisionModal()" class="text-slate-400 hover:text-slate-600">
-                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                        </button>
+        {{-- Modal Validasi Dokumen (Disesuaikan persis tampilan Dokumen LED PPEPP) --}}
+        <div id="viewerRevisionModal" class="fixed inset-0 z-50 hidden overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="viewerModalReqTitle">
+            <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity" onclick="closeViewerRevisionModal()"></div>
+            <div class="flex min-h-screen items-center justify-center p-4">
+                <div class="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-slate-950/10">
+                    <div class="border-b border-slate-100 bg-gradient-to-r from-violet-50/80 to-white px-6 py-4">
+                        <p class="text-xs font-bold uppercase tracking-wider text-violet-700">VALIDASI DOKUMEN</p>
+                        <h3 class="mt-1 text-base font-bold text-slate-900" id="viewerModalReqTitle">{{ $submission->requirement->title }}</h3>
                     </div>
 
-                    <form id="viewerRevisionForm" method="POST" action="" class="mt-4">
+                    <form id="viewerRevisionForm" method="POST" action="{{ route('perti.submissions.validate', $submission) }}" class="p-6 space-y-4">
                         @csrf
-                        <input type="hidden" name="status" value="revision">
-                        
-                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Persyaratan:</p>
-                        <p class="text-sm font-semibold text-slate-800 mb-4" id="viewerModalReqTitle"></p>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">STATUS VALIDASI</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center gap-2.5 rounded-xl border border-slate-200 p-3 cursor-pointer hover:bg-slate-50 transition">
+                                    <input type="radio" name="status" value="approved" id="viewer_status_approved" class="text-emerald-600 focus:ring-emerald-500" onchange="toggleViewerTargetSection()">
+                                    <div>
+                                        <span class="block text-xs font-bold text-emerald-800">Sesuai</span>
+                                        <span class="block text-[11px] text-slate-500">Dokumen sah & sesuai</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-center gap-2.5 rounded-xl border border-slate-200 p-3 cursor-pointer hover:bg-slate-50 transition">
+                                    <input type="radio" name="status" value="revision" id="viewer_status_revision" class="text-rose-600 focus:ring-rose-500" onchange="toggleViewerTargetSection()">
+                                    <div>
+                                        <span class="block text-xs font-bold text-rose-800">Perlu Revisi</span>
+                                        <span class="block text-[11px] text-slate-500">Ada berkas keliru</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
 
                         <!-- Selection for Files & Links to Revise -->
                         @php
@@ -463,18 +464,18 @@
                         @endphp
 
                         @if ($hasFilesOrLinks)
-                            <div class="mb-4 rounded-xl border border-rose-200/60 bg-rose-50/40 p-3.5">
-                                <label class="block text-xs font-bold uppercase tracking-wider text-rose-900 mb-2">Pilih Berkas / Link yang Perlu Direvisi:</label>
+                            <div id="viewerTargetSection" class="rounded-xl border border-rose-200/60 bg-rose-50/40 p-3.5 space-y-2">
+                                <label class="block text-xs font-bold uppercase tracking-wider text-rose-900">Pilih Berkas / Link yang Perlu Direvisi:</label>
                                 
                                 @if (!empty($modalDriveLinks))
-                                    <div class="mb-3">
-                                        <p class="text-[11px] font-bold text-violet-700 uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                                    <div>
+                                        <p class="text-[11px] font-bold text-violet-700 uppercase tracking-wider mb-1 flex items-center gap-1">
                                             <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"/></svg>
                                             Link Google Drive:
                                         </p>
-                                        <div class="space-y-1.5">
+                                        <div class="space-y-1">
                                             @foreach ($modalDriveLinks as $idx => $link)
-                                                <label class="flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white p-2 text-xs text-slate-800 cursor-pointer hover:border-rose-400 transition select-none">
+                                                <label class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white p-2 text-xs text-slate-800 cursor-pointer hover:border-rose-400 transition select-none">
                                                     <input type="checkbox" name="target_links[]" value="{{ $link['name'] }}" class="h-4 w-4 rounded border-slate-300 text-rose-600 focus:ring-rose-500">
                                                     <span class="font-semibold text-violet-700">🔗 {{ $link['name'] }}</span>
                                                 </label>
@@ -485,13 +486,13 @@
 
                                 @if (!empty($modalFiles))
                                     <div>
-                                        <p class="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                                        <p class="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1 flex items-center gap-1">
                                             <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
                                             Berkas Dokumen:
                                         </p>
-                                        <div class="space-y-1.5">
+                                        <div class="space-y-1">
                                             @foreach ($modalFiles as $idx => $file)
-                                                <label class="flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white p-2 text-xs text-slate-800 cursor-pointer hover:border-rose-400 transition select-none">
+                                                <label class="flex items-center gap-2 rounded-lg border border-slate-200 bg-white p-2 text-xs text-slate-800 cursor-pointer hover:border-rose-400 transition select-none">
                                                     <input type="checkbox" name="target_files[]" value="{{ $file['original_filename'] }}" class="h-4 w-4 rounded border-slate-300 text-rose-600 focus:ring-rose-500">
                                                     <span class="font-semibold text-slate-800 truncate">📄 {{ $file['original_filename'] }}</span>
                                                     <span class="text-[10px] text-slate-400">({{ number_format($file['file_size'] / 1024, 1) }} KB)</span>
@@ -504,16 +505,19 @@
                         @endif
 
                         <div>
-                            <label for="viewer_validation_notes" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Catatan / Alasan Revisi untuk Prodi:</label>
-                            <p class="mt-1 text-[11px] text-slate-500">Tentukan instruksi/catatan detail mengenai perbaikan yang harus dilakukan.</p>
+                            <label for="viewer_validation_notes" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">CATATAN VALIDASI (WAJIB JIKA REVISI)</label>
                             <textarea id="viewer_validation_notes" name="validation_notes" rows="3"
-                                placeholder="Contoh: Berkas Dokumen A halaman 2 TTD Dekan belum ada. Link Google Drive B tidak dapat diakses (Access Denied). Harap diperbaiki..."
-                                class="mt-1.5 w-full rounded-xl border border-slate-200 p-3 text-sm text-slate-800 placeholder-slate-400 focus:border-rose-500 focus:ring-rose-500"></textarea>
+                                placeholder="Tulis catatan atau instruksi perbaikan untuk prodi..."
+                                class="w-full rounded-xl border-slate-200 text-xs py-2 px-3 focus:border-violet-500 focus:ring-1 focus:ring-violet-500"></textarea>
                         </div>
 
-                        <div class="mt-6 flex justify-end gap-3">
-                            <button type="button" onclick="closeViewerRevisionModal()" class="ui-btn-secondary py-2 px-4 text-xs">Batal</button>
-                            <button type="submit" class="inline-flex items-center justify-center rounded-xl px-4 py-2 text-xs font-bold text-white shadow-md transition hover:opacity-90" style="background-color: #e11d48 !important; color: #ffffff !important;">Kirim Catatan Revisi</button>
+                        <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                            <button type="button" onclick="closeViewerRevisionModal()" class="rounded-xl px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
+                                Batal
+                            </button>
+                            <button type="submit" class="rounded-xl bg-violet-600 px-5 py-2 text-xs font-bold text-white hover:bg-violet-700 transition shadow-sm">
+                                Simpan Validasi
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -521,6 +525,14 @@
         </div>
 
         <script>
+            function toggleViewerTargetSection() {
+                const isRevision = document.getElementById('viewer_status_revision')?.checked;
+                const targetSec = document.getElementById('viewerTargetSection');
+                if (targetSec) {
+                    targetSec.style.display = isRevision ? 'block' : 'none';
+                }
+            }
+
             function parseValidationNotes(notesStr) {
                 if (!notesStr) return { targetFiles: [], targetLinks: [], customNote: '' };
 
@@ -547,7 +559,7 @@
                 return { targetFiles, targetLinks, customNote };
             }
 
-            function openViewerRevisionModal() {
+            function openViewerValidationModal(preferredStatus = 'approved') {
                 const form = document.getElementById('viewerRevisionForm');
                 if (form) {
                     form.action = @json(route('perti.submissions.validate', $submission));
@@ -557,6 +569,14 @@
                     const { targetFiles, targetLinks, customNote } = parseValidationNotes(rawNotes);
 
                     document.getElementById('viewer_validation_notes').value = customNote;
+
+                    if (preferredStatus === 'revision') {
+                        document.getElementById('viewer_status_revision').checked = true;
+                    } else {
+                        document.getElementById('viewer_status_approved').checked = true;
+                    }
+
+                    toggleViewerTargetSection();
 
                     // Pre-check target links
                     document.querySelectorAll('#viewerRevisionModal input[name="target_links[]"]').forEach(cb => {
@@ -580,13 +600,8 @@
             };
 
             document.addEventListener('DOMContentLoaded', () => {
-                const btn = document.getElementById('btnViewerRevision');
-                if (btn) {
-                    btn.addEventListener('click', openViewerRevisionModal);
-                }
-
                 @if(request('action') === 'revision')
-                    openViewerRevisionModal();
+                    openViewerValidationModal('revision');
                 @endif
             });
         </script>

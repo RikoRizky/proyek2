@@ -24,7 +24,7 @@
                 $isRevision = $lkps?->status === 'revision';
                 $isSubmitted = in_array($lkps?->status, ['submitted', 'uploaded']);
             @endphp
-            <div class="px-6 py-6 {{ $isRevision ? 'bg-rose-50/40' : '' }}">
+            <div id="table-{{ $tableCode }}" class="px-6 py-6 scroll-mt-20 {{ $isRevision ? 'bg-rose-50/40' : '' }}">
                 <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div class="min-w-0 flex-1">
                         <div class="flex flex-wrap items-center gap-2">

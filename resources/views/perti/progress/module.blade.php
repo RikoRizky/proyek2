@@ -149,7 +149,7 @@
                             $hasSubmission = $submission && $submission->status !== SubmissionStatus::Pending;
                             $status = $submission?->status;
                         @endphp
-                        <li class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 px-6 py-5 transition hover:bg-slate-50/60">
+                        <li id="req-{{ $req->id }}" class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 px-6 py-5 transition hover:bg-slate-50/60 scroll-mt-20">
                             <div class="flex items-start gap-3 min-w-0 flex-1">
                                 {{-- Status icon --}}
                                 @if ($status === SubmissionStatus::Approved)
@@ -267,14 +267,14 @@
         <div class="flex min-h-screen items-center justify-center p-4">
             <div class="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-slate-950/10">
                 <div class="border-b border-slate-100 bg-gradient-to-r from-violet-50/80 to-white px-6 py-4">
-                    <p class="text-xs font-bold uppercase tracking-wider text-violet-700">Validasi Dokumen</p>
+                    <p class="text-xs font-bold uppercase tracking-wider text-violet-700">VALIDASI DOKUMEN</p>
                     <h3 class="mt-1 text-base font-bold text-slate-900" id="valModalTitle">Nama Persyaratan</h3>
                 </div>
 
                 <form id="valForm" method="POST" action="" class="p-6 space-y-4">
                     @csrf
                     <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Status Validasi</label>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">STATUS VALIDASI</label>
                         <div class="grid grid-cols-2 gap-3">
                             <label class="flex items-center gap-2.5 rounded-xl border border-slate-200 p-3 cursor-pointer hover:bg-slate-50 transition">
                                 <input type="radio" name="status" value="approved" id="status_approved" class="text-emerald-600 focus:ring-emerald-500">
@@ -294,7 +294,7 @@
                     </div>
 
                     <div>
-                        <label for="validation_notes" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Catatan Validasi (Wajib jika revisi)</label>
+                        <label for="validation_notes" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">CATATAN VALIDASI (WAJIB JIKA REVISI)</label>
                         <textarea id="validation_notes" name="validation_notes" rows="3" placeholder="Tulis catatan atau instruksi perbaikan untuk prodi..."
                             class="w-full rounded-xl border-slate-200 text-xs py-2 px-3 focus:border-violet-500 focus:ring-1 focus:ring-violet-500"></textarea>
                     </div>
@@ -318,9 +318,22 @@
             document.getElementById('valForm').action = '/perti/submissions/' + subId + '/validate';
             document.getElementById('validation_notes').value = currentNotes || '';
 
-            if (currentStatus === 'approved') {
+            if (currentStatus === 'revision') {
+                document.getElementById('status_revision').checked = true;
+            } else {
                 document.getElementById('status_approved').checked = true;
-            } else if (currentStatus === 'revision') {
+            }
+
+            document.getElementById('validateModal').classList.remove('hidden');
+        }
+
+        function openPertiValidateTableModal(tableCode, tableTitle, currentStatus, currentNotes) {
+            const displayTitle = tableTitle.startsWith('Tabel') ? tableTitle : ('Tabel ' + tableCode + ': ' + tableTitle);
+            document.getElementById('valModalTitle').textContent = displayTitle;
+            document.getElementById('valForm').action = '/perti/prodis/{{ $prodi->id }}/lkps/' + encodeURIComponent(tableCode) + '/validate';
+            document.getElementById('validation_notes').value = currentNotes || '';
+
+            if (currentStatus === 'revision') {
                 document.getElementById('status_revision').checked = true;
             } else {
                 document.getElementById('status_approved').checked = true;
@@ -332,5 +345,15 @@
         function closeValidateModal() {
             document.getElementById('validateModal').classList.add('hidden');
         }
+
+        function closePertiValidateTableModal() {
+            closeValidateModal();
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeValidateModal();
+            }
+        });
     </script>
 </x-app-layout>

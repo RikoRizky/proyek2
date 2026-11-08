@@ -92,6 +92,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
 Route::middleware(['auth', 'role:perti'])->prefix('perti')->name('perti.')->group(function () {
+    Route::get('search', [\App\Http\Controllers\Perti\SearchController::class, 'index'])->name('search');
     Route::resource('prodis', App\Http\Controllers\Perti\ProdiController::class)->except(['show']);
     Route::get('prodis/{prodi}/progress', [App\Http\Controllers\Perti\ProdiProgressController::class, 'index'])->name('prodis.progress');
     Route::get('prodis/{prodi}/modul/{module}', [App\Http\Controllers\Perti\ProdiProgressController::class, 'module'])->name('prodis.modul');
@@ -112,6 +113,7 @@ Route::middleware(['auth', 'role:perti'])->prefix('perti')->name('perti.')->grou
 });
 
 Route::middleware(['auth', 'role:prodi'])->prefix('unit')->name('unit.')->group(function () {
+    Route::get('search', [\App\Http\Controllers\UnitKerja\SearchController::class, 'index'])->name('search');
     Route::get('submissions', [SubmissionController::class, 'index'])->name('submissions.index');
     Route::get('submissions/modul/{module}', [SubmissionController::class, 'module'])->name('submissions.module');
     Route::post('modules/{module}/submissions/batch', [SubmissionController::class, 'batchStore'])->name('modules.submissions.batch');

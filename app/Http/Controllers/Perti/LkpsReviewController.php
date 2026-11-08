@@ -95,6 +95,12 @@ class LkpsReviewController extends Controller
             ]);
         }
 
+        $requirement = \App\Models\Requirement::where('table_code', $tableCode)->first();
+        if ($requirement && $requirement->module_id) {
+            return redirect()->route('perti.prodis.modul', [$prodi->id, $requirement->module_id, 'tab' => 'lkps'])
+                ->with('status', "Tabel {$tableCode} berhasil {$statusText}.");
+        }
+
         return back()->with('status', "Tabel {$tableCode} berhasil {$statusText}.");
     }
 

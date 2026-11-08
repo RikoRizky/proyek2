@@ -27,7 +27,7 @@
             $isRevision = $latest?->status === \App\Enums\SubmissionStatus::Revision;
             $isApproved = $latest?->status === \App\Enums\SubmissionStatus::Approved;
         @endphp
-        <div class="grid gap-6 px-6 py-6 lg:grid-cols-3 lg:items-center {{ $isRevision ? 'bg-rose-50/40' : '' }}" data-requirement-row="{{ $req->id }}">
+        <div id="req-{{ $req->id }}" class="grid gap-6 px-6 py-6 lg:grid-cols-3 lg:items-center scroll-mt-20 {{ $isRevision ? 'bg-rose-50/40' : '' }}" data-requirement-row="{{ $req->id }}">
             <div class="min-w-0 lg:col-span-2">
                 <p class="text-lg font-semibold text-slate-900">{{ $req->title }}</p>
                 @if ($req->description)

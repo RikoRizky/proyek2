@@ -604,22 +604,20 @@
     })();
 </script>
 
-<!-- Detail Catatan Validasi Modal (Diskusi style) -->
-<div id="detailValidationModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm transition-opacity">
-    <div class="flex min-h-full items-center justify-center p-4">
-        <div class="w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl transition-all">
-            <!-- Header with gradient -->
-            <div class="bg-gradient-to-r from-violet-600 to-indigo-600 p-6 text-white relative">
-                <button type="button" onclick="closeDetailValidationModal()" class="absolute top-4 right-4 text-white/80 hover:text-white rounded-full p-1 transition">
-                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
-                </button>
-                <p class="text-[11px] font-bold uppercase tracking-wider text-violet-200">Catatan Revisi Perti</p>
-                <h3 class="mt-1 text-lg font-extrabold text-white leading-snug" id="detailValTitle">Persyaratan</h3>
-                <p class="mt-1 text-xs text-violet-100" id="detailValDate"></p>
+<!-- Detail Catatan Validasi Modal (Disesuaikan persis tampilan Dokumen LED PPEPP) -->
+<div id="detailValidationModal" class="fixed inset-0 z-50 hidden overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="detailValTitle">
+    <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity" onclick="closeDetailValidationModal()"></div>
+    <div class="flex min-h-screen items-center justify-center p-4">
+        <div class="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-slate-950/10">
+            <!-- Header with soft gradient -->
+            <div class="border-b border-slate-100 bg-gradient-to-r from-violet-50/80 to-white px-6 py-4">
+                <p class="text-xs font-bold uppercase tracking-wider text-violet-700">VALIDASI DOKUMEN</p>
+                <h3 class="mt-1 text-base font-bold text-slate-900" id="detailValTitle">Nama Persyaratan</h3>
+                <p class="mt-0.5 text-xs text-slate-500" id="detailValDate"></p>
             </div>
 
             <!-- Modal Content -->
-            <div class="p-6 space-y-5">
+            <div class="p-6 space-y-4">
                 <!-- Target Items Section -->
                 <div id="detailValTargetSection" class="hidden">
                     <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">Dokumen / Link yang Perlu Direvisi:</p>
@@ -628,14 +626,14 @@
 
                 <!-- Custom Note Section -->
                 <div>
-                    <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">Instruksi / Catatan Perti:</p>
-                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-800 leading-relaxed font-medium whitespace-pre-wrap" id="detailValNotes"></div>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-2">Catatan Validasi:</p>
+                    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-800 leading-relaxed font-medium whitespace-pre-wrap" id="detailValNotes"></div>
                 </div>
-            </div>
 
-            <!-- Footer -->
-            <div class="border-t border-slate-100 bg-slate-50 px-6 py-4 flex justify-end">
-                <button type="button" onclick="closeDetailValidationModal()" class="ui-btn-secondary py-2 px-5 text-xs font-bold">Tutup</button>
+                <!-- Footer -->
+                <div class="flex items-center justify-end pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeDetailValidationModal()" class="rounded-xl bg-violet-600 px-5 py-2 text-xs font-bold text-white hover:bg-violet-700 transition shadow-sm">Tutup</button>
+                </div>
             </div>
         </div>
     </div>

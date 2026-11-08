@@ -185,19 +185,10 @@
                 {{-- Aksi Validasi Perti --}}
                 @if ($routePrefix === 'perti' && $submission)
                     <div class="flex items-center gap-1.5">
-                        <form method="POST" action="{{ route('perti.prodis.lkps.validate', [$prodi->id, $tableCode]) }}" class="inline">
-                            @csrf
-                            <input type="hidden" name="status" value="approved">
-                            <button type="submit" onclick="return confirm('Setujui tabel {{ $tableCode }} ini?')"
-                                class="inline-flex items-center gap-1 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-emerald-700 transition">
-                                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
-                                <span>Setujui</span>
-                            </button>
-                        </form>
-                        <button type="button" onclick="openLkpsViewerRevisionModal()"
-                            class="inline-flex items-center gap-1 rounded-xl bg-rose-600 px-3 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-rose-700 transition">
-                            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
-                            <span>Perlu Revisi</span>
+                        <button type="button" onclick="openLkpsViewerValidateModal('{{ $submission->status === 'approved' ? 'approved' : 'revision' }}')"
+                            class="inline-flex items-center gap-1.5 rounded-xl bg-violet-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-violet-700 transition">
+                            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                            <span>Validasi Tabel</span>
                         </button>
                     </div>
                 @endif
@@ -1238,59 +1229,73 @@
 
     {{-- Modal Perlu Revisi untuk LKPS Viewer (Role Perti) --}}
     @if ($routePrefix === 'perti' && $submission)
-        <div id="lkpsViewerRevisionModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm transition-opacity">
-            <div class="flex min-h-full items-center justify-center p-4">
-                <div class="w-full max-w-lg overflow-hidden rounded-2xl bg-white p-6 shadow-2xl transition-all">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                        <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                            <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-rose-100 text-rose-600">
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125"/>
-                                </svg>
-                            </span>
-                            Catatan Revisi Tabel {{ $tableCode }}
-                        </h3>
-                        <button type="button" onclick="closeLkpsViewerRevisionModal()" class="text-slate-400 hover:text-slate-600">
-                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                        </button>
+        {{-- Modal Validasi Data Tabel LKPS (Disesuaikan persis tampilan Dokumen LED PPEPP) --}}
+        <div id="lkpsViewerValidateModal" class="fixed inset-0 z-50 hidden overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="lkpsValTitle">
+            <div class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity" onclick="closeLkpsViewerValidateModal()"></div>
+            <div class="flex min-h-screen items-center justify-center p-4">
+                <div class="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-slate-950/10">
+                    <div class="border-b border-slate-100 bg-gradient-to-r from-violet-50/80 to-white px-6 py-4">
+                        <p class="text-xs font-bold uppercase tracking-wider text-violet-700">VALIDASI DOKUMEN</p>
+                        <h3 class="mt-1 text-base font-bold text-slate-900" id="lkpsValTitle">Tabel {{ $tableCode }}</h3>
                     </div>
 
-                    <form method="POST" action="{{ route('perti.prodis.lkps.validate', [$prodi->id, $tableCode]) }}" class="mt-4 space-y-4">
+                    <form method="POST" action="{{ route('perti.prodis.lkps.validate', [$prodi->id, $tableCode]) }}" class="p-6 space-y-4">
                         @csrf
-                        <input type="hidden" name="status" value="revision">
-
                         <div>
-                            <label for="viewer_validation_notes" class="block text-xs font-bold text-slate-700">
-                                Poin-poin Perbaikan / Koreksi Data:
-                            </label>
-                            <textarea id="viewer_validation_notes" name="notes" rows="4" required
-                                placeholder="Jelaskan kolom atau baris data mana yang perlu diperbaiki oleh Program Studi..."
-                                class="mt-1 w-full rounded-xl border border-slate-300 p-3 text-xs text-slate-900 focus:border-rose-500 focus:ring-1 focus:ring-rose-500">{{ $submission->validation_notes }}</textarea>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">STATUS VALIDASI</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="flex items-center gap-2.5 rounded-xl border border-slate-200 p-3 cursor-pointer hover:bg-slate-50 transition">
+                                    <input type="radio" name="status" value="approved" id="lkps_status_approved" class="text-emerald-600 focus:ring-emerald-500">
+                                    <div>
+                                        <span class="block text-xs font-bold text-emerald-800">Sesuai</span>
+                                        <span class="block text-[11px] text-slate-500">Dokumen sah &amp; sesuai</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-center gap-2.5 rounded-xl border border-slate-200 p-3 cursor-pointer hover:bg-slate-50 transition">
+                                    <input type="radio" name="status" value="revision" id="lkps_status_revision" class="text-rose-600 focus:ring-rose-500">
+                                    <div>
+                                        <span class="block text-xs font-bold text-rose-800">Perlu Revisi</span>
+                                        <span class="block text-[11px] text-slate-500">Ada berkas keliru</span>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
 
-                        <div class="flex items-center justify-end gap-2 pt-2">
-                            <button type="button" onclick="closeLkpsViewerRevisionModal()"
+                        <div>
+                            <label for="viewer_validation_notes" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">CATATAN VALIDASI (WAJIB JIKA REVISI)</label>
+                            <textarea id="viewer_validation_notes" name="validation_notes" rows="3"
+                                placeholder="Tulis catatan atau instruksi perbaikan untuk prodi..."
+                                class="w-full rounded-xl border-slate-200 text-xs py-2 px-3 focus:border-violet-500 focus:ring-1 focus:ring-violet-500">{{ $submission->validation_notes }}</textarea>
+                        </div>
+
+                        <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                            <button type="button" onclick="closeLkpsViewerValidateModal()"
                                 class="rounded-xl px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
                                 Batal
                             </button>
                             <button type="submit"
-                                class="rounded-xl bg-rose-600 px-5 py-2 text-xs font-bold text-white shadow-xs hover:bg-rose-700 transition">
-                                Kirim Catatan Revisi
+                                class="rounded-xl bg-violet-600 px-5 py-2 text-xs font-bold text-white hover:bg-violet-700 transition shadow-sm">
+                                Simpan Validasi
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    @endif
 
-    {{-- Script Modal Revisi (Perti) --}}
-    <script>
-        function openLkpsViewerRevisionModal() {
-            document.getElementById('lkpsViewerRevisionModal')?.classList.remove('hidden');
-        }
-        function closeLkpsViewerRevisionModal() {
-            document.getElementById('lkpsViewerRevisionModal')?.classList.add('hidden');
-        }
-    </script>
+        {{-- Script Modal Validasi LKPS (Perti) --}}
+        <script>
+            function openLkpsViewerValidateModal(status = 'approved') {
+                if (status === 'approved') {
+                    document.getElementById('lkps_status_approved').checked = true;
+                } else {
+                    document.getElementById('lkps_status_revision').checked = true;
+                }
+                document.getElementById('lkpsViewerValidateModal')?.classList.remove('hidden');
+            }
+            function closeLkpsViewerValidateModal() {
+                document.getElementById('lkpsViewerValidateModal')?.classList.add('hidden');
+            }
+        </script>
+    @endif
 </x-viewer-layout>
