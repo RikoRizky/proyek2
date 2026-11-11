@@ -110,6 +110,15 @@ Route::middleware(['auth', 'role:perti'])->prefix('perti')->name('perti.')->grou
     Route::get('prodis/{prodi}/lkps/{table_code}/view', [\App\Http\Controllers\Perti\LkpsReviewController::class, 'viewer'])->name('prodis.lkps.viewer');
     Route::post('prodis/{prodi}/lkps/{table_code}/validate', [\App\Http\Controllers\Perti\LkpsReviewController::class, 'validateTable'])->name('prodis.lkps.validate');
     Route::get('prodis/{prodi}/lkps/{table_code}/export', [\App\Http\Controllers\Perti\LkpsReviewController::class, 'export'])->name('prodis.lkps.export');
+
+    // Arsip & Dokumen Tambahan (PT/UPPS & Prodi)
+    Route::get('archives', [\App\Http\Controllers\Perti\SupportingDocumentController::class, 'index'])->name('archives.index');
+    Route::post('archives', [\App\Http\Controllers\Perti\SupportingDocumentController::class, 'store'])->name('archives.store');
+    Route::put('archives/{supportingDocument}', [\App\Http\Controllers\Perti\SupportingDocumentController::class, 'update'])->name('archives.update');
+    Route::delete('archives/{supportingDocument}', [\App\Http\Controllers\Perti\SupportingDocumentController::class, 'destroy'])->name('archives.destroy');
+    Route::get('archives/{supportingDocument}/view', [\App\Http\Controllers\Perti\SupportingDocumentController::class, 'viewer'])->name('archives.view');
+    Route::get('archives/{supportingDocument}/inline', [\App\Http\Controllers\Perti\SupportingDocumentController::class, 'inline'])->name('archives.inline');
+    Route::get('archives/{supportingDocument}/download', [\App\Http\Controllers\Perti\SupportingDocumentController::class, 'download'])->name('archives.download');
 });
 
 Route::middleware(['auth', 'role:prodi'])->prefix('unit')->name('unit.')->group(function () {
@@ -131,6 +140,15 @@ Route::middleware(['auth', 'role:prodi'])->prefix('unit')->name('unit.')->group(
     Route::post('lkps/{table_code}/save', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'save'])->name('lkps.save');
     Route::post('lkps/{table_code}/import', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'import'])->name('lkps.import');
     Route::get('lkps/{table_code}/export', [\App\Http\Controllers\UnitKerja\LkpsController::class, 'export'])->name('lkps.export');
+
+    // Arsip & Dokumen Tambahan Prodi
+    Route::get('archives', [\App\Http\Controllers\UnitKerja\SupportingDocumentController::class, 'index'])->name('archives.index');
+    Route::post('archives', [\App\Http\Controllers\UnitKerja\SupportingDocumentController::class, 'store'])->name('archives.store');
+    Route::put('archives/{supportingDocument}', [\App\Http\Controllers\UnitKerja\SupportingDocumentController::class, 'update'])->name('archives.update');
+    Route::delete('archives/{supportingDocument}', [\App\Http\Controllers\UnitKerja\SupportingDocumentController::class, 'destroy'])->name('archives.destroy');
+    Route::get('archives/{supportingDocument}/view', [\App\Http\Controllers\UnitKerja\SupportingDocumentController::class, 'viewer'])->name('archives.view');
+    Route::get('archives/{supportingDocument}/inline', [\App\Http\Controllers\UnitKerja\SupportingDocumentController::class, 'inline'])->name('archives.inline');
+    Route::get('archives/{supportingDocument}/download', [\App\Http\Controllers\UnitKerja\SupportingDocumentController::class, 'download'])->name('archives.download');
 });
 
 Route::middleware('auth')->group(function () {

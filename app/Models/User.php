@@ -88,6 +88,11 @@ class User extends Authenticatable
         return $this->hasMany(LkpsSubmission::class);
     }
 
+    public function supportingDocuments(): HasMany
+    {
+        return $this->hasMany(SupportingDocument::class, 'uploaded_by');
+    }
+
     // ─── Accessories ─────────────────────────────────────────────────
 
     public function getEffectivePackageAttribute()

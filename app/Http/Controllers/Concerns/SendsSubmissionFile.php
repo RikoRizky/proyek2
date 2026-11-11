@@ -58,6 +58,61 @@ trait SendsSubmissionFile
         );
     }
 
+    protected function storedFileDownloadResponse(array $files, int $fileIndex = 0): StreamedResponse
+    {
+        $file = $files[$fileIndex] ?? null;
+        abort_unless(
+            $file && ! empty($file['file_path']) && Storage::disk('local')->exists($file['file_path']),
+            404
+        );
+
+        return Storage::disk('local')->download(
+            $file['file_path'],
+            $file['original_filename'] ?? basename($file['file_path'])
+        );
+    }
+
+    protected function storedFileInlineResponse(array $files, int $fileIndex = 0): StreamedResponse
+    {
+        $file = $files[$fileIndex] ?? null;
+        abort_unless(
+            $file && ! empty($file['file_path']) && Storage::disk('local')->exists($file['file_path']),
+            404
+        );
+
+        $filename = $file['original_filename'] ?? basename($file['file_path']);
+        $headers = [
+            'Content-Disposition' => 'inline; filename="'.$this->asciiFilename($filename).'"',
+        ];
+
+        if ($mimeType = $this->resolveInlineMimeType($filename, $file['mime_type'] ?? null)) {
+            $headers['Content-Type'] = $mimeType;
+        }
+
+        return Storage::disk('local')->response(
+            $file['file_path'],
+            $filename,
+            $headers
+        );
+    }
+
+    private function resolveInlineMimeType(string $filename, ?string $storedMime): ?string
+    {
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
+        return match ($ext) {
+            'pdf' => 'application/pdf',
+            'png' => 'image/png',
+            'jpg', 'jpeg' => 'image/jpeg',
+            'webp' => 'image/webp',
+            'gif' => 'image/gif',
+            'csv' => 'text/csv; charset=utf-8',
+            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'xls' => 'application/vnd.ms-excel',
+            default => $storedMime ?: null,
+        };
+    }
+
     private function asciiFilename(string $name): string
     {
         return preg_replace('/[^\x20-\x7E]/', '_', $name) ?: 'document';

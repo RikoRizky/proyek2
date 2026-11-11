@@ -31,4 +31,6 @@ return [
 
     'allowed_mimes' => ['pdf', 'xlsx', 'xls'],
 
+    'archive_allowed_mimes' => ['pdf', 'xlsx', 'xls', 'csv', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'zip'],
+
 ];

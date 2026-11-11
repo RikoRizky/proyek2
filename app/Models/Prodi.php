@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Prodi extends \Illuminate\Database\Eloquent\Model
 {
@@ -31,6 +32,11 @@ class Prodi extends \Illuminate\Database\Eloquent\Model
     public function perti(): BelongsTo
     {
         return $this->belongsTo(Perti::class, 'perti_id');
+    }
+
+    public function supportingDocuments(): HasMany
+    {
+        return $this->hasMany(SupportingDocument::class, 'prodi_id');
     }
 
     /**

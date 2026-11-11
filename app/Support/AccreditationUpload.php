@@ -88,6 +88,22 @@ class AccreditationUpload
         return config('accreditation.allowed_mimes', ['pdf', 'xlsx', 'xls']);
     }
 
+    /** @return list<string> */
+    public static function archiveAllowedMimes(): array
+    {
+        return config('accreditation.archive_allowed_mimes', ['pdf', 'xlsx', 'xls', 'csv', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'zip']);
+    }
+
+    public static function archiveAllowedMimesLabel(): string
+    {
+        return implode(', ', array_map('strtoupper', self::archiveAllowedMimes()));
+    }
+
+    public static function archiveAcceptAttribute(): string
+    {
+        return implode(',', array_map(fn (string $ext) => '.'.$ext, self::archiveAllowedMimes()));
+    }
+
     /** @return array<string, list<string>> */
     public static function fileRules(): array
     {
@@ -97,6 +113,44 @@ class AccreditationUpload
                 ['max:'.self::maxUploadKb()]
             ),
         ];
+    }
+
+    /** @return array<string, list<string>> */
+    public static function archiveFileRules(bool $required = false): array
+    {
+        return [
+            'file' => array_values(array_filter([
+                $required ? 'required' : null,
+                'file',
+                'mimes:'.implode(',', self::archiveAllowedMimes()),
+                'max:'.self::maxUploadKb(),
+            ])),
+        ];
+    }
+
+    public static function previewKind(?string $filename): string
+    {
+        $ext = strtolower(pathinfo((string) $filename, PATHINFO_EXTENSION));
+
+        return match ($ext) {
+            'pdf' => 'pdf',
+            'xlsx', 'xls', 'csv' => 'spreadsheet',
+            'jpg', 'jpeg', 'png', 'webp', 'gif' => 'image',
+            default => 'download_only',
+        };
+    }
+
+    public static function formatFileSize(?int $bytes): string
+    {
+        if (! $bytes || $bytes <= 0) {
+            return '0 KB';
+        }
+
+        if ($bytes >= 1048576) {
+            return number_format($bytes / 1048576, 1, ',', '.').' MB';
+        }
+
+        return number_format($bytes / 1024, 1, ',', '.').' KB';
     }
 
     public static function formatMegabytes(int $bytes): string
@@ -131,6 +185,27 @@ class AccreditationUpload
         }
 
         return $validator->errors()->first('file');
+    }
+
+    public static function validateArchiveFile(UploadedFile $file): ?string
+    {
+        $validator = Validator::make(['file' => $file], self::archiveFileRules(true));
+
+        if ($validator->passes()) {
+            return null;
+        }
+
+        $msg = $validator->errors()->first('file');
+        if (str_contains($msg, 'max')) {
+            return 'Berkas «'.$file->getClientOriginalName().'» terlalu besar ('
+                .self::formatMegabytes((int) $file->getSize()).' MB, maks. '.self::maxUploadMb().' MB).';
+        }
+        if (str_contains($msg, 'mimes')) {
+            return 'Format berkas «'.$file->getClientOriginalName().'» tidak didukung. Format yang diizinkan: '
+                .self::archiveAllowedMimesLabel().'.';
+        }
+
+        return $msg;
     }
 
     public static function fieldErrorMessage(

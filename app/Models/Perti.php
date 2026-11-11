@@ -34,6 +34,11 @@ class Perti extends \Illuminate\Database\Eloquent\Model
         return $this->hasMany(Prodi::class, 'perti_id');
     }
 
+    public function supportingDocuments(): HasMany
+    {
+        return $this->hasMany(SupportingDocument::class, 'perti_id');
+    }
+
     /**
      * Nama perti diambil dari akun user-nya.
      */
