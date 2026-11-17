@@ -10,7 +10,7 @@
         @csrf
 
         <div>
-            <a href="{{ route('google.login') }}" class="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500/30 transition-all">
+            <a href="{{ route('google.login') }}" class="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-[#A35139]/30 transition-all">
                 <svg class="h-5 w-5" viewBox="0 0 24 24">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                     <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -34,7 +34,7 @@
                         <i class="fas fa-envelope text-sm"></i>
                     </div>
                     <x-text-input id="email" 
-                        class="block w-full rounded-xl border-slate-200 bg-white/80 pl-10 pr-4 py-3 text-sm placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/30 transition-shadow duration-200" 
+                        class="block w-full rounded-xl border-[#C9C1B1]/60 bg-white/90 pl-10 pr-4 py-3 text-sm placeholder:text-slate-400 focus:border-[#A35139] focus:ring-2 focus:ring-[#A35139]/30 transition-shadow duration-200" 
                         type="email" 
                         name="email" 
                         :value="old('email')" 
@@ -56,7 +56,7 @@
                         <i class="fas fa-lock text-sm"></i>
                     </div>
                     <x-text-input id="password" 
-                        class="block w-full rounded-xl border-slate-200 bg-white/80 pl-10 pr-4 py-3 text-sm placeholder:text-slate-400 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/30 transition-shadow duration-200" 
+                        class="block w-full rounded-xl border-[#C9C1B1]/60 bg-white/90 pl-10 pr-4 py-3 text-sm placeholder:text-slate-400 focus:border-[#A35139] focus:ring-2 focus:ring-[#A35139]/30 transition-shadow duration-200" 
                         type="password" 
                         name="password" 
                         required 
@@ -68,11 +68,11 @@
 
         <div class="flex items-center justify-between gap-4">
             <label for="remember_me" class="inline-flex cursor-pointer items-center gap-2">
-                <input id="remember_me" type="checkbox" class="rounded border-slate-300 text-violet-600 shadow-sm focus:ring-violet-500/30" name="remember">
+                <input id="remember_me" type="checkbox" class="rounded border-slate-300 text-[#A35139] shadow-sm focus:ring-[#A35139]/30" name="remember">
                 <span class="text-sm text-slate-600">Ingat saya</span>
             </label>
             @if (Route::has('password.request'))
-                <a class="text-sm font-semibold text-violet-600 hover:text-violet-500" href="{{ route('password.request') }}">
+                <a class="text-sm font-semibold text-[#A35139] hover:text-[#FFB162]" href="{{ route('password.request') }}">
                     Lupa kata sandi?
                 </a>
             @endif
@@ -93,7 +93,7 @@
         </div>
         @unless (Route::has('register'))
             <p class="pt-4 text-center text-xs leading-relaxed text-slate-500">
-                Belum memiliki akun program studi? Silakan <a href="{{ route('harga') }}" class="font-semibold text-violet-600 hover:text-violet-500 hover:underline">pilih paket langganan.</a>
+                Belum memiliki akun program studi? Silakan <a href="{{ route('harga') }}" class="font-semibold text-[#A35139] hover:text-[#FFB162] hover:underline">pilih paket langganan.</a>
             </p>
         @endunless
     </form>

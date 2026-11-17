@@ -19,7 +19,7 @@
                     @foreach(['Isi Data' => true, 'Pembayaran' => true, 'Akun Aktif' => false] as $step => $done)
                         <li class="flex items-center gap-3">
                             <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold
-                                {{ $done ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-400' }}">
+                                {{ $done ? 'bg-[#A35139] text-white shadow-md shadow-[#A35139]/30' : 'bg-[#EEE9DF] text-slate-500' }}">
                                 @if($done && $step !== 'Pembayaran')
                                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                                 @else
@@ -32,31 +32,31 @@
                 </ol>
 
                 {{-- Info Ringkasan --}}
-                <div class="rounded-3xl bg-gradient-to-br from-violet-600 to-indigo-700 p-7 text-white shadow-xl shadow-violet-500/25">
-                    <p class="text-xs font-bold uppercase tracking-widest text-violet-200 mb-4">Ringkasan Pesanan</p>
+                <div class="rounded-3xl bg-gradient-to-br from-[#1B2632] via-[#243343] to-[#2C3B4D] p-7 text-white shadow-xl shadow-[#1B2632]/25">
+                    <p class="text-xs font-bold uppercase tracking-widest text-[#FFB162] mb-4">Ringkasan Pesanan</p>
 
                     <div class="space-y-3 text-sm">
                         <div class="flex justify-between">
-                            <span class="text-violet-200">ID Pesanan</span>
+                            <span class="text-[#C9C1B1]">ID Pesanan</span>
                             <span class="font-mono font-medium text-white">{{ $transaction->order_id }}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-violet-200">Paket</span>
-                            <span class="font-bold text-white">{{ $transaction->package_name }}</span>
+                            <span class="text-[#C9C1B1]">Paket</span>
+                            <span class="font-bold text-[#FFB162]">{{ $transaction->package_name }}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-violet-200">Nama</span>
+                            <span class="text-[#C9C1B1]">Nama</span>
                             <span class="font-medium text-white">{{ $transaction->customer_name }}</span>
                         </div>
-                        <div class="pt-4 border-t border-violet-500/40 flex justify-between items-end">
-                            <span class="text-violet-200 font-semibold">Total</span>
+                        <div class="pt-4 border-t border-[#C9C1B1]/30 flex justify-between items-end">
+                            <span class="text-[#C9C1B1] font-semibold">Total</span>
                             <span class="text-2xl font-black text-white">Rp {{ number_format($transaction->amount, 0, ',', '.') }}</span>
                         </div>
                     </div>
 
-                    <div class="mt-6 pt-5 border-t border-violet-500/40">
-                        <p class="text-xs text-violet-200 leading-relaxed">
-                            <svg class="inline h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <div class="mt-6 pt-5 border-t border-[#C9C1B1]/30">
+                        <p class="text-xs text-[#C9C1B1] leading-relaxed">
+                            <svg class="inline h-3.5 w-3.5 mr-1 text-[#FFB162]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                             Link aktivasi akun akan dikirim ke email <strong class="text-white">{{ $transaction->customer_email }}</strong> setelah pembayaran berhasil.
                         </p>
                     </div>
@@ -88,7 +88,7 @@
 
                     {{-- Tombol Bayar --}}
                     <button id="pay-button"
-                        class="mt-8 flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 px-6 py-5 text-base font-bold text-white shadow-xl shadow-slate-900/20 transition-all hover:scale-[1.01] hover:shadow-slate-900/30 focus:outline-none focus:ring-4 focus:ring-slate-500/20">
+                        class="mt-8 flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-[#A35139] to-[#8A412C] hover:from-[#8A412C] hover:to-[#A35139] px-6 py-5 text-base font-bold text-white shadow-xl shadow-[#A35139]/25 transition-all hover:scale-[1.01] hover:shadow-[#A35139]/35 focus:outline-none focus:ring-4 focus:ring-[#A35139]/20">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                         Pilih Metode & Bayar Sekarang
                     </button>

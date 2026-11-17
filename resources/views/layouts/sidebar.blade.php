@@ -5,14 +5,14 @@
 
     $navLink = function (bool $active) {
         return $active
-            ? 'bg-white/10 text-white shadow-inner ring-1 ring-white/10'
-            : 'text-slate-300 hover:bg-white/5 hover:text-white';
+            ? 'bg-[#A35139] text-white shadow-md shadow-[#A35139]/25 font-semibold'
+            : 'text-[#C9C1B1] hover:bg-[#2C3B4D] hover:text-white';
     };
 
     $subNavLink = function (bool $active) {
         return $active
-            ? 'bg-white/10 text-white ring-1 ring-white/10'
-            : 'text-slate-400 hover:bg-white/5 hover:text-slate-100';
+            ? 'bg-[#A35139] text-white ring-1 ring-[#FFB162]/40 font-semibold'
+            : 'text-[#C9C1B1]/80 hover:bg-[#2C3B4D] hover:text-white';
     };
 
     $uploadModules = $role === UserRole::Prodi
@@ -64,18 +64,18 @@
 
 {{-- Sidebar: fixed on all breakpoints; main area uses lg:pl-64 --}}
 <aside
-    class="fixed inset-y-0 left-0 z-50 flex w-[min(18rem,88vw)] flex-col border-r border-white/10 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 shadow-2xl transition-transform duration-300 ease-out lg:z-40 lg:w-64 lg:max-w-none lg:translate-x-0 lg:shadow-xl"
+    class="fixed inset-y-0 left-0 z-50 flex w-[min(18rem,88vw)] flex-col border-r border-[#2C3B4D]/70 bg-gradient-to-b from-[#1B2632] via-[#212E3C] to-[#1B2632] text-slate-100 shadow-2xl transition-transform duration-300 ease-out lg:z-40 lg:w-64 lg:max-w-none lg:translate-x-0 lg:shadow-xl"
     :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
 >
-    <div class="flex h-16 items-center gap-3 border-b border-white/10 px-5">
+    <div class="flex h-16 items-center gap-3 border-b border-[#2C3B4D]/70 px-5">
         <img
-            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-lg shadow-violet-500/30 object-contain bg-white"
+            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl shadow-lg shadow-[#A35139]/20 object-contain bg-white"
             src="{{ asset('images/logoname.png') }}"
             alt="SILADATA"
         />
         <a href="{{ route('dashboard') }}" class="min-w-0 leading-tight" @click="sidebarOpen = false">
             <span class="block truncate text-sm font-semibold tracking-tight text-white">SILADATA</span>
-            <span class="block truncate text-[11px] font-medium text-slate-400">Sistem Layanan Dokumen Akreditasi</span>
+            <span class="block truncate text-[11px] font-medium text-[#C9C1B1]">Sistem Layanan Dokumen Akreditasi</span>
         </a>
     </div>
 

@@ -55,13 +55,13 @@
             }
         }
     }" class="relative flex-grow pb-16">
-        <!-- Header Banner -->
-        <div class="bg-violet-700 pt-28 sm:pt-32 pb-32 text-center text-white px-4 sm:px-6 lg:px-8">
+        <!-- Header Banner (Palette: Abyssal Anchorfish Blue & Blue Fantastic) -->
+        <div class="bg-gradient-to-br from-[#1B2632] via-[#243343] to-[#2C3B4D] pt-28 sm:pt-32 pb-32 text-center text-white px-4 sm:px-6 lg:px-8">
             <div class="mx-auto max-w-3xl">
                 <h1 class="text-3xl font-extrabold sm:text-4xl">
                     Diskusi dengan tim kami dan dapatkan solusi terbaik
                 </h1>
-                <p class="mt-4 text-violet-100 text-sm sm:text-base">
+                <p class="mt-4 text-[#C9C1B1] text-sm sm:text-base">
                     Silakan isi formulir, sehingga tim kami dapat dengan senang hati menghubungi Anda untuk memberikan solusi terbaik
                 </p>
 
@@ -71,7 +71,7 @@
                     <!-- Step 1 -->
                     <div class="flex items-center gap-2">
                         <span class="flex h-6 w-6 items-center justify-center rounded-full text-xs transition-colors duration-200"
-                              :class="step > 1 ? 'bg-emerald-500 text-white' : (step === 1 ? 'bg-white text-violet-700 font-bold' : 'bg-white/30 text-white/70')">
+                              :class="step > 1 ? 'bg-[#FFB162] text-[#1B2632] font-black' : (step === 1 ? 'bg-white text-[#A35139] font-bold' : 'bg-white/30 text-white/70')">
                             <template x-if="step > 1">
                                 <span>✓</span>
                             </template>
@@ -87,7 +87,7 @@
                     <!-- Step 2 -->
                     <div class="flex items-center gap-2">
                         <span class="flex h-6 w-6 items-center justify-center rounded-full text-xs transition-colors duration-200"
-                              :class="step > 2 ? 'bg-emerald-500 text-white' : (step === 2 ? 'bg-white text-violet-700 font-bold' : 'bg-white/30 text-white/70')">
+                              :class="step > 2 ? 'bg-[#FFB162] text-[#1B2632] font-black' : (step === 2 ? 'bg-white text-[#A35139] font-bold' : 'bg-white/30 text-white/70')">
                             <template x-if="step > 2">
                                 <span>✓</span>
                             </template>
@@ -103,7 +103,7 @@
                     <!-- Step 3 -->
                     <div class="flex items-center gap-2">
                         <span class="flex h-6 w-6 items-center justify-center rounded-full text-xs transition-colors duration-200"
-                              :class="step === 3 ? 'bg-white text-violet-700 font-bold' : 'bg-white/30 text-white/70'">
+                              :class="step === 3 ? 'bg-white text-[#A35139] font-bold' : 'bg-white/30 text-white/70'">
                             <span>3</span>
                         </span>
                         <span :class="step === 3 ? 'text-white' : 'text-white/60'">Terkirim</span>
@@ -115,18 +115,18 @@
 
         <!-- Main Content Card -->
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 mt-[-80px]">
-            <div class="bg-white rounded-[24px] shadow-xl p-8 border border-slate-100">
+            <div class="bg-white rounded-[24px] shadow-xl p-8 border border-[#C9C1B1]/60">
                 @if(session('success'))
                     <!-- Success State -->
                     <div class="text-center py-12 px-4">
                         <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 text-3xl mb-6">
                             ✓
                         </div>
-                        <h2 class="text-2xl font-bold text-slate-900 mb-2">Formulir Terkirim!</h2>
-                        <p class="text-slate-600 max-w-md mx-auto mb-8">
+                        <h2 class="text-2xl font-bold text-[#1B2632] mb-2">Formulir Terkirim!</h2>
+                        <p class="text-[#2C3B4D] max-w-md mx-auto mb-8">
                             {{ session('success') }}
                         </p>
-                        <a href="{{ route('home') }}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600 hover:bg-violet-700 px-6 py-3.5 font-bold text-white transition hover:scale-[1.02] active:scale-[0.98]">
+                        <a href="{{ route('home') }}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#A35139] hover:bg-[#8A412C] px-6 py-3.5 font-bold text-white transition hover:scale-[1.02] active:scale-[0.98] shadow-md shadow-[#A35139]/25">
                             Kembali ke Beranda
                         </a>
                     </div>
@@ -138,31 +138,31 @@
                         <!-- STEP 1: Personal Info -->
                         <div x-show="step === 1" x-transition>
                             <div class="mb-6">
-                                <label class="block text-sm font-bold text-slate-700 mb-1">Nama Lengkap*</label>
+                                <label class="block text-sm font-bold text-[#1B2632] mb-1">Nama Lengkap*</label>
                                 <input type="text" x-model="nama" name="nama" placeholder="Nama Lengkap" 
-                                       class="w-full rounded-xl border-slate-200 bg-white text-slate-900 shadow-sm focus:border-violet-500 focus:ring-violet-500/30">
+                                       class="w-full rounded-xl border border-[#C9C1B1]/70 bg-white text-[#1B2632] shadow-sm focus:border-[#A35139] focus:ring-[#A35139]/30">
                                 <p class="text-red-500 text-xs mt-1 font-medium" x-text="errors.nama"></p>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                                 <div>
-                                    <label class="block text-sm font-bold text-slate-700 mb-1">Email*</label>
+                                    <label class="block text-sm font-bold text-[#1B2632] mb-1">Email*</label>
                                     <input type="email" x-model="email" name="email" placeholder="Email"
-                                           class="w-full rounded-xl border-slate-200 bg-white text-slate-900 shadow-sm focus:border-violet-500 focus:ring-violet-500/30">
+                                           class="w-full rounded-xl border border-[#C9C1B1]/70 bg-white text-[#1B2632] shadow-sm focus:border-[#A35139] focus:ring-[#A35139]/30">
                                     <p class="text-red-500 text-xs mt-1 font-medium" x-text="errors.email"></p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-bold text-slate-700 mb-1">Nomor WhatsApp*</label>
+                                    <label class="block text-sm font-bold text-[#1B2632] mb-1">Nomor WhatsApp*</label>
                                     <input type="tel" x-model="whatsapp" name="whatsapp" placeholder="Contoh: 81234567890"
-                                           class="w-full rounded-xl border-slate-200 bg-white text-slate-900 shadow-sm focus:border-violet-500 focus:ring-violet-500/30">
+                                           class="w-full rounded-xl border border-[#C9C1B1]/70 bg-white text-[#1B2632] shadow-sm focus:border-[#A35139] focus:ring-[#A35139]/30">
                                     <p class="text-red-500 text-xs mt-1 font-medium" x-text="errors.whatsapp"></p>
                                 </div>
                             </div>
 
                             <div class="mb-6">
-                                <label class="block text-sm font-bold text-slate-700 mb-1">Perguruan Tinggi*</label>
+                                <label class="block text-sm font-bold text-[#1B2632] mb-1">Perguruan Tinggi*</label>
                                 <select x-model="pt" name="perusahaan" 
-                                        class="w-full rounded-xl border-slate-200 bg-white text-slate-900 shadow-sm focus:border-violet-500 focus:ring-violet-500/30">
+                                        class="w-full rounded-xl border border-[#C9C1B1]/70 bg-white text-[#1B2632] shadow-sm focus:border-[#A35139] focus:ring-[#A35139]/30">
                                     <option value="" disabled selected>Pilih PT Anda</option>
                                     <option value="Universitas Indonesia">Universitas Indonesia</option>
                                     <option value="Institut Teknologi Bandung">Institut Teknologi Bandung</option>
@@ -179,18 +179,18 @@
 
                                 {{-- Input manual saat pilih Lainnya --}}
                                 <div x-show="pt === 'Lainnya'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" class="mt-3">
-                                    <label class="block text-xs font-semibold text-violet-700 mb-1">✏️ Masukkan nama Perguruan Tinggi Anda*</label>
+                                    <label class="block text-xs font-semibold text-[#A35139] mb-1">✏️ Masukkan nama Perguruan Tinggi Anda*</label>
                                     <input type="text" x-model="pt_lainnya" name="perusahaan_lainnya"
                                            placeholder="Contoh: Universitas Nusantara Mandiri"
-                                           class="w-full rounded-xl border-violet-300 bg-violet-50/40 text-slate-900 shadow-sm focus:border-violet-500 focus:ring-violet-500/30 placeholder:text-slate-400">
+                                           class="w-full rounded-xl border-[#A35139]/40 bg-[#EEE9DF]/30 text-[#1B2632] shadow-sm focus:border-[#A35139] focus:ring-[#A35139]/30 placeholder:text-slate-400">
                                     <p class="text-red-500 text-xs mt-1 font-medium" x-text="errors.pt_lainnya"></p>
                                 </div>
                             </div>
 
                             <div class="mb-8">
-                                <label class="block text-sm font-bold text-slate-700 mb-1">Jabatan di Perguruan Tinggi*</label>
+                                <label class="block text-sm font-bold text-[#1B2632] mb-1">Jabatan di Perguruan Tinggi*</label>
                                 <select x-model="jabatan" name="jabatan" 
-                                        class="w-full rounded-xl border-slate-200 bg-white text-slate-900 shadow-sm focus:border-violet-500 focus:ring-violet-500/30">
+                                        class="w-full rounded-xl border border-[#C9C1B1]/70 bg-white text-[#1B2632] shadow-sm focus:border-[#A35139] focus:ring-[#A35139]/30">
                                     <option value="" disabled selected>Pilih Jabatan</option>
                                     <option value="Rektor / Wakil Rektor">Rektor / Wakil Rektor</option>
                                     <option value="Dekan / Wakil Dekan">Dekan / Wakil Dekan</option>
@@ -204,16 +204,16 @@
 
                                 {{-- Input manual saat pilih Lainnya --}}
                                 <div x-show="jabatan === 'Lainnya'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" class="mt-3">
-                                    <label class="block text-xs font-semibold text-violet-700 mb-1">✏️ Masukkan jabatan Anda*</label>
+                                    <label class="block text-xs font-semibold text-[#A35139] mb-1">✏️ Masukkan jabatan Anda*</label>
                                     <input type="text" x-model="jabatan_lainnya" name="jabatan_lainnya"
                                            placeholder="Contoh: Kepala Biro Akademik"
-                                           class="w-full rounded-xl border-violet-300 bg-violet-50/40 text-slate-900 shadow-sm focus:border-violet-500 focus:ring-violet-500/30 placeholder:text-slate-400">
+                                           class="w-full rounded-xl border-[#A35139]/40 bg-[#EEE9DF]/30 text-[#1B2632] shadow-sm focus:border-[#A35139] focus:ring-[#A35139]/30 placeholder:text-slate-400">
                                     <p class="text-red-500 text-xs mt-1 font-medium" x-text="errors.jabatan_lainnya"></p>
                                 </div>
                             </div>
 
                             <button type="button" @click="validateStep1()" 
-                                    class="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold py-3.5 px-6 rounded-xl transition duration-150 hover:scale-[1.01] active:scale-[0.99] shadow-md shadow-violet-500/20">
+                                    class="w-full bg-[#A35139] hover:bg-[#8A412C] text-white font-bold py-3.5 px-6 rounded-xl transition duration-150 hover:scale-[1.01] active:scale-[0.99] shadow-md shadow-[#A35139]/20">
                                 Lanjut
                             </button>
                         </div>
@@ -221,10 +221,10 @@
                         <!-- STEP 2: Kebutuhan -->
                         <div x-show="step === 2" x-transition>
                             <div class="mb-6">
-                                <h3 class="text-xl font-bold text-slate-900">Kebutuhan Kampus</h3>
-                                <p class="text-sm text-slate-500 mb-6">Pilih kebutuhan yang sesuai dengan institusi Anda</p>
+                                <h3 class="text-xl font-bold text-[#1B2632]">Kebutuhan Kampus</h3>
+                                <p class="text-sm text-[#2C3B4D] mb-6">Pilih kebutuhan yang sesuai dengan institusi Anda</p>
                                 
-                                <label class="block text-sm font-bold text-slate-700 mb-3">Apa kebutuhan utama institusi Anda? (pilih maksimal 3)*</label>
+                                <label class="block text-sm font-bold text-[#1B2632] mb-3">Apa kebutuhan utama institusi Anda? (pilih maksimal 3)*</label>
                                 
                                 <div class="space-y-2.5">
                                     <template x-for="opt in [
@@ -238,12 +238,12 @@
                                         'Kesiapan digital kampus untuk pengembangan dan peningkatan daya saing',
                                         'Lainnya'
                                     ]">
-                                        <label class="flex items-start gap-3 rounded-xl border p-4 transition cursor-pointer hover:border-violet-400 hover:bg-violet-50/5"
-                                               :class="kebutuhan.includes(opt) ? 'border-violet-500 bg-violet-50/10' : 'border-slate-200 bg-white'">
+                                        <label class="flex items-start gap-3 rounded-xl border p-4 transition cursor-pointer hover:border-[#A35139] hover:bg-[#EEE9DF]/20"
+                                               :class="kebutuhan.includes(opt) ? 'border-[#A35139] bg-[#EEE9DF]/30' : 'border-[#C9C1B1]/60 bg-white'">
                                             <input type="checkbox" name="kebutuhan[]" :value="opt" x-model="kebutuhan" 
                                                    :disabled="kebutuhan.length >= 3 && !kebutuhan.includes(opt)"
-                                                   class="mt-1 rounded border-slate-300 text-violet-600 focus:ring-violet-500">
-                                            <span class="text-sm text-slate-700 font-medium" x-text="opt"></span>
+                                                   class="mt-1 rounded border-slate-300 text-[#A35139] focus:ring-[#A35139]">
+                                            <span class="text-sm text-[#1B2632] font-medium" x-text="opt"></span>
                                         </label>
                                     </template>
                                 </div>
@@ -251,16 +251,16 @@
 
                                 {{-- Textarea manual jika memilih Lainnya pada kebutuhan --}}
                                 <div x-show="kebutuhan.includes('Lainnya')" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" class="mt-3">
-                                    <label class="block text-xs font-semibold text-violet-700 mb-1">✏️ Jelaskan kebutuhan lainnya Anda*</label>
+                                    <label class="block text-xs font-semibold text-[#A35139] mb-1">✏️ Jelaskan kebutuhan lainnya Anda*</label>
                                     <textarea x-model="kebutuhan_lainnya" name="kebutuhan_lainnya" rows="3"
                                               placeholder="Tuliskan kebutuhan spesifik institusi Anda di sini..."
-                                              class="w-full rounded-xl border-violet-300 bg-violet-50/40 text-slate-900 shadow-sm focus:border-violet-500 focus:ring-violet-500/30 placeholder:text-slate-400 resize-none"></textarea>
+                                              class="w-full rounded-xl border-[#A35139]/40 bg-[#EEE9DF]/30 text-[#1B2632] shadow-sm focus:border-[#A35139] focus:ring-[#A35139]/30 placeholder:text-slate-400 resize-none"></textarea>
                                     <p class="text-red-500 text-xs mt-1 font-medium" x-text="errors.kebutuhan_lainnya"></p>
                                 </div>
                             </div>
 
                             <div class="mb-6">
-                                <label class="block text-sm font-bold text-slate-700 mb-3">Sistem informasi akademik yang digunakan saat ini*</label>
+                                <label class="block text-sm font-bold text-[#1B2632] mb-3">Sistem informasi akademik yang digunakan saat ini*</label>
                                 
                                 <div class="space-y-2.5">
                                     <template x-for="opt in [
@@ -269,11 +269,11 @@
                                         {val: 'community', label: 'Menggunakan sistem pendukung atau komunitas'},
                                         {val: 'none', label: 'Saat ini belum menggunakan sistem akademik'}
                                     ]">
-                                        <label class="flex items-center gap-3 rounded-xl border p-4 transition cursor-pointer hover:border-violet-400 hover:bg-violet-50/5"
-                                               :class="sistem_saat_ini === opt.val ? 'border-violet-500 bg-violet-50/10' : 'border-slate-200 bg-white'">
+                                        <label class="flex items-center gap-3 rounded-xl border p-4 transition cursor-pointer hover:border-[#A35139] hover:bg-[#EEE9DF]/20"
+                                               :class="sistem_saat_ini === opt.val ? 'border-[#A35139] bg-[#EEE9DF]/30' : 'border-[#C9C1B1]/60 bg-white'">
                                             <input type="radio" name="sistem_saat_ini" :value="opt.val" x-model="sistem_saat_ini" 
-                                                   class="border-slate-300 text-violet-600 focus:ring-violet-500">
-                                            <span class="text-sm text-slate-700 font-medium" x-text="opt.label"></span>
+                                                   class="border-slate-300 text-[#A35139] focus:ring-[#A35139]">
+                                            <span class="text-sm text-[#1B2632] font-medium" x-text="opt.label"></span>
                                         </label>
                                     </template>
                                 </div>
@@ -281,7 +281,7 @@
                             </div>
 
                             <div class="mb-8">
-                                <label class="block text-sm font-bold text-slate-700 mb-3">Kesiapan investasi digital institusi*</label>
+                                <label class="block text-sm font-bold text-[#1B2632] mb-3">Kesiapan investasi digital institusi*</label>
                                 
                                 <div class="space-y-2.5">
                                     <template x-for="opt in [
@@ -290,11 +290,11 @@
                                         {val: 'planning', label: 'Sedang dalam tahap perencanaan anggaran'},
                                         {val: 'next', label: 'Dianggarkan untuk periode selanjutnya'}
                                     ]">
-                                        <label class="flex items-center gap-3 rounded-xl border p-4 transition cursor-pointer hover:border-violet-400 hover:bg-violet-50/5"
-                                               :class="investasi === opt.val ? 'border-violet-500 bg-violet-50/10' : 'border-slate-200 bg-white'">
+                                        <label class="flex items-center gap-3 rounded-xl border p-4 transition cursor-pointer hover:border-[#A35139] hover:bg-[#EEE9DF]/20"
+                                               :class="investasi === opt.val ? 'border-[#A35139] bg-[#EEE9DF]/30' : 'border-[#C9C1B1]/60 bg-white'">
                                             <input type="radio" name="investasi" :value="opt.val" x-model="investasi" 
-                                                   class="border-slate-300 text-violet-600 focus:ring-violet-500">
-                                            <span class="text-sm text-slate-700 font-medium" x-text="opt.label"></span>
+                                                   class="border-slate-300 text-[#A35139] focus:ring-[#A35139]">
+                                            <span class="text-sm text-[#1B2632] font-medium" x-text="opt.label"></span>
                                         </label>
                                     </template>
                                 </div>
@@ -303,11 +303,11 @@
 
                             <div class="flex gap-4">
                                 <button type="button" @click="step = 1; window.scrollTo({ top: 0, behavior: 'smooth' });"
-                                        class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 px-6 rounded-xl transition duration-150">
+                                        class="w-1/3 bg-[#EEE9DF]/70 hover:bg-[#EEE9DF] text-[#1B2632] font-bold py-3.5 px-6 rounded-xl transition duration-150">
                                     Kembali
                                 </button>
                                 <button type="button" @click="validateStep2()" 
-                                        class="w-2/3 bg-violet-600 hover:bg-violet-700 text-white font-bold py-3.5 px-6 rounded-xl transition duration-150 hover:scale-[1.01] active:scale-[0.99] shadow-md shadow-violet-500/20">
+                                        class="w-2/3 bg-[#A35139] hover:bg-[#8A412C] text-white font-bold py-3.5 px-6 rounded-xl transition duration-150 hover:scale-[1.01] active:scale-[0.99] shadow-md shadow-[#A35139]/20">
                                     Lanjutkan
                                 </button>
                             </div>
@@ -315,11 +315,11 @@
 
                         <!-- STEP 3: Terkirim -->
                         <div x-show="step === 3" x-transition>
-                            <div class="mb-8 border border-slate-200 rounded-xl p-5 bg-slate-50 flex items-center justify-between max-w-sm mx-auto shadow-sm">
+                            <div class="mb-8 border border-[#C9C1B1]/60 rounded-xl p-5 bg-[#EEE9DF]/20 flex items-center justify-between max-w-sm mx-auto shadow-sm">
                                 <div class="flex items-center gap-3">
                                     <input type="checkbox" id="recaptcha" x-model="robot_checked"
-                                           class="rounded border-slate-300 text-violet-600 focus:ring-violet-500 h-6 w-6 cursor-pointer">
-                                    <label for="recaptcha" class="text-sm font-semibold text-slate-700 select-none cursor-pointer">I'm not a robot</label>
+                                           class="rounded border-slate-300 text-[#A35139] focus:ring-[#A35139] h-6 w-6 cursor-pointer">
+                                    <label for="recaptcha" class="text-sm font-semibold text-[#1B2632] select-none cursor-pointer">I'm not a robot</label>
                                 </div>
                                 <div class="flex flex-col items-center select-none text-[10px] text-slate-400">
                                     <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA" class="h-6 w-6 mb-1">
@@ -330,11 +330,11 @@
 
                             <div class="flex gap-4">
                                 <button type="button" @click="step = 2; window.scrollTo({ top: 0, behavior: 'smooth' });"
-                                        class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 px-6 rounded-xl transition duration-150">
+                                        class="w-1/3 bg-[#EEE9DF]/70 hover:bg-[#EEE9DF] text-[#1B2632] font-bold py-3.5 px-6 rounded-xl transition duration-150">
                                     Kembali
                                 </button>
                                 <button type="submit"
-                                        class="w-2/3 bg-violet-600 hover:bg-violet-700 text-white font-bold py-3.5 px-6 rounded-xl transition duration-150 hover:scale-[1.01] active:scale-[0.99] shadow-md shadow-violet-500/20">
+                                        class="w-2/3 bg-[#A35139] hover:bg-[#8A412C] text-white font-bold py-3.5 px-6 rounded-xl transition duration-150 hover:scale-[1.01] active:scale-[0.99] shadow-md shadow-[#A35139]/20">
                                     Kirim Formulir Diskusi
                                 </button>
                             </div>

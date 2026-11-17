@@ -8,33 +8,33 @@
     }
 
     body {
-        @apply antialiased text-slate-800;
+        @apply antialiased text-[#1B2632];
     }
 }
 
 @layer components {
     .ui-page-shell {
-        @apply min-h-screen bg-gradient-to-br from-slate-100 via-violet-50/40 to-slate-100;
+        @apply min-h-screen bg-[#EEE9DF]/30;
     }
 
     .ui-card {
-        @apply rounded-2xl border border-slate-200/80 bg-white/90 shadow-xl shadow-slate-200/40 backdrop-blur-sm;
+        @apply rounded-2xl border border-[#C9C1B1]/40 bg-white/95 shadow-xl shadow-[#1B2632]/5 backdrop-blur-sm;
     }
 
     .ui-card-inner {
-        @apply rounded-2xl border border-slate-100 bg-white p-6 sm:p-8 shadow-sm;
+        @apply rounded-2xl border border-[#C9C1B1]/30 bg-white p-6 sm:p-8 shadow-sm;
     }
 
     .ui-section-header {
-        @apply flex flex-col gap-1 border-b border-slate-100/80 bg-gradient-to-r from-slate-50/90 to-white px-6 py-4 sm:flex-row sm:items-center sm:justify-between;
+        @apply flex flex-col gap-1 border-b border-[#C9C1B1]/30 bg-gradient-to-r from-[#EEE9DF]/40 to-white px-6 py-4 sm:flex-row sm:items-center sm:justify-between;
     }
 
     .ui-btn-primary {
-        @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition hover:from-violet-500 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 active:scale-[0.98];
+        @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#A35139] to-[#8A412C] px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#A35139]/25 transition hover:from-[#8A412C] hover:to-[#733522] focus:outline-none focus:ring-2 focus:ring-[#A35139] focus:ring-offset-2 active:scale-[0.98];
     }
 
     .ui-btn-secondary {
-        @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2;
+        @apply inline-flex items-center justify-center gap-2 rounded-xl border border-[#C9C1B1]/70 bg-white px-4 py-2.5 text-sm font-semibold text-[#1B2632] shadow-sm transition hover:border-[#A35139] hover:bg-[#EEE9DF]/40 focus:outline-none focus:ring-2 focus:ring-[#A35139] focus:ring-offset-2;
     }
 
     .ui-btn-danger {
@@ -42,35 +42,35 @@
     }
 
     .ui-btn-ghost {
-        @apply inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900;
+        @apply inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-medium text-[#2C3B4D] transition hover:bg-[#EEE9DF]/60 hover:text-[#1B2632];
     }
 
     .ui-input {
-        @apply mt-1 block w-full rounded-xl border-slate-200 bg-white text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-violet-500/30;
+        @apply mt-1 block w-full rounded-xl border-[#C9C1B1]/60 bg-white text-[#1B2632] shadow-sm transition placeholder:text-[#2C3B4D]/40 focus:border-[#A35139] focus:ring-[#A35139]/30;
     }
 
     .ui-table-wrap {
-        @apply overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm;
+        @apply overflow-hidden rounded-2xl border border-[#C9C1B1]/40 bg-white shadow-sm;
     }
 
     .ui-table {
-        @apply min-w-full divide-y divide-slate-100 text-sm;
+        @apply min-w-full divide-y divide-[#C9C1B1]/30 text-sm;
     }
 
     .ui-table thead {
-        @apply bg-gradient-to-r from-slate-50 to-slate-50/50;
+        @apply bg-[#EEE9DF]/40;
     }
 
     .ui-table th {
-        @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500;
+        @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#2C3B4D]/70;
     }
 
     .ui-table td {
-        @apply px-4 py-3.5 text-slate-700;
+        @apply px-4 py-3.5 text-[#1B2632];
     }
 
     .ui-table tbody tr {
-        @apply transition hover:bg-violet-50/40;
+        @apply transition hover:bg-[#EEE9DF]/30;
     }
 
     .ui-badge {
@@ -82,16 +82,41 @@
     }
 
     .ui-empty {
-        @apply flex flex-col items-center justify-center gap-2 py-14 text-center text-slate-500;
+        @apply flex flex-col items-center justify-center gap-2 py-14 text-center text-[#2C3B4D]/60;
     }
 
-    /* SILADATA New Brand Identity */
-    .bg-navy-dark { background-color: #111C2E !important; }
-    .bg-navy-card { background-color: #16243A !important; }
-    .text-navy-dark { color: #111C2E !important; }
-    .text-terracotta { color: #E47A34 !important; }
-    .bg-terracotta { background-color: #E47A34 !important; }
-    .border-terracotta { border-color: #C86B32 !important; }
-    .bg-sand { background-color: #F7F3ED !important; }
+    /* SILADATA Brand Identity Palette (MP072) */
+    .bg-palladian { background-color: #EEE9DF !important; }
+    .text-palladian { color: #EEE9DF !important; }
+    .border-palladian { border-color: #EEE9DF !important; }
+
+    .bg-oatmeal { background-color: #C9C1B1 !important; }
+    .text-oatmeal { color: #C9C1B1 !important; }
+    .border-oatmeal { border-color: #C9C1B1 !important; }
+
+    .bg-blue-fantastic { background-color: #2C3B4D !important; }
+    .text-blue-fantastic { color: #2C3B4D !important; }
+    .border-blue-fantastic { border-color: #2C3B4D !important; }
+
+    .bg-burning-flame { background-color: #FFB162 !important; }
+    .text-burning-flame { color: #FFB162 !important; }
+    .border-burning-flame { border-color: #FFB162 !important; }
+
+    .bg-truffle-trouble { background-color: #A35139 !important; }
+    .text-truffle-trouble { color: #A35139 !important; }
+    .border-truffle-trouble { border-color: #A35139 !important; }
+
+    .bg-abyssal-blue { background-color: #1B2632 !important; }
+    .text-abyssal-blue { color: #1B2632 !important; }
+    .border-abyssal-blue { border-color: #1B2632 !important; }
+
+    /* Brand helpers */
+    .bg-navy-dark { background-color: #1B2632 !important; }
+    .bg-navy-card { background-color: #2C3B4D !important; }
+    .text-navy-dark { color: #1B2632 !important; }
+    .text-terracotta { color: #A35139 !important; }
+    .bg-terracotta { background-color: #A35139 !important; }
+    .border-terracotta { border-color: #A35139 !important; }
+    .bg-sand { background-color: #EEE9DF !important; }
     .bg-sand-card { background-color: #FAF7F2 !important; }
 }

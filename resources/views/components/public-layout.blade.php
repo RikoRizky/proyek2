@@ -134,10 +134,10 @@
             align-items: center;
             justify-content: space-between;
             background-color: #FFFFFF !important;
-            border: 1px solid rgba(225, 218, 204, 0.85);
+            border: 1px solid rgba(201, 193, 177, 0.75);
             border-radius: 9999px;
             padding: 12px 30px;
-            box-shadow: 0 10px 30px rgba(17, 28, 46, 0.07);
+            box-shadow: 0 10px 30px rgba(27, 38, 50, 0.08);
             width: 100%;
             max-width: 100%;
             margin: 0 auto;
@@ -188,7 +188,7 @@
             font-size: 23px;
             font-weight: 900;
             letter-spacing: -0.03em;
-            color: #111C2E !important;
+            color: #1B2632 !important;
             text-decoration: none;
             line-height: 1;
         }
@@ -196,7 +196,7 @@
         .siladata-nav-divider {
             width: 1px;
             height: 18px;
-            background-color: #E2D9CC;
+            background-color: #C9C1B1;
             display: none;
         }
 
@@ -204,7 +204,7 @@
             display: none;
             font-size: 13.5px;
             font-weight: 500;
-            color: #475467;
+            color: #2C3B4D;
             letter-spacing: -0.01em;
             line-height: 1;
             white-space: nowrap;
@@ -219,7 +219,7 @@
         .siladata-nav-link {
             font-size: 14.5px;
             font-weight: 600;
-            color: #111C2E !important;
+            color: #1B2632 !important;
             text-decoration: none;
             transition: color 0.15s ease;
             white-space: nowrap;
@@ -228,14 +228,14 @@
         }
 
         .siladata-nav-link:hover {
-            color: #E87A36 !important;
+            color: #A35139 !important;
         }
 
         .siladata-nav-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background-color: #111C2E;
+            background-color: #1B2632;
             color: #FFFFFF !important;
             font-size: 14px;
             font-weight: 700;
@@ -243,16 +243,16 @@
             border-radius: 9999px;
             text-decoration: none;
             white-space: nowrap;
-            box-shadow: 0 4px 12px rgba(17, 28, 46, 0.15);
+            box-shadow: 0 4px 12px rgba(27, 38, 50, 0.18);
             transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
             cursor: pointer !important;
             pointer-events: auto !important;
         }
 
         .siladata-nav-btn:hover {
-            background-color: #1B2B43;
+            background-color: #2C3B4D;
             transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(17, 28, 46, 0.22);
+            box-shadow: 0 6px 18px rgba(27, 38, 50, 0.25);
         }
 
         @media (min-width: 640px) {
@@ -299,27 +299,27 @@
         }
     </style>
 </head>
-<body class="font-sans text-slate-900 antialiased" style="background-color: #ECE8DD; margin: 0; padding: 0;">
+<body class="font-sans text-[#1B2632] antialiased" style="background-color: #EEE9DF; margin: 0; padding: 0;">
     {{-- Floating Pill Navbar (Satu-satunya Navbar: Selalu Ada dan Melayang Mengikuti Scroll) --}}
     <header class="siladata-sticky-wrapper">
         <x-siladata-navbar />
     </header>
 
-    <div class="relative min-h-screen flex flex-col" style="background-color: #ECE8DD;">
+    <div class="relative min-h-screen flex flex-col" style="background-color: #EEE9DF;">
         <main class="relative flex-grow">
             {{ $slot }}
         </main>
 
-        {{-- Footer Gelap (Matching Bottom Accent) --}}
-        <footer class="bg-[#101A2B] text-slate-300" style="background-color: #101A2B;">
+        {{-- Footer Gelap (Abyssal Anchorfish Blue Palette #1B2632) --}}
+        <footer class="bg-[#1B2632] text-slate-300" style="background-color: #1B2632;">
             <div class="mx-auto max-w-7xl px-6 py-16">
                 <div class="grid gap-12 md:grid-cols-12">
                     {{-- Logo & Deskripsi --}}
                     <div class="md:col-span-5 flex flex-col justify-between">
                         <div>
                             <span class="text-3xl font-black tracking-wider text-white">SILADATA</span>
-                            <p class="mt-1 text-xs font-medium text-[#E47A34] tracking-wider uppercase">Sistem Layanan Dokumen Akreditasi</p>
-                            <p class="mt-4 max-w-sm text-sm leading-relaxed text-slate-400">
+                            <p class="mt-1 text-xs font-bold text-[#FFB162] tracking-wider uppercase">Sistem Layanan Dokumen Akreditasi</p>
+                            <p class="mt-4 max-w-sm text-sm leading-relaxed text-[#C9C1B1]">
                                 Platform digital yang membantu perguruan tinggi dalam mengelola, menyimpan, dan mempersiapkan dokumen akreditasi sesuai standar LAM Infokom, LAMEMBA, LAM-PTKes, dan LAMDIK secara efisien dan transparan.
                             </p>
                         </div>
@@ -336,7 +336,7 @@
                                 </div>
                                 <div>
                                     <p class="text-sm font-medium">+62 881-0233-00457</p>
-                                    <p class="text-xs text-slate-400">Chat via WhatsApp</p>
+                                    <p class="text-xs text-[#C9C1B1]">Chat via WhatsApp</p>
                                 </div>
                             </a>
                         </div>
@@ -348,10 +348,10 @@
                         <div>
                             <h3 class="text-xs font-semibold uppercase tracking-wider text-white mb-4">Navigasi</h3>
                             <ul class="space-y-2.5 text-sm">
-                                <li><a href="{{ route('home') }}" class="text-slate-400 hover:text-[#E47A34] transition">Beranda</a></li>
-                                <li><a href="{{ route('harga') }}" class="text-slate-400 hover:text-[#E47A34] transition">Harga Paket</a></li>
-                                <li><a href="{{ route('discussion') }}" class="text-slate-400 hover:text-[#E47A34] transition">Diskusi</a></li>
-                                <li><a href="{{ route('login') }}" class="text-slate-400 hover:text-[#E47A34] transition">Masuk</a></li>
+                                <li><a href="{{ route('home') }}" class="text-[#C9C1B1] hover:text-[#FFB162] transition">Beranda</a></li>
+                                <li><a href="{{ route('harga') }}" class="text-[#C9C1B1] hover:text-[#FFB162] transition">Harga Paket</a></li>
+                                <li><a href="{{ route('discussion') }}" class="text-[#C9C1B1] hover:text-[#FFB162] transition">Diskusi</a></li>
+                                <li><a href="{{ route('login') }}" class="text-[#C9C1B1] hover:text-[#FFB162] transition">Masuk</a></li>
                             </ul>
                         </div>
 
@@ -359,10 +359,10 @@
                         <div>
                             <h3 class="text-xs font-semibold uppercase tracking-wider text-white mb-4">Fitur Platform</h3>
                             <ul class="space-y-2.5 text-sm">
-                                <li><span class="text-slate-400">Dashboard Akreditasi</span></li>
-                                <li><span class="text-slate-400">Monitoring Progress</span></li>
-                                <li><span class="text-slate-400">Upload Dokumen</span></li>
-                                <li><span class="text-slate-400">Cetak Laporan PDF</span></li>
+                                <li><span class="text-[#C9C1B1]">Dashboard Akreditasi</span></li>
+                                <li><span class="text-[#C9C1B1]">Monitoring Progress</span></li>
+                                <li><span class="text-[#C9C1B1]">Upload Dokumen</span></li>
+                                <li><span class="text-[#C9C1B1]">Cetak Laporan PDF</span></li>
                             </ul>
                         </div>
 
@@ -370,21 +370,21 @@
                         <div>
                             <h3 class="text-xs font-semibold uppercase tracking-wider text-white mb-4">Legal</h3>
                             <ul class="space-y-2.5 text-sm">
-                                <li><a href="#" class="text-slate-400 hover:text-white transition">Kebijakan Privasi</a></li>
-                                <li><a href="#" class="text-slate-400 hover:text-white transition">Syarat & Ketentuan</a></li>
-                                <li><a href="#" class="text-slate-400 hover:text-white transition">Keamanan Data</a></li>
+                                <li><a href="#" class="text-[#C9C1B1] hover:text-white transition">Kebijakan Privasi</a></li>
+                                <li><a href="#" class="text-[#C9C1B1] hover:text-white transition">Syarat & Ketentuan</a></li>
+                                <li><a href="#" class="text-[#C9C1B1] hover:text-white transition">Keamanan Data</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 {{-- Bottom Footer --}}
-                <div class="mt-12 border-t border-slate-800 pt-8">
+                <div class="mt-12 border-t border-[#2C3B4D] pt-8">
                     <div class="flex flex-col items-center justify-between gap-3 text-center md:flex-row">
-                        <p class="text-sm text-slate-500">
+                        <p class="text-sm text-[#C9C1B1]">
                             © {{ date('Y') }} SILADATA. Seluruh hak cipta dilindungi.
                         </p>
-                        <p class="text-xs text-slate-600">
+                        <p class="text-xs text-[#C9C1B1]/70">
                             Sistem Layanan Dokumen Akreditasi · LAM Infokom
                         </p>
                     </div>

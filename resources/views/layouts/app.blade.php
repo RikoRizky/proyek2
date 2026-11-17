@@ -52,7 +52,7 @@
                     </div>
                 @endif
                 @isset($header)
-                    <header class="relative lg:sticky lg:top-0 z-20 shrink-0 border-b border-slate-200/60 bg-white/85 shadow-sm backdrop-blur-lg">
+                    <header class="relative lg:sticky lg:top-0 z-20 shrink-0 border-b border-[#C9C1B1]/40 bg-white/90 shadow-sm backdrop-blur-lg">
                         <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
                             <div class="min-w-0 flex-1">
                                 {{ $header }}
@@ -62,15 +62,15 @@
                                     .desktop-profile-only { display: none !important; }
                                 }
                             </style>
-                            <div class="flex desktop-profile-only shrink-0 items-center rounded-full border border-slate-200/80 bg-white/60 shadow-sm backdrop-blur-sm">
-                                <a href="{{ route('profile.edit') }}" class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-600 transition-all duration-200 hover:bg-violet-50 hover:text-violet-700">
-                                    <img src="{{ auth()->user()->profile_photo_url }}" alt="Profile" class="h-6 w-6 rounded-full object-cover ring-2 ring-violet-500/10">
+                            <div class="flex desktop-profile-only shrink-0 items-center rounded-full border border-[#C9C1B1]/50 bg-white/80 shadow-sm backdrop-blur-sm">
+                                <a href="{{ route('profile.edit') }}" class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold text-[#1B2632] transition-all duration-200 hover:bg-[#EEE9DF] hover:text-[#A35139]">
+                                    <img src="{{ auth()->user()->profile_photo_url }}" alt="Profile" class="h-6 w-6 rounded-full object-cover ring-2 ring-[#A35139]/20">
                                     <span class="hidden sm:inline">Profil</span>
                                 </a>
-                                <div class="h-5 w-px bg-slate-200/80"></div>
+                                <div class="h-5 w-px bg-[#C9C1B1]/50"></div>
                                 <form method="POST" action="{{ route('logout') }}" class="inline-flex">
                                     @csrf
-                                    <button type="submit" class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-slate-500 transition-all duration-200 hover:bg-rose-50 hover:text-rose-600">
+                                    <button type="submit" class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-[#2C3B4D]/70 transition-all duration-200 hover:bg-rose-50 hover:text-rose-600">
                                         <svg class="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
                                         </svg>

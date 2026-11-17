@@ -6,7 +6,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <p class="text-xs font-bold uppercase tracking-[0.2em] text-violet-600">Beranda</p>
+            <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#A35139]">Beranda</p>
             <h1 class="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Ringkasan</h1>
             <p class="mt-1 text-sm text-slate-600">Sistem penguploadan data akreditasi</p>
         </div>
@@ -21,11 +21,11 @@
         @endphp
 
         {{-- Welcome Banner Admin --}}
-        <div class="mb-6 relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700 p-5 sm:p-8 shadow-xl shadow-violet-500/20 text-white">
+        <div class="mb-6 relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1B2632] via-[#243343] to-[#2C3B4D] p-5 sm:p-8 shadow-xl shadow-[#1B2632]/20 text-white">
             <div class="relative z-10">
-                <p class="text-violet-300 text-xs font-bold uppercase tracking-widest">Admin · SILADATA</p>
+                <p class="text-[#FFB162] text-xs font-bold uppercase tracking-widest">Admin · SILADATA</p>
                 <h2 class="mt-1.5 text-xl font-black sm:text-2xl">Selamat datang, {{ auth()->user()->name }}! 👋</h2>
-                <p class="mt-1 text-sm text-violet-200">{{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</p>
+                <p class="mt-1 text-sm text-[#C9C1B1]">{{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</p>
             </div>
             <div class="pointer-events-none absolute -right-8 -top-8 h-48 w-48 rounded-full bg-white/5"></div>
             <div class="pointer-events-none absolute -bottom-6 right-24 h-32 w-32 rounded-full bg-white/5"></div>
@@ -34,10 +34,10 @@
         <div class="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <!-- Total Perguruan Tinggi -->
             <div class="relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-5 shadow-lg shadow-slate-200/50 transition duration-200 hover:-translate-y-1 hover:shadow-xl">
-                <div class="absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-gradient-to-r from-violet-500 to-indigo-500"></div>
+                <div class="absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-gradient-to-r from-[#A35139] to-[#FFB162]"></div>
                 <div class="flex items-center justify-between">
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Perguruan Tinggi</p>
-                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 text-white shadow-md shadow-violet-500/30">
+                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[#A35139] to-[#FFB162] text-white shadow-md shadow-[#A35139]/30">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.5M4.5 21V10.5" />
                         </svg>
@@ -49,10 +49,10 @@
 
             <!-- Program Studi -->
             <div class="relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-5 shadow-lg shadow-slate-200/50 transition duration-200 hover:-translate-y-1 hover:shadow-xl">
-                <div class="absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-gradient-to-r from-emerald-400 to-teal-500"></div>
+                <div class="absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-gradient-to-r from-[#2C3B4D] to-[#1B2632]"></div>
                 <div class="flex items-center justify-between">
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Program Studi</p>
-                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 text-white shadow-md shadow-emerald-500/30">
+                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[#2C3B4D] to-[#1B2632] text-white shadow-md shadow-[#2C3B4D]/30">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342" />
                         </svg>
@@ -64,26 +64,26 @@
 
             <!-- Rata-rata Progress -->
             <div class="relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-5 shadow-lg shadow-slate-200/50 transition duration-200 hover:-translate-y-1 hover:shadow-xl">
-                <div class="absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-gradient-to-r from-sky-400 to-blue-500"></div>
+                <div class="absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-gradient-to-r from-[#FFB162] to-[#A35139]"></div>
                 <div class="flex items-center justify-between">
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Rata-rata Progress</p>
-                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400 to-blue-500 text-white shadow-md shadow-sky-500/30 text-sm font-black">
+                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[#FFB162] to-[#A35139] text-white shadow-md shadow-[#FFB162]/30 text-sm font-black">
                         %
                     </span>
                 </div>
                 <p class="mt-4 text-3xl font-black tracking-tight text-slate-900">{{ $summary['average_percent'] }}%</p>
                 <div class="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-                    <div class="h-full rounded-full bg-gradient-to-r from-sky-400 to-blue-500 transition-all duration-500" style="width: {{ $summary['average_percent'] }}%"></div>
+                    <div class="h-full rounded-full bg-gradient-to-r from-[#FFB162] to-[#A35139] transition-all duration-500" style="width: {{ $summary['average_percent'] }}%"></div>
                 </div>
                 <p class="mt-2 text-xs font-medium text-slate-500">Rata-rata kelengkapan nasional</p>
             </div>
 
             <!-- Prodi Lengkap -->
             <div class="relative overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-5 shadow-lg shadow-slate-200/50 transition duration-200 hover:-translate-y-1 hover:shadow-xl">
-                <div class="absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-gradient-to-r from-amber-400 to-orange-500"></div>
+                <div class="absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-gradient-to-r from-emerald-400 to-teal-500"></div>
                 <div class="flex items-center justify-between">
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Prodi Lengkap</p>
-                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-md shadow-amber-500/30">
+                    <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 text-white shadow-md shadow-emerald-500/30">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -97,7 +97,7 @@
         <div class="mb-8 grid gap-6 lg:grid-cols-2">
             <x-chart-card title="Progress per Perguruan Tinggi" subtitle="Rata-rata kelengkapan unggahan per perguruan tinggi" canvas-id="dashAdminBar" height="280px" />
             <div class="ui-card flex flex-col justify-center p-6 sm:p-8">
-                <p class="text-xs font-bold uppercase tracking-[0.2em] text-violet-600">Analitik</p>
+                <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#A35139]">Analitik</p>
                 <h2 class="mt-2 text-xl font-bold text-slate-900">Perbandingan antar prodi</h2>
                 <p class="mt-2 text-sm text-slate-600">Lihat grafik lengkap, breakdown per kriteria, dan status kelengkapan setiap program studi.</p>
                 <div class="mt-6 flex flex-wrap gap-3">
@@ -110,11 +110,11 @@
         <div class="ui-card overflow-hidden">
             <div class="ui-section-header">
                 <h2 class="text-lg font-bold text-slate-900">Modul akreditasi</h2>
-                <a href="{{ route('admin.modules.index') }}" class="text-sm font-semibold text-violet-600 hover:text-violet-500">Kelola modul →</a>
+                <a href="{{ route('admin.modules.index') }}" class="text-sm font-semibold text-[#A35139] hover:text-[#8A412C]">Kelola modul →</a>
             </div>
             <ul class="divide-y divide-slate-100">
                 @forelse ($stats['modules'] as $module)
-                    <li class="flex items-center justify-between gap-4 px-6 py-4 transition hover:bg-violet-50/30">
+                    <li class="flex items-center justify-between gap-4 px-6 py-4 transition hover:bg-[#EEE9DF]/30">
                         <div class="min-w-0">
                             <p class="font-semibold text-slate-900">{{ $module->name }}</p>
                         </div>
@@ -136,7 +136,7 @@
                         datasets: [{
                             label: 'Progress (%)',
                             data: @json($pertiPercents),
-                            backgroundColor: 'rgba(139,92,246,0.85)',
+                            backgroundColor: '#A35139',
                             borderRadius: 8,
                         }],
                     },
@@ -161,18 +161,18 @@
         @endphp
 
         {{-- Welcome Banner Perti --}}
-        <div class="mb-6 relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700 p-5 sm:p-8 shadow-xl shadow-violet-500/20 text-white">
+        <div class="mb-6 relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1B2632] via-[#243343] to-[#2C3B4D] p-5 sm:p-8 shadow-xl shadow-[#1B2632]/25 text-white">
             <div class="relative z-10">
-                <p class="text-violet-300 text-xs font-bold uppercase tracking-widest">Perguruan Tinggi · SILADATA</p>
-                <h2 class="mt-1.5 text-xl font-black sm:text-2xl">Selamat datang, {{ auth()->user()->name }}! 👋</h2>
-                <p class="mt-1 text-sm text-violet-200">{{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</p>
+                <p class="text-[#FFB162] text-xs font-bold uppercase tracking-widest">Perguruan Tinggi · SILADATA</p>
+                <h2 class="mt-1.5 text-xl font-black sm:text-2xl text-white">Selamat datang, {{ auth()->user()->name }}! 👋</h2>
+                <p class="mt-1 text-sm text-[#C9C1B1]">{{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</p>
             </div>
             <div class="pointer-events-none absolute -right-8 -top-8 h-48 w-48 rounded-full bg-white/5"></div>
             <div class="pointer-events-none absolute -bottom-6 right-24 h-32 w-32 rounded-full bg-white/5"></div>
         </div>
 
         @if (($stats['pendingValidationCount'] ?? 0) > 0)
-            <div class="mb-6 flex flex-col gap-4 rounded-2xl border border-amber-200 bg-gradient-to-r from-amber-500 via-amber-600 to-indigo-600 p-5 text-white shadow-xl shadow-amber-500/10 sm:flex-row sm:items-center sm:justify-between">
+            <div class="mb-6 flex flex-col gap-4 rounded-2xl border border-[#FFB162]/40 bg-gradient-to-r from-[#A35139] via-[#C56345] to-[#FFB162] p-5 text-white shadow-xl shadow-[#A35139]/20 sm:flex-row sm:items-center sm:justify-between">
                 <div class="flex items-center gap-4">
                     <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-md">
                         <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -184,7 +184,7 @@
                         <p class="mt-0.5 text-xs text-white/90 sm:text-sm">Program studi telah mengunggah dokumen baru. Periksa tabel di bawah untuk melakukan validasi.</p>
                     </div>
                 </div>
-                <a href="#prodi-table" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-xs font-extrabold text-amber-900 shadow-md transition hover:bg-amber-50">
+                <a href="#prodi-table" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-xs font-extrabold text-[#A35139] shadow-md transition hover:bg-[#EEE9DF]">
                     Periksa Dokumen →
                 </a>
             </div>
@@ -332,7 +332,7 @@
                                                     Lihat Revisi →
                                                 </a>
                                             @else
-                                                <a href="{{ route('perti.prodis.progress', $prodiTargetId) }}" class="inline-flex items-center gap-1 text-xs font-semibold text-violet-600 hover:text-violet-500">
+                                                <a href="{{ route('perti.prodis.progress', $prodiTargetId) }}" class="inline-flex items-center gap-1 text-xs font-semibold text-[#A35139] hover:text-[#FFB162]">
                                                     Lihat Detail →
                                                 </a>
                                             @endif
@@ -352,7 +352,7 @@
             </div>
 
             <div class="ui-card flex flex-col justify-center p-6 sm:p-8">
-                <p class="text-xs font-bold uppercase tracking-[0.2em] text-violet-600">Manajemen</p>
+                <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#A35139]">Manajemen</p>
                 <h2 class="mt-2 text-xl font-bold text-slate-900">Kelola akun program studi</h2>
                 <p class="mt-2 text-sm text-slate-600">Buat, edit, dan kelola akun program studi di bawah perguruan tinggi Anda.</p>
                 <div class="mt-6 flex flex-wrap gap-3">
@@ -376,7 +376,7 @@
                         datasets: [{
                             label: 'Progress (%)',
                             data: percents,
-                            backgroundColor: percents.map(p => p >= 100 ? 'rgba(16,185,129,0.85)' : p > 0 ? 'rgba(59,130,246,0.85)' : 'rgba(148,163,184,0.7)'),
+                            backgroundColor: percents.map(p => p >= 100 ? '#10b981' : p > 0 ? '#2C3B4D' : '#C9C1B1'),
                             borderRadius: 8,
                         }],
                     },
@@ -407,7 +407,7 @@
                         labels: ['Lengkap', 'Berjalan', 'Belum mulai'],
                         datasets: [{
                             data: [summary.complete_count, summary.in_progress_count, summary.empty_count],
-                            backgroundColor: ['#10b981', '#8b5cf6', '#cbd5e1'],
+                            backgroundColor: ['#10b981', '#A35139', '#C9C1B1'],
                             borderWidth: 0,
                         }],
                     },
@@ -428,11 +428,11 @@
         @endphp
 
         {{-- Welcome Banner Prodi --}}
-        <div class="mb-6 relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700 p-5 sm:p-8 shadow-xl shadow-violet-500/20 text-white">
+        <div class="mb-6 relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1B2632] via-[#243343] to-[#2C3B4D] p-5 sm:p-8 shadow-xl shadow-[#1B2632]/25 text-white">
             <div class="relative z-10">
-                <p class="text-violet-300 text-xs font-bold uppercase tracking-widest">Program Studi · SILADATA</p>
-                <h2 class="mt-1.5 text-xl font-black sm:text-2xl">Selamat datang, {{ auth()->user()->name }}! 👋</h2>
-                <p class="mt-1 text-sm text-violet-200">{{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</p>
+                <p class="text-[#FFB162] text-xs font-bold uppercase tracking-widest">Program Studi · SILADATA</p>
+                <h2 class="mt-1.5 text-xl font-black sm:text-2xl text-white">Selamat datang, {{ auth()->user()->name }}! 👋</h2>
+                <p class="mt-1 text-sm text-[#C9C1B1]">{{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</p>
             </div>
             <div class="pointer-events-none absolute -right-8 -top-8 h-48 w-48 rounded-full bg-white/5"></div>
             <div class="pointer-events-none absolute -bottom-6 right-24 h-32 w-32 rounded-full bg-white/5"></div>
@@ -467,7 +467,7 @@
             <div class="ui-card relative overflow-hidden p-5 transition duration-200 hover:-translate-y-0.5 hover:shadow-lg">
                 <div class="flex items-center justify-between">
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Sudah Terunggah</p>
-                    <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-[#EEE9DF] text-[#A35139]">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -532,10 +532,10 @@
                     $hasRevision = $revisionCount > 0;
                     $isAllApproved = $approvedCount === $total && $total > 0;
                 @endphp
-                <a href="{{ route('unit.submissions.module', $module) }}" class="ui-card group overflow-hidden transition duration-200 hover:-translate-y-0.5 hover:shadow-lg {{ $hasRevision ? 'ring-2 ring-rose-500/30 border-rose-200 bg-rose-50/20 hover:shadow-rose-500/10' : 'hover:shadow-violet-500/10' }}">
-                    <div class="border-b px-5 py-4 {{ $hasRevision ? 'border-rose-100 bg-gradient-to-r from-rose-50 via-rose-50/60 to-white' : 'border-slate-100 bg-gradient-to-r from-violet-50/80 to-white' }}">
+                <a href="{{ route('unit.submissions.module', $module) }}" class="ui-card group overflow-hidden transition duration-200 hover:-translate-y-0.5 hover:shadow-lg {{ $hasRevision ? 'ring-2 ring-rose-500/30 border-rose-200 bg-rose-50/20 hover:shadow-rose-500/10' : 'hover:shadow-[#A35139]/10' }}">
+                    <div class="border-b px-5 py-4 {{ $hasRevision ? 'border-rose-100 bg-gradient-to-r from-rose-50 via-rose-50/60 to-white' : 'border-[#C9C1B1]/40 bg-gradient-to-r from-[#EEE9DF]/70 to-white' }}">
                         <div class="flex items-center justify-between gap-2">
-                            <p class="text-xs font-bold uppercase tracking-wider {{ $hasRevision ? 'text-rose-700' : 'text-violet-700' }}">{{ $module->shortLabel() }}</p>
+                            <p class="text-xs font-bold uppercase tracking-wider {{ $hasRevision ? 'text-rose-700' : 'text-[#A35139]' }}">{{ $module->shortLabel() }}</p>
                             @if ($hasRevision)
                                 <span class="inline-flex items-center gap-1 rounded-full border border-rose-200 bg-rose-100/90 px-2 py-0.5 text-[11px] font-extrabold text-rose-700 shadow-sm animate-pulse">
                                     <svg class="h-3 w-3 shrink-0 text-rose-600" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
@@ -549,7 +549,7 @@
                                 </span>
                             @endif
                         </div>
-                        <h3 class="mt-1.5 line-clamp-2 text-base font-bold text-slate-900 {{ $hasRevision ? 'group-hover:text-rose-700' : 'group-hover:text-violet-700' }}">{{ $module->name }}</h3>
+                        <h3 class="mt-1.5 line-clamp-2 text-base font-bold text-slate-900 {{ $hasRevision ? 'group-hover:text-rose-700' : 'group-hover:text-[#A35139]' }}">{{ $module->name }}</h3>
                     </div>
                     <div class="px-5 py-4">
                         <div class="flex items-center justify-between gap-3 text-sm">
@@ -557,7 +557,7 @@
                             <span class="rounded-full px-2.5 py-0.5 text-xs font-bold {{ $hasRevision ? 'bg-rose-100 text-rose-800' : 'bg-slate-100 text-slate-700' }}">{{ $moduleProgress }}%</span>
                         </div>
                         <div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-100">
-                            <div class="h-full rounded-full transition-all duration-500 {{ $hasRevision ? 'bg-rose-500' : 'bg-violet-500' }}" style="width: {{ $moduleProgress }}%"></div>
+                            <div class="h-full rounded-full transition-all duration-500 {{ $hasRevision ? 'bg-rose-500' : 'bg-[#A35139]' }}" style="width: {{ $moduleProgress }}%"></div>
                         </div>
                         
                         @if ($hasRevision)
@@ -566,7 +566,7 @@
                                 <span class="rounded-full bg-rose-100 px-2 py-0.5 font-extrabold text-rose-700">{{ $revisionCount }} revisi</span>
                             </div>
                         @else
-                            <p class="mt-4 text-sm font-semibold text-violet-600 group-hover:text-violet-500">Lihat lebih detail →</p>
+                            <p class="mt-4 text-sm font-semibold text-[#A35139] group-hover:text-[#FFB162]">Lihat lebih detail →</p>
                         @endif
                     </div>
                 </a>
@@ -583,7 +583,7 @@
                         datasets: [{
                             label: 'Progress (%)',
                             data: @json($modulePercents),
-                            backgroundColor: 'rgba(99,102,241,0.85)',
+                            backgroundColor: '#A35139',
                             borderRadius: 8,
                         }],
                     },

@@ -41,26 +41,26 @@
 
     </head>
     <body class="font-sans text-slate-900 antialiased">
-        <div class="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-100 via-violet-50/50 to-indigo-50/40">
-            <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-violet-200/30 via-transparent to-transparent"></div>
-            <div class="pointer-events-none absolute -left-32 top-1/4 h-96 w-96 rounded-full bg-violet-400/10 blur-3xl"></div>
-            <div class="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-indigo-400/10 blur-3xl"></div>
+        <div class="relative min-h-screen overflow-hidden bg-[#EEE9DF]/30">
+            <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#FFB162]/15 via-transparent to-transparent"></div>
+            <div class="pointer-events-none absolute -left-32 top-1/4 h-96 w-96 rounded-full bg-[#A35139]/10 blur-3xl"></div>
+            <div class="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-[#2C3B4D]/10 blur-3xl"></div>
 
             <div class="relative flex min-h-screen flex-col items-center justify-center px-4 py-10 sm:px-6">
                 <a href="{{ url('/') }}" class="mb-8 flex flex-col items-center gap-3 transition hover:opacity-90">
                     <img
-                        class="flex h-14 w-14 items-center justify-center rounded-2xl shadow-xl shadow-violet-500/30 ring-4 ring-white/50 object-contain bg-white"
+                        class="flex h-14 w-14 items-center justify-center rounded-2xl shadow-xl shadow-[#A35139]/20 ring-4 ring-white/60 object-contain bg-white"
                         src="{{ asset('images/logoname.png') }}"
                         alt="SILADATA"
                     />
-                    <span class="text-center text-sm font-semibold text-slate-700">SILADATA (Sistem Layanan Dokumen Akreditasi)</span>
+                    <span class="text-center text-sm font-bold text-[#1B2632]">SILADATA (Sistem Layanan Dokumen Akreditasi)</span>
                 </a>
 
                 <div class="w-full max-w-md">
-                    <div class="rounded-3xl border border-white/60 bg-white/80 p-8 shadow-2xl shadow-slate-300/40 ring-1 ring-slate-200/60 backdrop-blur-xl sm:p-10">
+                    <div class="rounded-3xl border border-[#C9C1B1]/60 bg-white/90 p-8 shadow-2xl shadow-[#1B2632]/10 ring-1 ring-[#C9C1B1]/40 backdrop-blur-xl sm:p-10">
                         {{ $slot }}
                     </div>
-                    <p class="mt-6 text-center text-xs text-slate-500">© {{ date('Y') }} — SILADATA (Sistem Layanan Dokumen Akreditasi)</p>
+                    <p class="mt-6 text-center text-xs text-[#2C3B4D]/60">© {{ date('Y') }} — SILADATA (Sistem Layanan Dokumen Akreditasi)</p>
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
                     icon: 'error',
                     title: '{{ session('error_title', 'Perhatian') }}',
                     text: "{!! session('error') !!}",
-                    confirmButtonColor: '#7c3aed',
+                    confirmButtonColor: '#A35139',
                 });
             });
         </script>
@@ -87,7 +87,7 @@
                     icon: 'success',
                     title: 'Berhasil',
                     text: "{!! session('status') !!}",
-                    confirmButtonColor: '#7c3aed',
+                    confirmButtonColor: '#A35139',
                 });
             });
         </script>
